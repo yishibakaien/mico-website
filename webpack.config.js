@@ -86,7 +86,7 @@ let config = {
     // devtool: '#source-map',
     devServer: {
         // contentBase: './',
-        host: 'localhost',
+        host: '127.0.0.1',
         port: 3001, // 端口
         inline: true,
         hot: false,
@@ -115,7 +115,7 @@ pages.forEach(pathname => {
         chunks: ['common', itemName[1]],
         minify: { // 压缩HTML文件
             removeComments: true, // 移除HTML中的注释
-            collapseWhitespace: false // 删除空白符与换行符（压缩html）
+            collapseWhitespace: true // 删除空白符与换行符（压缩html）
         }
     };
     confTitle.forEach((item, index) => {

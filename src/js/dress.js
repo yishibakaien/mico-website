@@ -1,6 +1,6 @@
 'use strict';
 import '../stylus/common/common';
-import '../stylus/reset/reset';
+import '../stylus/static/reset/reset';
 import '../stylus/dress/dress';
 import { baseURL } from '../../config/config';
 import { bind, getQueryString, c } from './utils/utils';

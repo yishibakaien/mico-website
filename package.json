@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --progress --colors --inline",
+    "dev": "webpack-dev-server --progress --colors --inline --host 0.0.0.0",
     "build": "webpack -p"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "babel-plugin-transform-runtime": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
     "babel-runtime": "^5.8.34",
+    "better-scroll": "^0.1.15",
     "clean-webpack-plugin": "^0.1.10",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.23.1",
@@ -40,5 +41,8 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.12.13",
     "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "swiper": "^3.4.2"
   }
 }

@@ -5,6 +5,174 @@ html,body
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB";
   color: #333;
 
+.clearfix {
+    display: block;
+}
+.clearfix:after{
+    display: block;
+    height: 0;
+    line-height: 0;
+    content: ' ';
+    clear: both;
+    visibility: hidden;
+}
+/*手机一像素边框*/
+.border-bottom {
+    position: relative;
+}
+.border-bottom:after {
+    content: " ";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #d9d9d9;
+    color: #D9D9D9;
+    -webkit-transform-origin: 0 100%;
+          transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+.border-top:before {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 0;
+    border-top: 1px solid #d9d9d9;
+    color: #d9d9d9;
+    -webkit-transform-origin: 0 100%;
+          transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+
+/*查看更多按钮*/
+.more-button {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    background: #fff;
+}
+.more-button:active {
+    color: #4c93fd;
+}
+
+/*带箭头的列表*/
+.list-wrapper {
+    margin-top: 8px;
+    padding: 0 16px;
+    background: #fff;
+}
+.list-wrapper .list {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+}
+.list-wrapper .list:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #d9d9d9;
+    color: #d9d9d9;
+    -webkit-transform-origin: 0 100%;
+          transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+.list-wrapper .list:last-child:after {
+    content: none;
+}
+.list-wrapper .list .icon-back {
+    position: absolute;
+    right: 0;
+    color: #666;
+}
+
+/*供应列表*/
+.supply-list {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    padding: 12px;
+    margin-top: 8px;
+    background: #fff;
+}
+.supply-list .img-wrapper {
+    -webkit-flex: 0 0 75px;
+    flex: 0 0 75px;
+    width: 75px;
+    height: 75px;
+    margin-right: 12px;
+    overflow: hidden;
+    background-image: url('../../images/patterns3.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.supply-list .content {
+    -webkit-flex: 1;
+    flex: 1;
+    position: relative;
+}
+.supply-list .title {
+    margin-top: 3px;
+    margin-bottom: 20px;
+    padding-right: 16px;
+    font-size: 15px;
+    line-height: 18px;
+}
+.supply-list .type {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #999;
+    background: #f8f8f8;
+}
+.supply-list .time {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    color: #999;
+}
+.supply-list .icon-back {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    color: #666;
+}
+
+/*蒙版*/
+.mask{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    z-index: 130;
+    background-color: rgba(7, 17, 27, 0.6);
+}
+
 .button
   display inline-block
   position relative

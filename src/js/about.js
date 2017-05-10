@@ -1,5 +1,5 @@
 require('../stylus/common/common');
-require('../stylus/reset/reset');
+require('../stylus/static/reset/reset');
 require('../stylus/about');
 var span = document.createElement('span');
 span.innerHTML = '这个是js插入的文字about页面';
