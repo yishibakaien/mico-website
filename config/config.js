@@ -4,9 +4,8 @@ const env = 'dev'; // 这里配置环境
 
 var baseURL = (function(env) {
 
-    var baseURL,
-        urls,
-    urls = {
+    var baseURL;
+    var urls = {
         dev: 'http://192.168.1.11:8080',
         test: 'http://192.168.1.11:8080',
         prod: ''
@@ -26,4 +25,4 @@ var baseURL = (function(env) {
 
 export {
     baseURL
-}
+};
