@@ -13,12 +13,20 @@ const CleanPlugin = require('clean-webpack-plugin'); // 文件夹清除工具
 
 const CopyWebpackPlugin = require('copy-webpack-plugin'); //  文件拷贝
 
+// let pages = Object.keys(getEntries('./src/*.html'));
+
+let entries = getEntries('./src/*.html');
+
+console.log('entries11', entries);
+
+let entry = {};
+
+entries.forEach(item => {
+    entry[item] = `./src/js/${item}.js`; 
+});
+
 let config = {
-    entry: {
-        index: './src/js/index.js',
-        dress: './src/js/dress.js',
-        about: './src/js/about.js'
-    },
+    entry,
     output: {
         path: path.join(__dirname, 'dist'), // 打包后的目录
         publicPath: '', // 模板、样式、脚本、图片等资源对应的server上的路径
@@ -32,14 +40,33 @@ let config = {
     },
     module: {
         preLoaders: [
-            { test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/ }
+            { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
         ],
         loaders: [{
             test: /\.css$/,
             loader: ExtractTextPlugin.extract('style', 'css')
         }, {
             test: /\.styl$/,
-            loader: ExtractTextPlugin.extract('css!stylus')
+            loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'stylus'])
+            // 这里存在一点问题，postcss编译时候会告警有 sourceMap，但直接忽略，待解决
+            
+            // loader: ExtractTextPlugin.extract({
+            //     fallback: 'style-loader', 
+            //     use: [
+            //         { 
+            //             loader: 'css-loader', 
+            //             options: { sourceMap: false } 
+            //         },
+            //         { 
+            //             loader: 'postcss-loader', 
+            //             options: { sourceMap: false } 
+            //         },
+            //         { 
+            //             loader: 'stylus-loader', 
+            //             options: { sourceMap: false } 
+            //         }
+            //     ]
+            // })
         }, {
             test: /\.js$/,
             loader: 'babel',
@@ -48,11 +75,12 @@ let config = {
                 presets: ['es2015']
             }
         }, {
-            test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: 'file-loader?name=./fonts/[name].[ext]'
+            // test: /\.(woff|woff2|ttf|eot|svg)(\?t=[0-9]\.[0-9]\.[0-9])?$/,
+            test: /\.(woff|woff2|ttf|eot|svg)$/,
+            loader: 'file-loader?name=../font/[name].[ext]'
         }, {
             test: /\.(png|jpg|gif|svg)$/,
-            loader: 'url',
+            loader: 'url-loader',
             query: {
                 limit: 10000, // 10kb 图片转base64。
                 name: '../images/[name].[ext]?' // 输出目录以及名称
@@ -60,6 +88,7 @@ let config = {
         }]
     },
     plugins: [
+        // 并不需要JQ
         // new webpack.ProvidePlugin({ // 全局配置加载
         //     $: 'jquery',
         //     jQuery: 'jquery',
@@ -77,12 +106,13 @@ let config = {
             }
         }),
         new CopyWebpackPlugin([
-            { from: './src/images', to: './images' } // 拷贝图片
+            { from: './src/images', to: './images' }, // 拷贝图片
+            { from: './src/font', to: './font'} // 拷贝字体
         ])
     ],
-    externals: {
-        $: 'jQuery'
-    },
+    // externals: {
+    //     $: 'jQuery'
+    // },
     // devtool: '#source-map',
     devServer: {
         // contentBase: './',
@@ -93,42 +123,80 @@ let config = {
     }
 };
 
-let pages = Object.keys(getEntries('./src/*.html'));
+// 配置title 的尝试 类似 jade模板
 let confTitle = [
     { name: 'index', title: '这是首页标题' },
     { name: 'dress', title: '3D试衣' },
-    { name: 'about', title: '这是关于我标题' }
+    { name: 'about', title: '这是关于我标题' },
+    { name: 'introduce', title: '厂家介绍' },
+    { name: 'patterns_classify', title: '花型分类' },
+    { name: 'patterns_list', title: '花型列表' },
+    { name: 'patterns_detail', title: '花型详情' },
 ];
 
-//  html-webpack-plugin 配置项，生成HTML模板
-pages.forEach(pathname => {
-    // 根据系统路径来取文件名，window下的做法，其它系统另测
-    let itemName = pathname.split('src\\');
-    console.log('pathName', pathname); // ['src\index']
-    console.log('itemName', itemName); // ['', 'index']
-    // 配置项
+entries.forEach(item => {
     let conf = {
-        filename: itemName[1] + '.html', // 生成的html存放路径，相对于path
-        template: pathname + '.html', // html模板路径
+        filename: `${item}.html`,
+        template: `./src/${item}.html`,
         inject: true, // 允许插件修改哪些内容，包括head与body
         hash: false, // 是否添加hash值
-        chunks: ['common', itemName[1]],
+        chunks: ['common', item],
         minify: { // 压缩HTML文件
             removeComments: true, // 移除HTML中的注释
             collapseWhitespace: true // 删除空白符与换行符（压缩html）
         }
     };
-    confTitle.forEach((item, index) => {
-        if (item.name === itemName[1]) {
+    confTitle.forEach((title, index) => {
+        if (title.name === item) {
             conf.title = confTitle[index].title;
         }
     });
     config.plugins.push(new HtmlWebpackPlugin(conf));
 });
 
-// 按文件名来获取入口文件(即需要生成的模板文件数量)
+//  html-webpack-plugin 配置项，生成HTML模板
+// pages.forEach(pathname => {
+//     // 根据系统路径来取文件名，window下的做法，其它系统另测
+//     let itemName = pathname.split('src\\');
+//     console.log('pathName', pathname); // ['src\index']
+//     console.log('itemName', itemName); // ['', 'index']
+//     // 配置项
+//     let conf = {
+//         filename: itemName[1] + '.html', // 生成的html存放路径，相对于path
+//         template: pathname + '.html', // html模板路径
+//         inject: true, // 允许插件修改哪些内容，包括head与body
+//         hash: false, // 是否添加hash值
+//         chunks: ['common', itemName[1]],
+//         minify: { // 压缩HTML文件
+//             removeComments: true, // 移除HTML中的注释
+//             collapseWhitespace: true // 删除空白符与换行符（压缩html）
+//         }
+//     };
+//     confTitle.forEach((item, index) => {
+//         if (item.name === itemName[1]) {
+//             conf.title = confTitle[index].title;
+//         }
+//     });
+//     config.plugins.push(new HtmlWebpackPlugin(conf));
+// });
+
 function getEntries(filePath) {
     let files = glob.sync(filePath);
+    let basename = [],
+        extname;
+    for (let item of files) {
+        extname = path.extname(item);
+        basename.push(path.basename(item, extname));
+    }
+    console.log('basename', basename);
+    return basename;
+}
+
+// 按文件名来获取入口文件(即需要生成的模板文件数量)
+// ！！废弃！！ 
+function __getEntries(filePath) {
+    let files = glob.sync(filePath);
+    console.log('files', files);
     let entries = {},
         entry,
         dirname,
@@ -149,6 +217,7 @@ function getEntries(filePath) {
         // 
         entries[pathname] = './' + entry;
     }
+    console.log('entries', entries);
     return entries;
 }
 

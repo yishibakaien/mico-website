@@ -1,0 +1,227 @@
+@charset 'utf-8';
+
+.wrap {
+    margin-top: 8px;
+    padding: 0 16px;
+    background: #fff;
+    position: relative;
+}
+.wrap:first-child {
+    margin-top: 0;
+}
+.title {
+    height: 49px;
+    line-height: 49px;
+    font-size: 15px;
+}
+.title .left {
+    color: #333;
+}
+.title .icon-star {
+    display: inline-block;
+    color: rgba(7, 17, 27, 0.5);
+    vertical-align: middle;
+    margin-right: 4px;
+}
+.title .right .text{
+    display: inline-block;
+    vertical-align: middle;
+}
+.left {
+    font-size: 14px;
+    color: #666;
+    margin-right: 15px;
+}
+.right {
+    float: right;
+}
+
+.desc .name {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding: 16px 0;
+    font-size: 0;
+
+}
+.desc .name .left {
+    -webkit-flex: 0 0 56px;
+    flex: 0 0 56px;
+    width: 56px;
+}
+.desc .name .fullname {
+    -webkit-flex: 1;
+    flex: 1;
+    line-height: 18px;
+    font-size: 15px;
+}
+.desc .summary {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding: 16px 0;
+    font-size: 0;
+}
+.desc .summary .left {
+    -webkit-flex: 0 0 56px;
+    flex: 0 0 56px;
+    width: 56px;
+}
+.desc .summary .text {
+    -webkit-flex: 1;
+    flex: 1;
+    line-height: 18px;
+    font-size: 15px;
+}
+.desc .position {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    padding: 16px 0;
+    font-size: 0;
+}
+.desc .position .left {
+    -webkit-flex: 0 0 56px;
+    flex: 0 0 56px;
+    width: 56px;
+}
+.desc .position .location {
+    -webkit-flex: 1;
+    flex: 1;
+    padding-right: 16px;
+    line-height: 18px;
+    /*overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;*/
+    font-size: 15px;
+}
+.desc .position .iconfont {
+    -webkit-flex: 0 0 20px;
+    flex: 0 0 20px;
+    width: 20px;
+    font-size: 20px;
+    color: #4c93fd
+}
+.qrcode {
+    height: 49px;
+    line-height: 49px;
+    font-size: 15px;
+}
+.qrcode .icon-erweima {
+    display: inline-block;
+    color: #4c93fd;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+.qrcode .right .text{
+    display: inline-block;
+    vertical-align: middle;
+}
+.picture {
+    line-height: 49px;
+    padding-bottom: 8px;
+    margin-bottom: 60px;
+}
+.picture .pic {
+    float: left;
+    width: 90px;
+    height: 90px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background-image: url('../../images/patterns1.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 49px;
+    line-height: 49px;
+    text-align: center;
+}
+
+/*二维码*/
+.qrc-content{
+    position: absolute;
+    width: 70%;
+    top: 40%;
+    left: 50%;
+    -webkit-transform:translateX(-50%) translateY(-50%);
+    transform:translateX(-50%) translateY(-50%);
+    padding: 20px 20px 32px 20px;
+    text-align: center;
+    border-radius: 4px;
+    background-color: #fff;
+}
+.qrc-content .qrc-header {
+    display: -webkit-flex;
+    display: -webkit-box;
+    display: flex;
+    position: relative;
+    /*background: red;*/
+
+}
+.qrc-content .qrc-header .avatar {
+    -webkit-flex: 0 0 49px;
+    flex: 0 0 49px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+.qrc-content .qrc-header .name {
+    -webkit-flex: 1;
+    flex: 1;
+    padding-right: 16px;
+    line-height: 49px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+
+}
+.qrc-content .qrc-header .close {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    font-size: 25px;
+}
+.qrc-body {
+    margin-top: 20px;
+}
+.qrc-body img {
+    width: 100%;
+}
+.qrc-content .qrc-button {
+    position: absolute;
+    left: 50%;
+    -webkit-transform:translateX(-50%);
+    transform:translateX(-50%);
+    width: 100%;
+    bottom: -60px;
+    background: #fff;
+    color: #439cfd;
+    padding: 16px 0;
+}
+#pictureMask img {
+    width: 100%;
+}
+#pictureMask .close {
+    position: absolute;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    right: 10px;
+    top: 10px;
+    z-index: 2;
+    font-size: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background: #f53535;
+    opacity: 0.9;
+    color: #fff;
+    box-shadow: 0 0 10px #000;
+    text-shadow: 0 0 20px #000;
+}

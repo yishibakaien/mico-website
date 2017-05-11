@@ -1,9 +1,10 @@
 'use strict';
 import '../stylus/common/common';
 import '../stylus/static/reset/reset';
-import '../stylus/dress/dress';
+import '../stylus/dress';
 import { baseURL } from '../../config/config';
 import { bind, getQueryString, c } from './utils/utils';
+
 console.log(baseURL);
 
 (function() { 

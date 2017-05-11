@@ -1,8 +1,9 @@
 'use strict';
 import '../stylus/common/common';
+import '../font/iconfont.styl';
 import '../stylus/static/reset/reset';
 import '../stylus/static/plugin/swiper-3.4.2.min.css';
-import '../stylus/index/index';
+import '../stylus/index';
 
 import Swiper from 'swiper';
 // 升级版 iScroll

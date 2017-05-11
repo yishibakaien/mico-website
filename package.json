@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "autoprefixer": "^7.0.1",
     "babel": "^6.3.13",
     "babel-core": "^6.3.21",
     "babel-eslint": "^7.2.3",
@@ -35,6 +36,8 @@
     "html-webpack-plugin": "^2.9.0",
     "imports-loader": "^0.6.5",
     "jquery": "^1.12.4",
+    "postcss": "^6.0.1",
+    "postcss-loader": "^2.0.5",
     "style-loader": "^0.13.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
