@@ -6,11 +6,29 @@ import '../stylus/patterns_detail.styl';
 import '../stylus/static/plugin/swiper-3.4.2.min.css';
 
 import Swiper from 'swiper';
+import { checkPhone, getCompanySimpleInfo } from './api/api';
 
 (function() {
     var activeNumber = document.getElementsByClassName('active-number')[0],
         dress = document.getElementsByClassName('dress')[0],
-        message = document.getElementsByClassName('message')[0];
+        message = document.getElementsByClassName('message')[0],
+        // 查看图片详情 swiper
+        pictureMask = document.getElementById('pictureMask'),
+        pics = document.querySelectorAll('#topSwiper .swiper-slide'),
+        swiperClose = document.querySelector('#pictureMask .close');
+
+    checkPhone({
+        mobile: '18650470415'
+    }, function(res) {
+        console.log('检查手机号码是否存在', res);
+    });
+
+    getCompanySimpleInfo({
+        id: '123'
+    }, function(res) {
+        console.log('获取简单工厂信息', res);
+    });
+    
     /* eslint-disable no-new */
     new Swiper('.swiper-container', {
         onSlideChangeEnd: function(swiper) {
@@ -23,4 +41,28 @@ import Swiper from 'swiper';
     message.addEventListener('click', function() {
         location.href = './introduce.html';
     }, false);
+
+    swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
+
+    for (let i = 0; i < pics.length; i++) {
+        (function(i) {
+            pics[i].addEventListener('click', function() {
+                pictureMask.style.display = 'block';
+                /* eslint-disable no-new */
+                new Swiper('#content', {
+                    pagination: '.swiper-pagination',
+                    paginationClickable: true
+                });
+                
+            }, false);
+        })(i);
+    }
+
+    function hideMask(mask) {
+        mask.style.display = 'none';
+    }
+
+    // function showMask(mask) {
+    //     mask.style.display = 'block';
+    // }
 })();

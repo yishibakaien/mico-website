@@ -1,21 +1,21 @@
 @charset 'utf-8';
 
-.swiper-container .swiper-slide {
+#topSwiper .swiper-slide {
     position: relative;
     width: 100%;
     padding-top: 70%;
-    background: url('../../images/patterns1.png');
+    background: url('../images/patterns1.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
-.swiper-container .swiper-slide:nth-of-type(2) {
-    background: url('../../images/patterns2.png');
+#topSwiper .swiper-slide:nth-of-type(2) {
+    background: url('../images/patterns2.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
-.swiper-container .number {
+#topSwiper .number {
     position: absolute;
     right: 4px;
     bottom: 4px;
@@ -25,8 +25,8 @@
     background: rgba(7, 17, 27, 0.6);
     border-radius: 2px;
 }
-.swiper-container .number .active-number,
-.swiper-container .number .total-number {
+#topSwiper .number .active-number,
+#topSwiper .number .total-number {
     display: inline-block;
     height: 14px;
     line-height: 14px;
@@ -232,4 +232,31 @@
 }
 .footer .call .text {
     font-size: 15px;
+}
+
+/* 查看图片详细 */
+#pictureMask img {
+    width: 100%;
+}
+#pictureMask .swiper-container {
+    width: 100%;
+    height: 100%;
+}
+#pictureMask .close {
+    position: absolute;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    right: 10px;
+    top: 10px;
+    z-index: 2;
+    font-size: 20px;
+    border-radius: 50%;
+    text-align: center;
+    background: #f53535;
+    opacity: 0.9;
+    color: #fff;
+    box-shadow: 0 0 10px #000;
+    text-shadow: 0 0 20px #000;
 }

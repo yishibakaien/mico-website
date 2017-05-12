@@ -2,6 +2,11 @@
 
 const env = 'dev'; // 这里配置环境
 
+const headers = {
+    'x-version': '1.0',
+    'x-client': '1'
+};
+
 var baseURL = (function(env) {
 
     var baseURL;
@@ -11,7 +16,8 @@ var baseURL = (function(env) {
         prod: ''
     };
     if (env === 'dev') {
-        baseURL = urls.dev;
+        //baseURL = urls.dev + '/api'; // 这里的这个 /api 是proxy跨域代理的配置
+        baseURL = 'http://localhost:3001/api';
     }
     if (env === 'test') {
         baseURL = urls.test;
@@ -24,5 +30,6 @@ var baseURL = (function(env) {
 })(env);
 
 export {
+    headers,
     baseURL
 };

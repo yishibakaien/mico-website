@@ -17,7 +17,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin'); //  文件拷贝
 
 let entries = getEntries('./src/*.html');
 
-console.log('entries11', entries);
+// console.log('entries', entries);
 
 let entry = {};
 
@@ -30,7 +30,7 @@ let config = {
     output: {
         path: path.join(__dirname, 'dist'), // 打包后的目录
         publicPath: '', // 模板、样式、脚本、图片等资源对应的server上的路径
-        filename: 'js/[name].[hash:6].js', // 根据对应入口名称,生成对应js名称
+        filename: 'js/[name].[hash:8].js', // 根据对应入口名称,生成对应js名称
         chunkFilename: 'js/[id].chunk.js' // chunk生成的配置
     },
     resolve: {
@@ -48,7 +48,7 @@ let config = {
         }, {
             test: /\.styl$/,
             loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'stylus'])
-            // 这里存在一点问题，postcss编译时候会告警有 sourceMap，但直接忽略，待解决
+            // 这里存在一点问题，postcss编译时候会告警有 sourceMap，待解决
             
             // loader: ExtractTextPlugin.extract({
             //     fallback: 'style-loader', 
@@ -75,17 +75,22 @@ let config = {
                 presets: ['es2015']
             }
         }, {
-            // test: /\.(woff|woff2|ttf|eot|svg)(\?t=[0-9]\.[0-9]\.[0-9])?$/,
-            test: /\.(woff|woff2|ttf|eot|svg)$/,
-            loader: 'file-loader?name=../font/[name].[ext]'
-        }, {
-            test: /\.(png|jpg|gif|svg)$/,
+            test: /\.(png|jpg|gif)$/,
             loader: 'url-loader',
             query: {
                 limit: 10000, // 10kb 图片转base64。
-                name: '../images/[name].[ext]?' // 输出目录以及名称
+                name: '../images/[name].[ext]' // 输出目录以及名称
             }
-        }]
+        }, {
+            // test: /\.(woff|woff2|ttf|eot|svg)(\?t=[0-9]\.[0-9]\.[0-9])?$/,
+            test: /\.(woff|woff2|ttf|eot|svg)$/,
+            loader: 'url-loader',
+            query: {
+                limit: 10000,
+                name: '../fonts/[name].[ext]'
+            }
+        }, 
+        ]
     },
     plugins: [
         // 并不需要JQ
@@ -99,7 +104,7 @@ let config = {
             name: 'common', // 将公共模块提取,生成名为`common`的chunk
             minChunks: 3 // 提取至少3个模块共有的部分
         }),
-        new ExtractTextPlugin('css/[name].[hash:6].css'), // 提取CSS行内样式,转化为link引入
+        new ExtractTextPlugin('css/[name].[hash:8].css'), // 提取CSS行内样式,转化为link引入
         new webpack.optimize.UglifyJsPlugin({ // js压缩
             compress: {
                 warnings: false
@@ -120,6 +125,16 @@ let config = {
         port: 3001, // 端口
         inline: true,
         hot: false,
+        proxy: {  
+            '/api/*': {
+                target: 'http://192.168.1.11:8080',  
+                secure: false,
+                changeOrigin: true,
+                pathRewrite: {
+                  '^/api': ''
+                }
+            }  
+        }
     }
 };
 
@@ -134,6 +149,7 @@ let confTitle = [
     { name: 'patterns_detail', title: '花型详情' },
 ];
 
+// template html
 entries.forEach(item => {
     let conf = {
         filename: `${item}.html`,
@@ -192,8 +208,8 @@ function getEntries(filePath) {
     return basename;
 }
 
+// ！！废弃！！
 // 按文件名来获取入口文件(即需要生成的模板文件数量)
-// ！！废弃！！ 
 function __getEntries(filePath) {
     let files = glob.sync(filePath);
     console.log('files', files);
