@@ -22,7 +22,7 @@ let entries = getEntries('./src/*.html');
 let entry = {};
 
 entries.forEach(item => {
-    entry[item] = `./src/js/${item}.js`; 
+    entry[item] = `./src/js/${item}.js`;
 });
 
 let config = {
@@ -48,8 +48,8 @@ let config = {
         }, {
             test: /\.styl$/,
             loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'stylus'])
-            // 这里存在一点问题，postcss编译时候会告警有 sourceMap，待解决
-            
+                // 这里存在一点问题，postcss编译时候会告警有 sourceMap，待解决
+
             // loader: ExtractTextPlugin.extract({
             //     fallback: 'style-loader', 
             //     use: [
@@ -89,8 +89,7 @@ let config = {
                 limit: 10000,
                 name: '../fonts/[name].[ext]'
             }
-        }, 
-        ]
+        }, ]
     },
     plugins: [
         // 并不需要JQ
@@ -112,7 +111,7 @@ let config = {
         }),
         new CopyWebpackPlugin([
             { from: './src/images', to: './images' }, // 拷贝图片
-            { from: './src/font', to: './font'} // 拷贝字体
+            { from: './src/font', to: './font' } // 拷贝字体
         ])
     ],
     // externals: {
@@ -125,15 +124,15 @@ let config = {
         port: 3001, // 端口
         inline: true,
         hot: false,
-        proxy: {  
+        proxy: {
             '/api/*': {
-                target: 'http://192.168.1.11:8080',  
+                target: 'http://192.168.1.11:8080',
                 secure: false,
                 changeOrigin: true,
                 pathRewrite: {
-                  '^/api': ''
+                    '^/api': ''
                 }
-            }  
+            }
         }
     }
 };

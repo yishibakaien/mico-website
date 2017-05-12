@@ -10,7 +10,7 @@ const API = {
     },
     company: {
         getCompanyInfo: '/company/getCompanyInfo', // 获取档口OR工厂信息
-        getCompanySimpleInfo: '/company/getCompanySimpleInfo'
+        getCompanySimpleInfo: '/company/getCompanySimpleInfo' // 获取简单的公司信息
     }
 };
 
@@ -34,7 +34,7 @@ function _formatData(method, data) {
 function _fetch(method = METHODS.get, data, url, cb) {
 
     let _headers = headers;
-
+    // 由于接口问题，暂时需要 配置一个 x-token
     _headers['x-token'] = 'aa19635f5b994f34806ca081f61fdb48';
 
     let param = {
@@ -48,15 +48,15 @@ function _fetch(method = METHODS.get, data, url, cb) {
     };
     Ajax(param);
 }
-
+// 检查手机号码，此接口没有跨域问题
 export function checkPhone(data, cb) {
     return _fetch(METHODS.get, data, API.user.checkPhone, cb);
 }
-
+// 获取公司信息(详细)
 export function getCompanyInfo(data, cb) {
     return _fetch(METHODS.get, data, API.company.getCompanyInfo, cb);
 }
-
+// 获取公司信息(简单)
 export function getCompanySimpleInfo(data, cb) {
     return _fetch(METHODS.post, data, API.company.getCompanySimpleInfo, cb);
 }
