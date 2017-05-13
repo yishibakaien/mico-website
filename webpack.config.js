@@ -19,6 +19,9 @@ let entries = getEntries('./src/*.html');
 
 // console.log('entries', entries);
 
+const extractCss = new ExtractTextPlugin('css/[name].[hash:8].css');
+// const extractStyl = new ExtractTextPlugin('css/[name][hash].styl.css');
+
 let entry = {};
 
 entries.forEach(item => {
@@ -34,20 +37,33 @@ let config = {
         chunkFilename: 'js/[id].chunk.js' // chunk生成的配置
     },
     resolve: {
-        root: [],
+        // root: [],
         // 设置require或import的时候可以不需要带后缀
-        extensions: ['', '.js', '.css', '.styl']
+        extensions: ['.js', '.css', '.styl']
     },
     module: {
-        preLoaders: [
-            { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
-        ],
-        loaders: [{
+        // preLoaders: [
+        //     { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ }
+        // ],
+        rules: [{
+            test: /\.js$/, 
+            enforce: 'pre', // 取代preloader
+            loader: 'eslint-loader', 
+            exclude: /node_modules/
+        }, {
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract('style', 'css')
+            // loader: ExtractTextPlugin.extract('style', 'css')
+            use: extractCss.extract({
+                fallback: 'style-loader',
+                use: ['css-loader']
+            })
         }, {
             test: /\.styl$/,
-            loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'stylus'])
+            // loader: ExtractTextPlugin.extract('style', ['css', 'postcss', 'stylus'])
+            use: extractCss.extract({
+                fallback: 'style-loader',
+                use: ['css-loader', 'postcss-loader', 'stylus-loader']
+            })
                 // 这里存在一点问题，postcss编译时候会告警有 sourceMap，待解决
 
             // loader: ExtractTextPlugin.extract({
@@ -69,7 +85,7 @@ let config = {
             // })
         }, {
             test: /\.js$/,
-            loader: 'babel',
+            loader: 'babel-loader',
             exclude: /node_modules/,
             query: {
                 presets: ['es2015']
@@ -89,7 +105,7 @@ let config = {
                 limit: 10000,
                 name: '../fonts/[name].[ext]'
             }
-        }, ]
+        }]
     },
     plugins: [
         // 并不需要JQ
@@ -103,7 +119,9 @@ let config = {
             name: 'common', // 将公共模块提取,生成名为`common`的chunk
             minChunks: 3 // 提取至少3个模块共有的部分
         }),
-        new ExtractTextPlugin('css/[name].[hash:8].css'), // 提取CSS行内样式,转化为link引入
+        //new ExtractTextPlugin('css/[name].[hash:8].css'), // 提取CSS行内样式,转化为link引入
+        extractCss,
+        // extractStyl,
         new webpack.optimize.UglifyJsPlugin({ // js压缩
             compress: {
                 warnings: false
@@ -209,31 +227,31 @@ function getEntries(filePath) {
 
 // ！！废弃！！
 // 按文件名来获取入口文件(即需要生成的模板文件数量)
-function __getEntries(filePath) {
-    let files = glob.sync(filePath);
-    console.log('files', files);
-    let entries = {},
-        entry,
-        dirname,
-        basename,
-        pathname,
-        extname;
-    for (let i = 0; i < files.length; i++) {
-        // src下所有 html 文件名
-        entry = files[i];
-        // 上层目录名
-        dirname = path.dirname(entry);
-        // 拓展名
-        extname = path.extname(entry);
-        // 不含拓展名的文件名
-        basename = path.basename(entry, extname);
-        // 上层目录名 + 文件名合成路径 如 src/index
-        pathname = path.join(dirname, basename);
-        // 
-        entries[pathname] = './' + entry;
-    }
-    console.log('entries', entries);
-    return entries;
-}
+// function __getEntries(filePath) {
+//     let files = glob.sync(filePath);
+//     console.log('files', files);
+//     let entries = {},
+//         entry,
+//         dirname,
+//         basename,
+//         pathname,
+//         extname;
+//     for (let i = 0; i < files.length; i++) {
+//         // src下所有 html 文件名
+//         entry = files[i];
+//         // 上层目录名
+//         dirname = path.dirname(entry);
+//         // 拓展名
+//         extname = path.extname(entry);
+//         // 不含拓展名的文件名
+//         basename = path.basename(entry, extname);
+//         // 上层目录名 + 文件名合成路径 如 src/index
+//         pathname = path.join(dirname, basename);
+//         // 
+//         entries[pathname] = './' + entry;
+//     }
+//     console.log('entries', entries);
+//     return entries;
+// }
 
 module.exports = config;
