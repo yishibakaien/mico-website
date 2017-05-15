@@ -9,8 +9,91 @@ import Swiper from 'swiper';
 // 升级版 iScroll
 import BScroll from 'better-scroll';
 import { addActive } from './utils/utils';
+import {
+    // 获取店铺花型分类
+    // listProductCategory,
+    // // 获取花型列表
+    // listProducts,
+    // 获取系统定义花型分类列表
+    listSystemProductCategory,
+    // 获取自定义花型分类列表
+    listUserProductCategory,
+    // 店铺分类绑定的花型列表
+    listCompanyBindingProduct,
+    // 店铺供应列表
+    listVisitCompanySupplys,
+    // 获取简单店铺信息
+    getCompanySimpleInfo,
+    // 获取详细店铺信息
+    getCompanyInfo
+ } from './api/api.js';
+
+const companyId = 36444;
 
 (function() {
+    // 获取简单店铺信息
+    getCompanySimpleInfo({
+        id: companyId
+    }, function(res) {
+        console.log('获取简单店铺信息', res);
+    });
+    // 获取详细店铺信息
+    getCompanyInfo({
+        companyId
+    }, function(res) {
+        console.log('获取详细店铺信息', res);
+    });
+
+    // 店铺供应列表
+    listVisitCompanySupplys({
+        companyId,
+        pageNO: 1,
+        pageSize: 6
+    }, function(res) {
+        console.log('店铺供应列表', res);
+    });
+
+    // 获取系统定义花型分类列表 [爆款、新品] 的列表 id
+    listSystemProductCategory({
+        companyId,
+        isMy: false
+    }, function(res) {
+        console.log('获取系统定义花型分类列表', res);
+        // 店铺分类绑定的花型列表，这里才是获取列表
+        res.data.forEach(function(item) {
+            listCompanyBindingProduct({
+                classId: item.id,
+                companyId
+            }, function(res) {
+                console.log('爆款，新品', res);
+            });
+        });
+        
+    });
+
+    // 获取自定义花型分类列表
+    listUserProductCategory({
+        companyId,
+        isMy: false
+    }, function(res) {
+        console.log('获取自定义花型分类列表', res);
+
+        var list = res.data.list;
+        list.forEach(function(item) {
+            // 店铺分类绑定的花型列表
+            listCompanyBindingProduct({
+                classId: item.id,
+                companyId,
+                pageNO: 1,
+                pageSize: 5
+            }, function(res) {
+                console.log('自定义列表', res);
+            });
+        });
+    });
+
+    // 获取供应列表
+
     var tabItem = document.getElementsByClassName('tab-item'),
         footerItem = document.getElementsByClassName('footer-item'),
         contentSwiper = new Swiper('#content', {

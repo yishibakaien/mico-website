@@ -144,7 +144,8 @@ let config = {
         hot: false,
         proxy: {
             '/api/*': {
-                target: 'http://192.168.1.11:8080',
+                // target: 'http://192.168.1.11:8080',
+                target: 'http://192.168.1.250:8080',
                 secure: false,
                 changeOrigin: true,
                 pathRewrite: {
@@ -179,6 +180,7 @@ entries.forEach(item => {
             collapseWhitespace: true // 删除空白符与换行符（压缩html）
         }
     };
+    // 动态 title 的添加类似jade 模板
     confTitle.forEach((title, index) => {
         if (title.name === item) {
             conf.title = confTitle[index].title;
