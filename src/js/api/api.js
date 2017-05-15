@@ -144,5 +144,5 @@ export function listCompanyBindingProduct(data, cb, err) {
 
 // 店铺供应列表
 export function listVisitCompanySupplys(data, cb, err) {
-    return _fetch(METHODS.get, data, API.main.listVisitCompanySupplys, cb, err);
+    return _fetch(METHODS.get, data, API.main.listVisitCompanySupplys, cb, err); 
 }
