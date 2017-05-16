@@ -6,9 +6,27 @@ import '../stylus/patterns_detail.styl';
 import '../stylus/static/plugin/swiper-3.4.2.min.css';
 
 import Swiper from 'swiper';
-import { checkPhone, getCompanySimpleInfo } from './api/api';
+import {
+    getCompanySimpleInfo,
+    // 获取花型详情
+    getProduct
+} from './api/api';
 
 (function() {
+
+    // 获取简单的工厂信息介绍
+    getCompanySimpleInfo({
+        id: '123'
+    }, function(res) {
+        console.log('获取简单工厂信息', res);
+    });
+    // 获取产品信息
+    getProduct({
+        id: 1619873
+    }, function(res) {
+        console.log('获取花型详情', res);
+    });
+
     var activeNumber = document.getElementsByClassName('active-number')[0],
         dress = document.getElementsByClassName('dress')[0],
         message = document.getElementsByClassName('message')[0],
@@ -17,17 +35,11 @@ import { checkPhone, getCompanySimpleInfo } from './api/api';
         pics = document.querySelectorAll('#topSwiper .swiper-slide'),
         swiperClose = document.querySelector('#pictureMask .close');
 
-    checkPhone({
-        mobile: '18650470415'
-    }, function(res) {
-        console.log('检查手机号码是否存在', res);
-    });
-
-    getCompanySimpleInfo({
-        id: '123'
-    }, function(res) {
-        console.log('获取简单工厂信息', res);
-    });
+    // checkPhone({
+    //     mobile: '18650470415'
+    // }, function(res) {
+    //     console.log('检查手机号码是否存在', res);
+    // });
     
     /* eslint-disable no-new */
     new Swiper('.swiper-container', {

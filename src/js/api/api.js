@@ -4,7 +4,7 @@ import { headers, baseURL } from '../../../config/config';
 
 import { Ajax } from './ajax';
 
-import { blackTip } from '../utils/blackTip';
+import blackTip from '../utils/blackTip';
 
 const API = {
     user: {
@@ -22,7 +22,10 @@ const API = {
         listCompanyBindingProduct: '/productCategoryBanding/listCompanyBindingProduct',
 
         // 店铺供应列表
-        listVisitCompanySupplys: '/companySupply/listVisitCompanySupplys'
+        listVisitCompanySupplys: '/companySupply/listVisitCompanySupplys',
+
+        // 获取花型详情
+        getProduct: '/product/getProduct/'
     },
     company: {
         // 获取档口OR工厂信息
@@ -38,10 +41,7 @@ const API = {
         listProducts: '/product/listProducts',        
 
         // 获取分类绑定的花型列表
-        listBindingProduct: '/productCategoryBanding/listBindingProduct',
-
-        // 获取花型详情
-        getProduct: '/product/getProduct/{id}'
+        listBindingProduct: '/productCategoryBanding/listBindingProduct'
     }
 };
 
@@ -134,7 +134,9 @@ export function listBindingProduct(data, cb, err) {
 
 // 获取花型详情
 export function getProduct(data, cb, err) {
-    return _fetch(METHODS.get, data, API.company.getProduct, cb, err);
+    let _data = data;
+    let url = API.main.getProduct.toString() + _data.id.toString();
+    return _fetch(METHODS.get, {}, url, cb, err);
 }
 
 // 店铺分类绑定的花型列表

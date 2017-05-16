@@ -8,7 +8,7 @@
 <body>
     <div class="header">
         <div class="bg">
-            <img src="./images/patterns1.png" width="100%" height="100%">
+            <img id="bgPic" src="./images/patterns1.png" width="100%" height="100%">
         </div>
         <div class="avatar-wrapper">
             <img class="avatar" id="companyHeadIcon" src="./images/avatar.png" width="60" height="60">
@@ -16,13 +16,15 @@
         <div class="content-wrapper">
             <div class="content">
                 <div class="title">
-                    <span class="tag factory"></span><span class="name">福建坐视布管网络科技有限公司福建坐视布管网络科技有限公司</span>
+                    <span class="tag factory" id="typeTag"></span><span class="name" id="companyName">
+                    <!-- 福建坐视布管网络科技有限公司福建坐视布管网络科技有限公司 -->
+                    </span>
                 </div>
-                <div class="desc">
-                  主营：面料、大边、小边、睫毛
+                <div class="desc" id="companyBusiness">
+                  <!-- 主营：面料、大边、小边、睫毛 -->
                 </div>
             </div>
-            <div class="star-wrapper">
+            <!-- <div class="star-wrapper">
                 <div class="pageview">
                     <div class="number">1000</div>
                     <div class="text">访问量</div>
@@ -30,7 +32,7 @@
                 <div class="star">
                     <i class="iconfont icon-star"></i>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- 主题区域 -->
@@ -46,37 +48,34 @@
         <div class="swiper-container" id="content" style="width:100%">
             <div class="swiper-wrapper">
                 <div class="swiper-slide left" id="wrapper1">
-                    <div>
-                        <div class="type">
+                    <div id="wrapper1Div">
+                        <div class="type" id="hotPatterns">
                             <div class="name border-bottom">爆款</div>
                             <div class="patterns-spec-wrapper">
-                                <div class="patterns">
-                                    <div class="img">
-                                    
-                                        <p class="price">￥10/码</p>
+                                <div class="patterns" id="top1" data-id="">
+                                    <div class="img" id="top1Img">
+                                        <p class="price" id="top1Price">￥10/码</p>
                                     </div>
-
                                     <div class="rank-tag">
                                         <div class="top">TOP</div>
                                         <div class="number">1</div>
                                     </div>
                                 </div>
 
-                                <div class="right-patterns">
-                                    <div class="patterns">
-                                        <div class="img">
-                                        
-                                            <p class="price">￥10/码</p>
+                                <div class="right-patterns" id="rightHotPatternsWrapper">
+                                    <div class="patterns" id="top2" data-id="">
+                                        <div class="img" id="top2Img">
+                                            <p class="price" id="top2Price">￥10/码</p>
                                         </div>
                                         <div class="rank-tag">
                                             <div class="top">TOP</div>
                                             <div class="number">2</div>
                                         </div>
                                     </div>
-                                    <div class="patterns">
-                                        <div class="img">
+                                    <div class="patterns" id="top3" data-id="">
+                                        <div class="img" id="top3Img">
                                         
-                                            <p class="price">￥10/码</p>
+                                            <p class="price" id="top3Price">￥10/码</p>
                                             <p class="color"></p>
                                         </div>
                                         <div class="rank-tag">
@@ -89,10 +88,10 @@
                             </div>
                         </div>
 
-                        <div class="type" >
+                        <div class="type" id="newPatterns">
                             <div class="name border-bottom">新品</div>
                             <div class="patterns-wrapper clearfix">
-                                <div class="patterns">
+                                <!-- <div class="patterns">
                                     <div class="img"></div>
                                     <p class="number">#20001</p>
                                     <p class="price">￥10/码</p>
@@ -106,11 +105,11 @@
                                     <div class="img"></div>
                                     <p class="number">#20001</p>
                                     <p class="price">￥10/码</p>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
-                        <div class="type" >
+                        <!-- <div class="type" >
                             <div class="name border-bottom">压纱板</div>
                             <div class="patterns-wrapper clearfix">
                                 <div class="patterns">
@@ -149,7 +148,7 @@
                         </div>
                         <div class="seemore border-bottom">
                             查看更多压纱板
-                        </div>
+                        </div> -->
 
                         <br>
                         <br>
@@ -157,7 +156,7 @@
                 </div>
 
                 <div class="swiper-slide right" id="wrapper2">
-                    <div>
+                    <div id="wrapper2Div">
                         <div class="supply-list">
                             <div class="img-wrapper">
                                 <!-- <img class="img" src="../src/images/patterns2.png"> -->

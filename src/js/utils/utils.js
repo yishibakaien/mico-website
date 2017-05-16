@@ -58,6 +58,9 @@ function addActive(els) {
 
 /*格式化时间*/
 function formatDate(date, fmt) {
+    if (typeof date === 'number') {
+        date = new Date(date);
+    }
     if (/(y+)/.test(fmt)) {
         fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
     }
@@ -80,11 +83,57 @@ function formatDate(date, fmt) {
         return ('00' + str).substr(str.length);
     }
 }
+/*格式化单位*/
+function formateUnit(unit) {
+    var _unit = '';
+    if (unit === '400010') {
+        _unit = '码';
+    } else if (unit === '400011') {
+        _unit = '公斤';
+    } else if (unit === '400012') {
+        _unit = '条';
+    }
+    return _unit;
+}
 
+/*格式化金额*/
+function formateMoney(price) {
+    // 金额以 分 作为单位
+    return (price / 100).toFixed(1);
+}
+/*格式化供应类型*/
+function formateSupplyType(str) {
+    if (str === 200010) {
+        return '胚布';
+    } else if (str === 200011) {
+        return '成品';
+    } else if (str === 200012) {
+        return '现货';
+    } else if (str === 200013) {
+        return '做货';
+    } else {
+        return '未分类';
+    }
+}
+
+/*设置元素背景图片*/
+function setBackgroundImage(ele, url) {
+    console.log(ele);
+    console.log(url);
+    ele.style.backgroundImage = 'url(' + url +')';
+}
+function setDataId(ele, id) {
+    ele.setAttribute('data-id', id);
+}
 export {
     bind,
     addActive,
     formatDate,
+    formateMoney,
+    formateUnit,
+    formateSupplyType,
+    setBackgroundImage,
+    setDataId,
     getQueryString,
     c
 };
