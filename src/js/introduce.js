@@ -7,8 +7,20 @@ import '../stylus/introduce';
 
 // 还差一个生成二维码的插件
 import Swiper from 'swiper';
+import {
+    c,
+    getQueryString
+} from './utils/utils';
+
+import {
+    getCompanyInfo
+} from './api/api';
+
 
 const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0'; 
+
+var companyId = getQueryString('companyId');
+
 
 (function() {
     var locationIcon = document.getElementById('location'),
@@ -20,6 +32,35 @@ const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXL
         pics = document.querySelectorAll('.picture .pic'),
         swiperClose = document.querySelector('#pictureMask .close'),
         qrcodeClose = document.getElementsByClassName('close')[0];
+    // 页面元素的获取
+    // 公司简称
+    var abbr = c('#abbr');
+    // 公司全称
+    var companyName = c('#companyName');
+    // 公司简介
+    var companyProfile = c('#companyProfile');
+    // 公司地址
+    var address = c('#address');
+    // 公司电话
+    var phone = c('#phone');
+    // 公司图片
+    // var picWrapper = c('#picWrapper');
+    getCompanyInfo({
+        companyId
+    }, function(res) {
+        console.log('公司详细信息', res);
+        var data = res.data;
+        abbr.innerHTML = data.companyAbbreviation;
+        companyName.innerHTML = data.companyName;
+        companyProfile.innerHTML = data.companyProfile;
+        address.innerHTML = data.address;
+        phone.setAttribute('tel', res.data.phone);
+        phone.addEventListener('click', function() {
+            console.log(res.data.phone);
+            location.href = 'tel:' + res.data.phone;
+        }, false);
+        // var picStr = '';
+    });
 
     locationIcon.addEventListener('click', mapNavigation, false);
 

@@ -23,9 +23,6 @@ const API = {
 
         // 店铺供应列表
         listVisitCompanySupplys: '/companySupply/listVisitCompanySupplys',
-
-        // 获取花型详情
-        getProduct: '/product/getProduct/'
     },
     company: {
         // 获取档口OR工厂信息
@@ -42,6 +39,13 @@ const API = {
 
         // 获取分类绑定的花型列表
         listBindingProduct: '/productCategoryBanding/listBindingProduct'
+    },
+    detail: {
+        // 获取花型详情
+        getProduct: '/product/getProduct/',
+
+        // 获取供应详情
+        getCompanySupply: '/companySupply/getCompanySupply/'
     }
 };
 
@@ -135,7 +139,14 @@ export function listBindingProduct(data, cb, err) {
 // 获取花型详情
 export function getProduct(data, cb, err) {
     let _data = data;
-    let url = API.main.getProduct.toString() + _data.id.toString();
+    let url = API.detail.getProduct.toString() + _data.id.toString();
+    return _fetch(METHODS.get, {}, url, cb, err);
+}
+
+// 获取供应详情
+export function getCompanySupply(data, cb, err) {
+    let _data = data;
+    let url = API.detail.getCompanySupply.toString() + _data.id.toString();
     return _fetch(METHODS.get, {}, url, cb, err);
 }
 

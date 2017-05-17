@@ -1,6 +1,7 @@
 'use strict';
 
-const env = 'dev'; // 这里配置环境
+// const env = 'dev'; // 这里配置环境
+const env = 'test_new';
 
 const headers = {
     'x-version': '1.0',
@@ -13,6 +14,7 @@ var baseURL = (function(env) {
     var urls = {
         dev: 'http://localhost:3001',
         test: 'http://192.168.1.11:8080',
+        test_new: 'http://192.168.1.11/api',
         prod: ''
     };
     if (env === 'dev') {
@@ -24,6 +26,9 @@ var baseURL = (function(env) {
     }
     if (env === 'prod') {
         baseURL = urls.prod;
+    }
+    if (env === 'test_new') {
+        baseURL = urls.test_new;
     }
     return baseURL;
 

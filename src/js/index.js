@@ -14,7 +14,7 @@ import {
     formateMoney,
     formateUnit,
     formatDate,
-    formateSupplyType,
+    formateSupplyShape,
     // 设置图片背景
     setBackgroundImage,
     // 设置data-id 属性
@@ -112,13 +112,13 @@ const companyId = 36444;
             var len = list.length;
             console.log(len);
             /**
-             * 这里为什么写的这么麻烦？因为奇葩的布局需求，还有后台的数据的获取实在是太乱了，一个列表请求 7-8次接口，涉及到众多的排序和 异步处理问题，这里面先后顺序如果处理起来 是非常乱的，更不易于理解，所以这里强行一个一个情况判断插值，反而更利于维护和理解
+             * 这里为什么写的这么麻烦？因为布局需求，做到css自适应 宽高 等比例缩放，只能使用background 来填充图片，还有后台的数据过于复杂，一个列表请求 7-8次接口，涉及到众多的排序和 异步处理问题，这里面先后顺序如果处理起来 是非常乱的，更不易于理解，所以这里强行一个一个情况判断插值，利于维护和理解
              */
             if (len) {
                 hotPatterns.style.display = 'block';
                 // 插值data-id
                 setDataId(top1, list[0].id);
-                console.log(setBackgroundImage);
+                // console.log(setBackgroundImage);
                 setBackgroundImage(top1Img, list[0].picsUrl);
                 top1Price.innerHTML = '￥' + formateMoney(list[0].price) + ' / ' + formateUnit(list[0].priceUnit); 
 
@@ -164,7 +164,7 @@ const companyId = 36444;
             }
             c('#newPatterns').getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
             /* eslint-disable no-new */
-            new BScroll(document.getElementById('wrapper1'), { click: true });
+            new BScroll(c('#wrapper1'), { click: true });
         });
     });
 
@@ -178,21 +178,35 @@ const companyId = 36444;
         var list = res.data.list;
         list.forEach(function(item) {
             // 店铺分类绑定的花型列表
+            console.log('自定义item', item);
             listCompanyBindingProduct({
                 classId: item.id,
                 companyId,
                 pageNO: 1,
-                pageSize: 4
+                pageSize: 10
             }, function(res) {
                 console.log('自定义列表', res);
+                var len;
+                var MAX_LENGTH = 4;
                 var itemList = res.data.list;
+
+                // 自定义分类的标题
                 var listTile = item.className;
-                // 这个是 type 的 wrapper
+
+                // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
+
                 var typeWrapper = document.createElement('div');
                 typeWrapper.className = 'type';
                 var listStr = `<div class="name border-bottom">${listTile}</div>
                             <div class="patterns-wrapper clearfix">`;
-                for (var i = 0; i < itemList.length; i++) {
+                
+                if (itemList.length > MAX_LENGTH) {
+                    len = MAX_LENGTH;
+                } else {
+                    len = itemList.length;
+                }
+                // 这里最多只展示 4 条，查过部分查看更多
+                for (var i = 0; i < len; i++) {
                     listStr += `<div class="patterns" data-id="${itemList[i].id}">
                                     <div class="img" style="background-image:url(${itemList[i].picsUrl})"></div>
                                     <p class="number">#${itemList[i].productNo}</p>
@@ -201,7 +215,7 @@ const companyId = 36444;
                 }
                 listStr += '</div></div>';
 
-                if (itemList.length > 4) {
+                if (itemList.length > MAX_LENGTH) {
                     listStr += `<div class="seemore border-bottom">
                                     查看更多${listTile}
                                 </div>`;
@@ -218,29 +232,56 @@ const companyId = 36444;
     listVisitCompanySupplys({
         companyId,
         pageNO: 1,
-        pageSize: 6
+        pageSize: 10
     }, function(res) {
         console.log('店铺供应列表', res);
+        var len;
         var list = res.data.list;
         var itemStr = '';
-        for (var i = 0; i < list.length; i++) {
+        var MAX_LENGTH = 6; 
+        if (list.length > MAX_LENGTH) {
+            len = MAX_LENGTH;
+        } else {
+            len = list.length;
+        }
+        // 这里最多只展示6条，超过部分 则点击查看全部来进行查看
+        for (var i = 0; i < len; i++) {
             itemStr += `<div class="supply-list" data-id="${list[i].id}">
                             <div class="img-wrapper" style="background-image:url(${list[i].productPicUrl})"></div>
                             <div class="content">
                                 <h1 class="title">${list[i].supplyDesc
 }</h1>
-                                <span class="type">${formateSupplyType(list[i].supplyShape)}</span>
+                                <span class="type">${formateSupplyShape(list[i].supplyShape)}</span>
                                 <span class="time">${formatDate(list[i].updateDate, 'yyyy-MM-dd')}</span>
                                 <i class="iconfont icon-back"></i>
                             </div>
                         </div>`;
         }
-        if (list.length > 6) {
-            itemStr += `<div class="more-button" link="./all_supply.html">
-                            查看全部
+        // if (list.length > MAX_LENGTH) {
+        // 这里先写3 方便测试
+        if (list.length > 3) {
+            itemStr += `<div class="more-button" id="moreSupplyBtn" link="./all_supply.html">
+                            查看全部供应
                         </div>`;
         }
         c('#wrapper2Div').innerHTML = itemStr;
+        /* eslint-disable no-new */
+        new BScroll(c('#wrapper2'), { click: true });
+        var supplyList = c('.supply-list');
+        for (let i of supplyList) {
+            i.addEventListener('click', function() {
+                console.log(this.getAttribute('data-id'));
+                var dataId = this.getAttribute('data-id');
+                location.href = `./supply_detail.html?dataId=${dataId}`;
+            });
+        }
+        // 如果有查看更多供应按钮
+        if (c('#moreSupplyBtn')) {
+            c('#moreSupplyBtn').addEventListener('click', function() {
+                // 点击跳转供应列表页
+                location.href = `./supply_list.html?companyId=${companyId}`;
+            });
+        }
     });
 
     var tabItem = document.getElementsByClassName('tab-item'),
@@ -250,9 +291,6 @@ const companyId = 36444;
         }),
         supplyList = document.getElementsByClassName('supply-list'),
         moreButton = document.getElementsByClassName('more-button')[0];
-    
-    /* eslint-disable no-new */
-    new BScroll(document.getElementById('wrapper2'), { click: true });
 
     addActive(tabItem);
     goTo(supplyList);
@@ -302,7 +340,7 @@ const companyId = 36444;
                     tel = this.getAttribute('tel');
                     if (url) {
                         console.log(url);
-                        location.href = url;
+                        location.href = url + '?companyId=' + companyId;
                         return;
                     }
                     if (tel) {

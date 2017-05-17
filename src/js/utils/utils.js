@@ -85,12 +85,13 @@ function formatDate(date, fmt) {
 }
 /*格式化单位*/
 function formateUnit(unit) {
+    unit = Number(unit);
     var _unit = '';
-    if (unit === '400010') {
+    if (unit === 400010) {
         _unit = '码';
-    } else if (unit === '400011') {
+    } else if (unit === 400011) {
         _unit = '公斤';
-    } else if (unit === '400012') {
+    } else if (unit === 400012) {
         _unit = '条';
     }
     return _unit;
@@ -102,15 +103,29 @@ function formateMoney(price) {
     return (price / 100).toFixed(1);
 }
 /*格式化供应类型*/
-function formateSupplyType(str) {
-    if (str === 200010) {
+function formateSupplyShape(num) {
+    if (num === 200010) {
         return '胚布';
-    } else if (str === 200011) {
+    } else if (num === 200011) {
         return '成品';
-    } else if (str === 200012) {
+    } else if (num === 200012) {
         return '现货';
-    } else if (str === 200013) {
+    } else if (num === 200013) {
         return '做货';
+    } else {
+        return '未分类';
+    }
+}
+
+function formateSupplyType(num) {
+    if (num === 100010) {
+        return '面料';
+    } else if (num === 100011) {
+        return '大边';
+    } else if (num === 100012) {
+        return '小边';
+    } else if (num === 100013) {
+        return '睫毛';
     } else {
         return '未分类';
     }
@@ -118,8 +133,8 @@ function formateSupplyType(str) {
 
 /*设置元素背景图片*/
 function setBackgroundImage(ele, url) {
-    console.log(ele);
-    console.log(url);
+    // console.log(ele);
+    // console.log(url);
     ele.style.backgroundImage = 'url(' + url +')';
 }
 function setDataId(ele, id) {
@@ -131,6 +146,7 @@ export {
     formatDate,
     formateMoney,
     formateUnit,
+    formateSupplyShape,
     formateSupplyType,
     setBackgroundImage,
     setDataId,
