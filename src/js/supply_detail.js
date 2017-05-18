@@ -18,7 +18,8 @@ import {
 import blackTip from './utils/blackTip';
 
 import {
-    getCompanySimpleInfo,
+    // getCompanySimpleInfo,
+    getCompanyInfo,
     // 获取花型详情
     getCompanySupply,
 } from './api/api';
@@ -34,19 +35,22 @@ var id = getQueryString('dataId');
     var supplyType = c('#supplyType');
     var supplyNumber = c('#supplyNumber');
     var supplyTime = c('#supplyTime');
-        // activeNumber = document.getElementsByClassName('active-number')[0],
+    // 公司信息盒子
+    var companyMessage = c('#companyMessage');
+    // 公司头像
+    var companyAvatar = c('#companyAvatar');
+    // 公司名字
+    var companyName = c('#companyName');
+    // 底部电话按钮
+    var phone = c('#phone');
+    //var activeNumber = document.getElementsByClassName('active-number')[0],
     var dress = document.getElementsByClassName('dress')[0];
-        // message = document.getElementsByClassName('message')[0],
-        // 查看图片详情 swiper
+    // message = document.getElementsByClassName('message')[0],
+    
     var pictureMask = document.getElementById('pictureMask');
     var pics = document.querySelectorAll('#topSwiper .swiper-slide');
     var swiperClose = document.querySelector('#pictureMask .close');
-    // 获取简单的工厂信息介绍
-    getCompanySimpleInfo({
-        id: '123'
-    }, function(res) {
-        console.log('获取简单工厂信息', res);
-    });
+    
     // 获取产品信息
     getCompanySupply({
         id
@@ -65,6 +69,20 @@ var id = getQueryString('dataId');
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + res.data.productPicUrl;
         }, false);
+
+        var companyId = res.data.companyId;
+        // 获取工厂信息介绍
+        getCompanyInfo({
+            companyId
+        }, function(res) {
+            if (res.data.companyHeadIcon) {
+                companyAvatar.src = res.data.companyHeadIcon;
+            }
+            companyName.innerHTML = res.data.companyName;
+            companyMessage.setAttribute('company-id', res.data.id);
+            console.log('获取工厂信息', res);
+            phone.setAttribute('tel', res.data.phone);
+        });
     }
 
     // checkPhone({
@@ -112,6 +130,15 @@ var id = getQueryString('dataId');
         })(i);
     }
 
+    companyMessage.addEventListener('click', function() {
+        var id = this.getAttribute('company-id');
+        location.href = '../introduce.html?companyId=' + id;
+    }, false);
+    phone.addEventListener('click', function() {
+        var phoneNumber = this.getAttribute('tel');
+        console.log(phoneNumber);
+        location.href = 'tel:' + phoneNumber;
+    }, false);
     function hideMask(mask) {
         mask.style.display = 'none';
         _supplyDetailPic.style.width = '100%';

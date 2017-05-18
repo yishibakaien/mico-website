@@ -1,7 +1,7 @@
 'use strict';
 
 // const env = 'dev'; // 这里配置环境
-const env = 'test_new';
+const env = 'dev';
 
 const headers = {
     'x-version': '1.0',
