@@ -7,24 +7,73 @@ import '../stylus/static/plugin/swiper-3.4.2.min.css';
 
 import Swiper from 'swiper';
 import {
-    getCompanySimpleInfo,
+    getCompanyInfo,
     // 获取花型详情
     getProduct
 } from './api/api';
+import {
+    c,
+    formateMoney,
+    getQueryString,
+    formateSupplyType,
+    formateUnit
+} from './utils/utils';
 
+var dataId = getQueryString('dataId');
+var companyId = getQueryString('companyId');
+// 轮播图盒子
+var picContainer = c('#picContainer');
+var productNo = c('#productNo');
+var price = c('#price');
+// 公司信息
+var avatar = c('#avatar');
+var tag = c('#tag');
+var companyName = c('#companyName');
+var companyBusiness = c('#companyBusiness');
+
+// 花型参数
+var category = c('#category');
+var ingredient = c('#ingredient');
+var stock = c('#stock');
+
+var width = c('#width');
+var height = c('#height');
 (function() {
 
     // 获取简单的工厂信息介绍
-    getCompanySimpleInfo({
-        id: '123'
+    getCompanyInfo({
+        id: companyId
     }, function(res) {
-        console.log('获取简单工厂信息', res);
+        console.log('获取详细工厂信息', res);
+        var data = res.data;
+        if (data.companyHeadIcon) {
+            avatar.src = data.companyHeadIcon;
+        }
+        if (data.companyType === 1) {
+            tag.className = 'tag factory';
+        } else if (data.companyType === 2) {
+            tag.className = 'tag stalls';
+        }
+        companyName.innerHTML = data.companyName;
+        companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness;
     });
     // 获取产品信息
     getProduct({
-        id: 1619873
+        id: dataId
     }, function(res) {
         console.log('获取花型详情', res);
+        var data = res.data;
+        // 这里返回的图片是个字符串，并不是数组
+        picContainer.style.backgroundImage = 'url(' + data.defaultPicUrl + ')';
+        productNo.innerHTML = '#' + data.productNo;
+        price.innerHTML = formateMoney(data.price, data.priceUnit);
+        category.innerHTML = formateSupplyType(data.category);
+
+        ingredient.innerHTML = data.ingredient;
+        stock.innerHTML = data.stock + ' ' + formateUnit(data.stockUnit);
+
+        width.innerHTML = (data.width ? data.width : 0) + ' cm';
+        height.innerHTML = (data.height ? data.height : 0) + ' cm';
     });
 
     var activeNumber = document.getElementsByClassName('active-number')[0],

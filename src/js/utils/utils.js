@@ -98,9 +98,21 @@ function formateUnit(unit) {
 }
 
 /*格式化金额*/
-function formateMoney(price) {
+function formateMoney(price, unit) {
     // 金额以 分 作为单位
-    return (price / 100).toFixed(1);
+    if (!price) {
+        return '价格面议';
+    }
+    unit = Number(unit);
+    var _unit = '';
+    if (unit === 400010) {
+        _unit = '码';
+    } else if (unit === 400011) {
+        _unit = '公斤';
+    } else if (unit === 400012) {
+        _unit = '条';
+    }
+    return '￥ ' + (price / 100).toFixed(1) + ' / ' + _unit;
 }
 /*格式化供应类型*/
 function formateSupplyShape(num) {

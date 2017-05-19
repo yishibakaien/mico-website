@@ -9,22 +9,26 @@
 <body>
     <div class="swiper-container" id="topSwiper">
         <div class="swiper-wrapper">
-            <div class="swiper-slide">
+            <div class="swiper-slide" id="picContainer">
                
             </div>
-            <div class="swiper-slide">
+            <!-- <div class="swiper-slide">
                 
-            </div>
+            </div> -->
         </div>
-        <div class="number">
+        <!-- <div class="number">
             <span class="active-number">1</span><span class="total-number">/2</span>
-        </div>
+        </div> -->
     </div>
     <div class="desc-wrapper border-bottom">
         <div class="left">
-            <div class="serial-number">#20001</div>
+            <div class="serial-number" id="productNo">
+            <!-- #20001 -->
+            </div>
             <div class="price">
-                <span class="text">参考价:</span><span class="money">￥10.00/码</span>
+                <span class="text">参考价:&nbsp;&nbsp;</span><span class="money" id="price">
+                <!-- ￥10.00/码 -->
+                </span>
             </div>
         </div>
         <div class="right">
@@ -32,21 +36,23 @@
                 <i class="iconfont icon-star"></i>
                 <span class="text">收藏</span>
             </div>
-            <div class="page-view">1688次浏览</div>
+            <!-- <div class="page-view">1688次浏览</div> -->
         </div>
     </div>
 
-    <div class="message">
+    <div class="message border-bottom" id="companyMessage">
         <div class="avatar-wrapper">
-            <img class="avatar" src="./images/avatar.png" width="60" height="60">
+            <img class="avatar" id="avatar" src="./images/default_avatar.png" width="60" height="60">
         </div>
         <div class="content-wrapper">
             <div class="content">
                 <div class="title">
-                    <span class="tag factory"></span><span class="name">福建坐视布管网络科技有限公司福建坐视布管网络科技有限公司</span>
+                    <span class="tag factory" id="tag"></span><span class="name" id="companyName">
+                    <!-- 福建坐视布管网络科技有限公司福建坐视布管网络科技有限公司 -->
+                    </span>
                 </div>
-                <div class="desc">
-                  主营：面料、大边、小边、睫毛
+                <div class="desc" id="companyBusiness">
+                  主营：
                 </div>
             </div>
         </div>
@@ -55,26 +61,38 @@
 
     <div class="patterns-params">
         <div class="parameter">
-            <span class="name">类型:</span><span class="value">面料</span>
+            <span class="name">类型:</span><span class="value" id="category">
+            <!-- 面料 -->
+            </span>
         </div>
         <div class="parameter">
-            <span class="name">成分:</span><span class="value">棉纶</span>
+            <span class="name">成分:</span><span class="value" id="ingredient">
+            <!-- 棉纶 -->
+            </span>
         </div>
         <div class="parameter">
-            <span class="name">库存:</span><span class="value">1000码</span>
+            <span class="name">库存:</span><span class="value" id="stock">
+            <!-- 1000码 -->
+            </span>
         </div>
         <div class="parameter">
-            <span class="name">货型:</span><span class="value">胚布</span>
+            <span class="name">货型:</span><span class="value" id="">
+            <!-- 胚布 -->
+            </span>
         </div>
         <div class="parameter">
-            <span class="name">幅宽:</span><span class="value">150cm</span>
+            <span class="name">幅宽:</span><span class="value" id="width">
+            <!-- 150cm -->
+            </span>
         </div>
         <div class="parameter">
-            <span class="name">画高:</span><span class="value">15cm</span>
+            <span class="name">花高:</span><span class="value" id="height">
+            <!-- 15cm -->
+            </span>
         </div>
-        <div class="parameter">
+        <!-- <div class="parameter">
             <span class="name">出码率:</span><span class="value">90%</span>
-        </div>
+        </div> -->
     </div>
 
     <div class="footer border-top">

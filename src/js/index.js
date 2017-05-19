@@ -12,7 +12,7 @@ import {
     c,
     addActive,
     formateMoney,
-    formateUnit,
+    // formateUnit,
     formatDate,
     formateSupplyShape,
     // 设置图片背景
@@ -325,7 +325,7 @@ const companyId = 36444;
                 setDataId(top1, list[0].id);
                 // console.log(setBackgroundImage);
                 setBackgroundImage(top1Img, list[0].picsUrl);
-                top1Price.innerHTML = '￥' + formateMoney(list[0].price) + ' / ' + formateUnit(list[0].priceUnit); 
+                top1Price.innerHTML = formateMoney(list[0].price, list[0].priceUnit); 
 
                 if (len === 1) {
                     rightHotPatternsWrapper.style.display = 'none';
@@ -337,15 +337,15 @@ const companyId = 36444;
                     //---------//
                     setDataId(top2, list[1].id);
                     setBackgroundImage(top2Img, list[1].picsUrl);
-                    top2Price.innerHTML = '￥' + formateMoney(list[1].price) + ' / ' + formateUnit(list[1].priceUnit); 
+                    top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit); 
                 } else {
                     setDataId(top2, list[1].id);
                     setBackgroundImage(top2Img, list[1].picsUrl);
-                    top2Price.innerHTML = '￥' + formateMoney(list[1].price) + ' / ' + formateUnit(list[1].priceUnit);
+                    top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit);
 
                     setDataId(top3, list[2].id);
                     setBackgroundImage(top3Img, list[2].picsUrl);
-                    top3Price.innerHTML = '￥' + formateMoney(list[2].price) + ' / ' + formateUnit(list[2].priceUnit); 
+                    top3Price.innerHTML = formateMoney(list[2].price, list[2].priceUnit); 
                 }
             }
         });
@@ -364,7 +364,7 @@ const companyId = 36444;
                 listStr += `<div class="patterns" data-id="${list[i].id}">
                                 <div class="img" style="background-image:url(${list[i].picsUrl})"></div>
                                 <p class="number">#${list[i].productNo}</p>
-                                <p class="price">￥${formateMoney(list[i].price)} / ${formateUnit(list[i].priceUnit)}</p>
+                                <p class="price">${formateMoney(list[i].price, list[i].priceUnit)}</p>
                             </div>`;
             }
             c('#newPatterns').getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
@@ -416,7 +416,7 @@ const companyId = 36444;
                     listStr += `<div class="patterns" data-id="${itemList[i].id}">
                                     <div class="img" style="background-image:url(${itemList[i].picsUrl})"></div>
                                     <p class="number">#${itemList[i].productNo}</p>
-                                    <p class="price">￥${formateMoney(itemList[i].price)} / ${formateUnit(itemList[i].priceUnit)}</p>
+                                    <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                                 </div>`;
                 }
                 listStr += '</div></div>';

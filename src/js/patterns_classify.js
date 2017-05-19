@@ -38,12 +38,13 @@ listVisitSystemProductCategory({
 function handleSystemData(data) {
     var systemClassifyStr = '';
     data.forEach(function(item) {
-        systemClassifyStr += `<div class="list">
+        systemClassifyStr += `<div class="list" data-id="${item.id}" company-id="${item.companyId}">
                                 <span class="text">${item.className} (${item.bindingCount}款)</span>
                                 <i class="iconfont icon-back"></i>
                             </div>`;
     });
     systemClassify.innerHTML = systemClassifyStr;
+    bindClickEvent(systemClassify);
 }
 
 function handleUserData(data) {
@@ -54,22 +55,27 @@ function handleUserData(data) {
     console.log(list);
     var userClassifyStr = '';
     list.forEach(function(item) {
-        userClassifyStr += `<div class="list">
+        userClassifyStr += `<div class="list" data-id="${item.id}" company-id="${item.companyId}">
                                 <span class="text">${item.className} (${item.bindingCount}款)</span>
                                 <i class="iconfont icon-back"></i>
                             </div>`;
     });
     userClassify.innerHTML = userClassifyStr;
+    bindClickEvent(userClassify);
 }
 
-(function() {
-    var list = document.getElementsByClassName('list'),
-        i;
+function bindClickEvent(ele) {
+    var list = ele.getElementsByClassName('list'),
+        i,
+        dataId,
+        companyId;
     for (i = 0; i < list.length; i++) {
         (function(i) {
             list[i].onclick = function() {
-                location.href = './patterns_list.html';
+                dataId = this.getAttribute('data-id');
+                companyId = this.getAttribute('company-id');
+                location.href = `./patterns_list.html?companyId=${companyId}&classId=${dataId}`;
             };
         })(i);
     }
-})();
+}

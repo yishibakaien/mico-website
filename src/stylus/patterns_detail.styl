@@ -1,5 +1,42 @@
 @charset 'utf-8';
 
+.tag {
+    display: inline-block;
+    position: relative;
+    height: 16px;
+    width: 16px;
+    color: #fff;
+    font-size: 12px;
+}
+  
+.tag.factory {
+    font-weight: 700;
+    background: #3385ff
+}
+    
+.tag.factory:after {
+    content: '厂';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+      
+.tag.stalls {
+    font-weight: 700;
+    background: #ff7011;
+}
+    
+.tag.stalls:after {
+    content: '贸';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
 #topSwiper .swiper-slide {
     position: relative;
     width: 100%;
