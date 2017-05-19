@@ -1,4 +1,4 @@
 node_modules/
 dist/
 resource/
-dist.zip
+*.zip
