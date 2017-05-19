@@ -26,6 +26,7 @@ var picContainer = c('#picContainer');
 var productNo = c('#productNo');
 var price = c('#price');
 // 公司信息
+var companyMessage = c('#companyMessage');
 var avatar = c('#avatar');
 var tag = c('#tag');
 var companyName = c('#companyName');
@@ -38,14 +39,20 @@ var stock = c('#stock');
 
 var width = c('#width');
 var height = c('#height');
+
+// 3D试衣
+var dress = c('#dress');
+// 弹起的轮播图
+var detailPic = c('#detailPic');
 (function() {
 
-    // 获取简单的工厂信息介绍
+    // 获取详细工厂信息介绍
     getCompanyInfo({
         id: companyId
     }, function(res) {
         console.log('获取详细工厂信息', res);
         var data = res.data;
+        companyMessage.setAttribute('company-id', data.userId);
         if (data.companyHeadIcon) {
             avatar.src = data.companyHeadIcon;
         }
@@ -56,6 +63,15 @@ var height = c('#height');
         }
         companyName.innerHTML = data.companyName;
         companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness;
+
+        // 厂家点击事件
+        companyMessage.onclick = function() {
+            var _companyId = this.getAttribute('company-id');
+            // alert(_companyId);
+            if (_companyId) {
+                location.href = './introduce.html?companyId=' + companyId;
+            }
+        };
     });
     // 获取产品信息
     getProduct({
@@ -65,6 +81,7 @@ var height = c('#height');
         var data = res.data;
         // 这里返回的图片是个字符串，并不是数组
         picContainer.style.backgroundImage = 'url(' + data.defaultPicUrl + ')';
+        detailPic.src = data.defaultPicUrl;
         productNo.innerHTML = '#' + data.productNo;
         price.innerHTML = formateMoney(data.price, data.priceUnit);
         category.innerHTML = formateSupplyType(data.category);
@@ -74,21 +91,18 @@ var height = c('#height');
 
         width.innerHTML = (data.width ? data.width : 0) + ' cm';
         height.innerHTML = (data.height ? data.height : 0) + ' cm';
+
+        dress.addEventListener('click', function() {
+            location.href = './dress.html?url=' + data.defaultPicUrl;
+        }, false);
     });
 
     var activeNumber = document.getElementsByClassName('active-number')[0],
-        dress = document.getElementsByClassName('dress')[0],
-        message = document.getElementsByClassName('message')[0],
+        // message = document.getElementsByClassName('message')[0],
         // 查看图片详情 swiper
         pictureMask = document.getElementById('pictureMask'),
         pics = document.querySelectorAll('#topSwiper .swiper-slide'),
         swiperClose = document.querySelector('#pictureMask .close');
-
-    // checkPhone({
-    //     mobile: '18650470415'
-    // }, function(res) {
-    //     console.log('检查手机号码是否存在', res);
-    // });
     
     /* eslint-disable no-new */
     new Swiper('.swiper-container', {
@@ -96,13 +110,7 @@ var height = c('#height');
             activeNumber.innerHTML = swiper.activeIndex + 1;
         }
     });
-    dress.addEventListener('click', function() {
-        location.href = './dress.html?url=' + 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491630241115&di=1114d7228a2982461277ad6f6cd0ee8a&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F13%2F52%2F65%2F17c58PIC9z8_1024.jpg';
-    }, false);
-    message.addEventListener('click', function() {
-        location.href = './introduce.html';
-    }, false);
-
+    
     swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
 
     for (let i = 0; i < pics.length; i++) {
