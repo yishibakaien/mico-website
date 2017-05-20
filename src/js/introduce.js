@@ -44,6 +44,10 @@ var companyId = getQueryString('companyId');
     var companyName_card = document.querySelector('#QRcodeMask .name');
     // 公司简介
     var companyProfile = c('#companyProfile');
+    // 座机号码
+    var contactTelNumber = c('#contactTelNumber');
+    // 传真号码
+    var faxNumber = c('#faxNumber');
     // 公司地址
     var address = c('#address');
     // 公司电话
@@ -64,6 +68,8 @@ var companyId = getQueryString('companyId');
         abbr.innerHTML = data.companyAbbreviation;
         companyName.innerHTML = data.companyName;
         companyName_card.innerHTML = data.companyName;
+        contactTelNumber.innerHTML = data.contactTel;
+        faxNumber.innerHTML = data.fax;
         companyProfile.innerHTML = data.companyProfile;
         address.innerHTML = data.address;
         phone.setAttribute('tel', res.data.phone);
@@ -71,17 +77,14 @@ var companyId = getQueryString('companyId');
             console.log(res.data.phone);
             location.href = 'tel:' + res.data.phone;
         }, false);
-        // 这里的图片是以字符串的形式返回的用 ',' 隔开
-        var picStr = res.data.companyPic;
-        // 这里返回的图片 最后还有一个 ',' 需要除去
-        picStr = picStr.slice(0, picStr.length - 1);
-        var picArr = picStr.split(',');
+
+        var picArr = res.data.presence;
         var eleStr = '';
         var swiperStr = '';
         picArr.forEach(function(item) {
-            eleStr += `<li class="pic" style="background-image:url(${item})"></li>`;
+            eleStr += `<li class="pic" style="background-image:url(${item.picUrl})"></li>`;
             swiperStr += `<div class="swiper-slide">
-                            <img src="${item}">
+                            <img src="${item.picUrl}">
                         </div>`;
         });
         picWrapper.innerHTML = eleStr;

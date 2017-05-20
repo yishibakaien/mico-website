@@ -35,6 +35,7 @@ var id = getQueryString('dataId');
     var supplyType = c('#supplyType');
     var supplyNumber = c('#supplyNumber');
     var supplyTime = c('#supplyTime');
+    var pageView = c('#pageView');
     // 公司信息盒子
     var companyMessage = c('#companyMessage');
     // 公司头像
@@ -61,6 +62,7 @@ var id = getQueryString('dataId');
     function injectData(res) {
         supplyDetailPic.style.backgroundImage =  `url(${res.data.productPicUrl})`;
         _supplyDetailPic.src = res.data.productPicUrl;
+        pageView.innerHTML = res.data.viewCount;
         supplyDetailDesc.innerHTML = res.data.supplyDesc;
         supplyType.innerHTML = formateSupplyType(res.data.supplyType);
         supplyNumber.innerHTML = res.data.supplyNum + ' ' + formateUnit(res.data.supplyUnit);
@@ -131,8 +133,9 @@ var id = getQueryString('dataId');
     }
 
     companyMessage.addEventListener('click', function() {
-        var id = this.getAttribute('company-id');
-        location.href = '../introduce.html?companyId=' + id;
+        // var id = this.getAttribute('company-id');
+        // location.href = '../introduce.html?companyId=' + id;
+        location.href = '/';
     }, false);
     phone.addEventListener('click', function() {
         var phoneNumber = this.getAttribute('tel');

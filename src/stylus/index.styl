@@ -70,6 +70,13 @@
     border-bottom: 15px solid transparent;
 }
 
+// 新修改滚动
+#wrapper1,
+#wrapper2 {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 /* header START */
 .header
     display flex
@@ -142,6 +149,7 @@
 .header .star-wrapper .pageview
     flex 1
     margin-top 8px
+    text-align center
 
 .header .pageview .number,
 .header .pageview .text
@@ -208,7 +216,9 @@
     background: #f1f1f1;
 }
 .swiper-container .swiper-slide .seemore {
+    float: left;
     height: 40px;
+    width: 100%;
     line-height: 40px;
     font-size: 13px;
     text-align: center;

@@ -158,7 +158,7 @@ let config = {
 
 // 配置title 的尝试 类似 jade模板
 let confTitle = [
-    { name: 'index', title: '这是首页标题' },
+    { name: 'index', title: '首页' },
     { name: 'dress', title: '3D试衣' },
     { name: 'about', title: '这是关于我标题' },
     { name: 'introduce', title: '厂家介绍' },

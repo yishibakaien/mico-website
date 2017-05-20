@@ -7,7 +7,7 @@ import '../stylus/index';
 
 import Swiper from 'swiper';
 // 升级版 iScroll
-import BScroll from 'better-scroll';
+// import BScroll from 'better-scroll';
 import {
     c,
     addActive,
@@ -51,12 +51,14 @@ import {
 // 守均店铺id 36444
 // 
 const companyId = 36444;
+const MAX_LENGTH = 6;
 
 // 宁博 店铺id 36438
 (function() {
     // 页面元素的获取
     var bgPic = c('#bgPic'),
         companyHeadIcon = c('#companyHeadIcon'),
+        viewCount = c('#viewCount'),
         companyName = c('#companyName'),
         typeTag = c('#typeTag'),
         companyBusiness = c('#companyBusiness'),
@@ -86,7 +88,8 @@ const companyId = 36444;
         console.log('获取详细店铺信息', res);
         // 头像
         if (res.data.companyHeadIcon) {
-            companyHeadIcon.src = bgPic.src = res.data.companyHeadIcon;
+            companyHeadIcon.src = res.data.companyHeadIcon;
+            bgPic.src = res.data.companyBanner;
         }
         // 店铺类型 厂家 or 档口，这里应该只有厂家，但还是做判断较好
         if (res.data.companyType === 1) {
@@ -94,12 +97,11 @@ const companyId = 36444;
         } else if (res.data.companyType === 2) {
             typeTag.className = 'tag stalls';
         }
+        viewCount.innerHTML = res.data.viewCount;
         // 公司名称
         companyName.innerHTML = res.data.companyName;
         // 公司主营项目
-        if (res.data.companyExtendBO.companyBusiness) {
-            companyBusiness.innerHTML = res.data.companyExtendBO.companyBusiness;
-        }
+        companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness;
     });
 
     // 店铺供应列表
@@ -112,7 +114,6 @@ const companyId = 36444;
         var len;
         var list = res.data.list;
         var itemStr = '';
-        var MAX_LENGTH = 6; 
         if (list.length > MAX_LENGTH) {
             len = MAX_LENGTH;
         } else {
@@ -133,21 +134,23 @@ const companyId = 36444;
         }
         // if (list.length > MAX_LENGTH) {
         // 这里先写3 方便测试
-        if (list.length > 3) {
+        if (list.length > MAX_LENGTH) {
             itemStr += `<div class="more-button" id="moreSupplyBtn" link="./all_supply.html">
                             查看全部供应
                         </div>`;
         }
         c('#wrapper2Div').innerHTML = itemStr;
         /* eslint-disable no-new */
-        new BScroll(c('#wrapper2'), { click: true });
+        // new BScroll(c('#wrapper2'), { click: true });
         var supplyList = c('.supply-list');
-        for (let i of supplyList) {
-            i.addEventListener('click', function() {
-                console.log(this.getAttribute('data-id'));
-                var dataId = this.getAttribute('data-id');
-                location.href = `./supply_detail.html?dataId=${dataId}`;
-            });
+        for (var n = 0; n < supplyList.length; n++) {
+            (function(n) {
+                supplyList[n].addEventListener('click', function() {
+                    console.log(this.getAttribute('data-id'));
+                    var dataId = this.getAttribute('data-id');
+                    location.href = `./supply_detail.html?dataId=${dataId}`;
+                });
+            })(n);
         }
         // 如果有查看更多供应按钮
         if (c('#moreSupplyBtn')) {
@@ -210,7 +213,7 @@ const companyId = 36444;
                     top3Price.innerHTML = formateMoney(list[2].price, list[2].priceUnit); 
                 }
             }
-            bindClick('.patterns');
+            bindClick('#hotPatterns .patterns');
         });
         // 获取新品列表
         listCompanyBindingProduct({
@@ -220,20 +223,36 @@ const companyId = 36444;
             console.log('新品分类', res);
             var list = res.data.list;
             var listStr = '';
+            var len;
             if (list.length) {
                 newPatterns.style.display = 'block';
             }
-            for (var i = 0; i < list.length; i++) {
+            if (list.length > MAX_LENGTH) {
+                len = MAX_LENGTH;
+            } else {
+                len = list.length;
+            }
+            for (let i = 0; i < len; i++) {
                 listStr += `<div class="patterns" data-id="${list[i].id}">
                                 <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
-                                <p class="number">#${list[i].productNo}</p>
+                                <p class="number">${list[i].productNo}</p>
                                 <p class="price">${formateMoney(list[i].price, list[i].priceUnit)}</p>
                             </div>`;
             }
-            c('#newPatterns').getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
+            if (list.length > MAX_LENGTH) {
+                listStr += '<div class="seemore" id="moreNew">查看更多新品</div>';
+            }
+            newPatterns.getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
+            if (c('#moreNew')) {
+                c('#moreNew').addEventListener('click', function() {
+                    // 点击跳转供应列表页
+                    location.href = `./patterns_list.html?companyId=${companyId}&classId=${newPatternsDataId}`;
+                });
+            }
+            
             /* eslint-disable no-new */
-            new BScroll(c('#wrapper1'), { click: true });
-            bindClick('.patterns');
+            // new BScroll(c('#wrapper1'), { click: true });
+            bindClick('#newPatterns .patterns');
         });
     });
 
@@ -257,17 +276,20 @@ const companyId = 36444;
             }, function(res) {
                 console.log('用户自定义分类', res);
                 var len;
-                var MAX_LENGTH = 4;
                 var itemList = res.data.list;
 
                 // 自定义分类的标题
                 var listTile = item.className;
 
                 // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
-
+                function showFlag(num) {
+                    if (num === 0) {
+                        return ' style="display:none" ';
+                    }
+                }
                 var typeWrapper = document.createElement('div');
-                typeWrapper.className = 'type';
-                var listStr = `<div class="name border-bottom">${listTile}</div>
+                typeWrapper.className = 'type clearfix';
+                var listStr = `<div class="name border-bottom" ${showFlag(itemList.length)}>${listTile}</div>
                             <div class="patterns-wrapper clearfix">`;
                 
                 if (itemList.length > MAX_LENGTH) {
@@ -275,39 +297,51 @@ const companyId = 36444;
                 } else {
                     len = itemList.length;
                 }
-                // 这里最多只展示 4 条，查过部分查看更多
+                // 这里最多只展示 6 条，查过部分查看更多
                 for (var i = 0; i < len; i++) {
-                    listStr += `<div class="patterns" onclick="goDetail()" data-id="${itemList[i].id}">
+                    listStr += `<div class="patterns" data-id="${itemList[i].id}">
                                     <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
-                                    <p class="number">#${itemList[i].productNo}</p>
+                                    <p class="number">${itemList[i].productNo}</p>
                                     <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                                 </div>`;
                 }
                 listStr += '</div></div>';
-
                 if (itemList.length > MAX_LENGTH) {
-                    listStr += `<div class="seemore border-bottom">
-                                    查看更多${listTile}
-                                </div>`;
+                    listStr += `<div class="seemore seeSelfPatterns" class-id="${item.id}">查看更多${listTile}</div>`;
                 }
                 typeWrapper.innerHTML = listStr;
                 document.getElementById('wrapper1Div').appendChild(typeWrapper);
                 /* eslint-disable no-new */
-                new BScroll(document.getElementById('wrapper1'), { click: true });
-                bindClick('.patterns');
+                // new BScroll(document.getElementById('wrapper1'), { click: true });
+                var seeSelfPatterns = c('.seeSelfPatterns');
+                for (var m = 0; m < seeSelfPatterns.length; m++) {
+                    (function(m) {
+                        seeSelfPatterns[m].onclick = function() {
+                            var classId = this.getAttribute('class-id');
+                            location.href = `./patterns_list.html?companyId=${companyId}&classId=${classId}`;
+                        };
+                    })(m);
+                }
+                bindClick('.type .patterns');
             });
         });
     });
 
     function bindClick(selector) {
-        var eles = c(selector);
-        for (let item of eles) {
-            item.onclick = function() {
-                var dataId = this.getAttribute('data-id');
-                location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
-            };
+        var eles = document.querySelectorAll(selector);
+        for (var i = 0; i < eles.length; i++) {
+            (function(i) {
+                eles[i].onclick = null;
+                eles[i].onclick = jump;
+            })(i);
+        }
+        function jump() {
+            var dataId = this.getAttribute('data-id');
+            // alert(dataId);
+            location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
         }
     }
+    
 
     var tabItem = document.getElementsByClassName('tab-item'),
         footerItem = document.getElementsByClassName('footer-item'),

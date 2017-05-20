@@ -15,9 +15,14 @@ import {
     listVisitSystemProductCategory
 } from './api/api';
 var companyId = getQueryString('companyId');
+// 全部花型
+var allPatterns = document.getElementById('allPatterns');
+// 用户分类
 var userClassify = document.getElementById('userClassify');
+// 系统分类
 var systemClassify = document.getElementById('systemClassify');
 
+console.log(allPatterns);
 listVisitUserProductCategory({
     companyId,
     pageSize: 100
@@ -73,6 +78,7 @@ function bindClickEvent(ele) {
         (function(i) {
             list[i].onclick = function() {
                 dataId = this.getAttribute('data-id');
+                // alert(dataId);
                 companyId = this.getAttribute('company-id');
                 location.href = `./patterns_list.html?companyId=${companyId}&classId=${dataId}`;
             };

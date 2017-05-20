@@ -15,6 +15,7 @@ import {
     c,
     formateMoney,
     getQueryString,
+    formateProduceShape,
     formateSupplyType,
     formateUnit
 } from './utils/utils';
@@ -36,7 +37,7 @@ var companyBusiness = c('#companyBusiness');
 var category = c('#category');
 var ingredient = c('#ingredient');
 var stock = c('#stock');
-
+var shape = c('#shape');
 var width = c('#width');
 var height = c('#height');
 
@@ -69,7 +70,7 @@ var detailPic = c('#detailPic');
             var _companyId = this.getAttribute('company-id');
             // alert(_companyId);
             if (_companyId) {
-                location.href = './introduce.html?companyId=' + companyId;
+                location.href = '/';
             }
         };
     });
@@ -82,15 +83,15 @@ var detailPic = c('#detailPic');
         // 这里返回的图片是个字符串，并不是数组
         picContainer.style.backgroundImage = 'url(' + data.defaultPicUrl + ')';
         detailPic.src = data.defaultPicUrl;
-        productNo.innerHTML = '#' + data.productNo;
+        productNo.innerHTML = data.productNo;
         price.innerHTML = formateMoney(data.price, data.priceUnit);
         category.innerHTML = formateSupplyType(data.category);
 
         ingredient.innerHTML = data.ingredient;
         stock.innerHTML = data.stock + ' ' + formateUnit(data.stockUnit);
-
-        width.innerHTML = (data.width ? data.width : 0) + ' cm';
-        height.innerHTML = (data.height ? data.height : 0) + ' cm';
+        shape.innerHTML = formateProduceShape(data.productShape);
+        width.innerHTML = (data.width ? data.width : 0);
+        height.innerHTML = (data.height ? data.height : 0);
 
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + data.defaultPicUrl;

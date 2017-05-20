@@ -55,15 +55,16 @@ function htmlHandler(res) {
         return;
     }
     var div = document.createElement('div');
-    for (let item of list) {
-        listStr += `<div class="patterns" data-id="${item.id}">
-                        <div class="img" style="background-image:url(${item.defaultPicUrl})"></div>
-                        <p class="number">#${item.productNo}</p>
-                        <p class="price">${formateMoney(item.price,item.priceUnit)}</p>
+    for (var i = 0; i < list.length; i++) {
+        listStr += `<div class="patterns" data-id="${list[i].id}">
+                        <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
+                        <p class="number">${list[i].productNo}</p>
+                        <p class="price">${formateMoney(list[i].price,list[i].priceUnit)}</p>
                     </div>`;
     }
     div.innerHTML = listStr;
     listWrapper.appendChild(div);
+    // alert('花型插入完毕', div); 
     // 这里有个坑  pageNo => pageNO 这个o 是大写
     if (res.data.pageSize * res.data.pageNO >= res.data.totalNum) {
         noMore.style.display = 'block';
@@ -81,24 +82,26 @@ more.onclick = function() {
 };
 function bindClickEvent(ele) {
     var patterns = ele.getElementsByClassName('patterns');
-    for (let item of patterns) {
-        item.onclick = function() {
-            var dataId = this.getAttribute('data-id');
-            location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
-        };
+    for (var i = 0; i < patterns.length; i++) {
+        (function(i) {
+            patterns[i].onclick = function() {
+                var dataId = this.getAttribute('data-id');
+                location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
+            };
+        })(i);
     }
 }
 
 // console.log('hello'.repeat(3));
-(function() {
-    var patterns = document.getElementsByClassName('patterns'),
-        i,
-        len = patterns.length;
-    for (i = 0; i < len; i++) {
-        (function(i) {
-            patterns[i].addEventListener('click', function() {
-                location.href = './patterns_detail.html';
-            }, false);
-        })(i);
-    }
-})();
+// (function() {
+//     var patterns = document.getElementsByClassName('patterns'),
+//         i,
+//         len = patterns.length;
+//     for (i = 0; i < len; i++) {
+//         (function(i) {
+//             patterns[i].addEventListener('click', function() {
+//                 location.href = './patterns_detail.html';
+//             }, false);
+//         })(i);
+//     }
+// })();

@@ -143,6 +143,16 @@ function formateSupplyType(num) {
     }
 }
 
+function formateProduceShape(num) {
+    if (num === 200010) {
+        return '胚布';
+    } else if (num === 200011) {
+        return '成品';
+    } else {
+        return '成品';
+    }
+}
+
 /*设置元素背景图片*/
 function setBackgroundImage(ele, url) {
     // console.log(ele);
@@ -159,6 +169,7 @@ export {
     formateMoney,
     formateUnit,
     formateSupplyShape,
+    formateProduceShape,
     formateSupplyType,
     setBackgroundImage,
     setDataId,
