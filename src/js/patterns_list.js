@@ -57,7 +57,7 @@ function htmlHandler(res) {
     var div = document.createElement('div');
     for (let item of list) {
         listStr += `<div class="patterns" data-id="${item.id}">
-                        <div class="img" style="background-image:url(${item.picsUrl})"></div>
+                        <div class="img" style="background-image:url(${item.defaultPicUrl})"></div>
                         <p class="number">#${item.productNo}</p>
                         <p class="price">${formateMoney(item.price,item.priceUnit)}</p>
                     </div>`;

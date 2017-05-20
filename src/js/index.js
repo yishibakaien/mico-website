@@ -102,151 +102,13 @@ const companyId = 36444;
         }
     });
 
-    // 获取系统定义花型分类列表 [爆款、新品] 的列表 id
-    // listSystemProductCategory({
-    //     companyId,
-    //     isMy: false
-    // }, function(res) {
-    //     console.log('获取系统定义花型分类列表', res);
-    //     // 店铺分类绑定的花型列表，这里才是获取列表
-        
-    //     // 爆款id
-    //     var hotPatternsDataId = res.data[0].id;
-    //     // 新品id
-    //     var newPatternsDataId = res.data[1].id;
-    //     // 获取爆款列表
-    //     listCompanyBindingProduct({
-    //         classId: hotPatternsDataId,
-    //         companyId
-    //     }, function(res) {
-    //         console.log('爆款', res);
-    //         var list = res.data.list;
-    //         var len = list.length;
-    //         console.log(len);
-    //         /**
-    //          * 这里为什么写的这么麻烦？因为布局需求，做到css自适应 宽高 等比例缩放，只能使用background 来填充图片，还有后台的数据过于复杂，一个列表请求 7-8次接口，涉及到众多的排序和 异步处理问题，这里面先后顺序如果处理起来 是非常乱的，更不易于理解，所以这里强行一个一个情况判断插值，利于维护和理解
-    //          */
-    //         if (len) {
-    //             hotPatterns.style.display = 'block';
-    //             // 插值data-id
-    //             setDataId(top1, list[0].id);
-    //             // console.log(setBackgroundImage);
-    //             setBackgroundImage(top1Img, list[0].picsUrl);
-    //             top1Price.innerHTML = '￥' + formateMoney(list[0].price) + ' / ' + formateUnit(list[0].priceUnit); 
-
-    //             if (len === 1) {
-    //                 rightHotPatternsWrapper.style.display = 'none';
-    //             } else if (len === 2) {
-    //                 // 为左边的设置 flex: 2;
-    //                 rightHotPatternsWrapper.style.cssText += '-webkit-box-flex:2;flex:2;';
-    //                 // 然后隐藏 top3 已达到平铺等高效果
-    //                 top3.style.display = 'none';
-    //                 //---------//
-    //                 setDataId(top2, list[1].id);
-    //                 setBackgroundImage(top2Img, list[1].picsUrl);
-    //                 top2Price.innerHTML = '￥' + formateMoney(list[1].price) + ' / ' + formateUnit(list[1].priceUnit); 
-    //             } else {
-    //                 setDataId(top2, list[1].id);
-    //                 setBackgroundImage(top2Img, list[1].picsUrl);
-    //                 top2Price.innerHTML = '￥' + formateMoney(list[1].price) + ' / ' + formateUnit(list[1].priceUnit);
-
-    //                 setDataId(top3, list[2].id);
-    //                 setBackgroundImage(top3Img, list[2].picsUrl);
-    //                 top3Price.innerHTML = '￥' + formateMoney(list[2].price) + ' / ' + formateUnit(list[2].priceUnit); 
-    //             }
-    //         }
-    //     });
-    //     // 获取新品列表
-    //     listCompanyBindingProduct({
-    //         classId: newPatternsDataId,
-    //         companyId
-    //     }, function(res) {
-    //         console.log('新品', res);
-    //         var list = res.data.list;
-    //         var listStr = '';
-    //         if (list.length) {
-    //             newPatterns.style.display = 'block';
-    //         }
-    //         for (var i = 0; i < list.length; i++) {
-    //             listStr += `<div class="patterns" data-id="${list[i].id}">
-    //                             <div class="img" style="background-image:url(${list[i].picsUrl})"></div>
-    //                             <p class="number">#${list[i].productNo}</p>
-    //                             <p class="price">￥${formateMoney(list[i].price)} / ${formateUnit(list[i].priceUnit)}</p>
-    //                         </div>`;
-    //         }
-    //         c('#newPatterns').getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
-    //         /* eslint-disable no-new */
-    //         new BScroll(c('#wrapper1'), { click: true });
-    //     });
-    // });
-
-    // // 获取自定义花型分类列表
-    // listUserProductCategory({
-    //     companyId,
-    //     isMy: false
-    // }, function(res) {
-    //     console.log('获取自定义花型分类列表', res);
-
-    //     var list = res.data.list;
-    //     list.forEach(function(item) {
-    //         // 店铺分类绑定的花型列表
-    //         console.log('自定义item', item);
-    //         listCompanyBindingProduct({
-    //             classId: item.id,
-    //             companyId,
-    //             pageNo: 1,
-    //             pageSize: 10
-    //         }, function(res) {
-    //             console.log('自定义列表', res);
-    //             var len;
-    //             var MAX_LENGTH = 4;
-    //             var itemList = res.data.list;
-
-    //             // 自定义分类的标题
-    //             var listTile = item.className;
-
-    //             // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
-
-    //             var typeWrapper = document.createElement('div');
-    //             typeWrapper.className = 'type';
-    //             var listStr = `<div class="name border-bottom">${listTile}</div>
-    //                         <div class="patterns-wrapper clearfix">`;
-                
-    //             if (itemList.length > MAX_LENGTH) {
-    //                 len = MAX_LENGTH;
-    //             } else {
-    //                 len = itemList.length;
-    //             }
-    //             // 这里最多只展示 4 条，查过部分查看更多
-    //             for (var i = 0; i < len; i++) {
-    //                 listStr += `<div class="patterns" data-id="${itemList[i].id}">
-    //                                 <div class="img" style="background-image:url(${itemList[i].picsUrl})"></div>
-    //                                 <p class="number">#${itemList[i].productNo}</p>
-    //                                 <p class="price">￥${formateMoney(itemList[i].price)} / ${formateUnit(itemList[i].priceUnit)}</p>
-    //                             </div>`;
-    //             }
-    //             listStr += '</div></div>';
-
-    //             if (itemList.length > MAX_LENGTH) {
-    //                 listStr += `<div class="seemore border-bottom">
-    //                                 查看更多${listTile}
-    //                             </div>`;
-    //             }
-    //             typeWrapper.innerHTML = listStr;
-    //             document.getElementById('wrapper1Div').appendChild(typeWrapper);
-    //             /* eslint-disable no-new */
-    //             new BScroll(document.getElementById('wrapper1'), { click: true });
-    //         });
-    //     });
-    // });
-
     // 店铺供应列表
     listVisitCompanySupplys({
         companyId,
         pageNo: 1,
         pageSize: 10
     }, function(res) {
-        console.log('店铺供应列表', res);
+        console.log('获取店铺供应列表', res);
         var len;
         var list = res.data.list;
         var itemStr = '';
@@ -301,7 +163,7 @@ const companyId = 36444;
     listVisitSystemProductCategory({
         companyId
     }, function(res) {
-        console.log('listVisitSystemProductCategory', res);
+        console.log('listVisitSystemProductCategory 获取系统定义花型分类（爆款、新品）', res);
 
         // 爆款id
         var hotPatternsDataId = res.data[0].id;
@@ -312,7 +174,7 @@ const companyId = 36444;
             classId: hotPatternsDataId,
             companyId
         }, function(res) {
-            console.log('爆款', res);
+            console.log('爆款分类', res);
             var list = res.data.list;
             var len = list.length;
             console.log(len);
@@ -324,7 +186,7 @@ const companyId = 36444;
                 // 插值data-id
                 setDataId(top1, list[0].id);
                 // console.log(setBackgroundImage);
-                setBackgroundImage(top1Img, list[0].picsUrl);
+                setBackgroundImage(top1Img, list[0].defaultPicUrl);
                 top1Price.innerHTML = formateMoney(list[0].price, list[0].priceUnit); 
 
                 if (len === 1) {
@@ -336,25 +198,26 @@ const companyId = 36444;
                     top3.style.display = 'none';
                     //---------//
                     setDataId(top2, list[1].id);
-                    setBackgroundImage(top2Img, list[1].picsUrl);
+                    setBackgroundImage(top2Img, list[1].defaultPicUrl);
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit); 
                 } else {
                     setDataId(top2, list[1].id);
-                    setBackgroundImage(top2Img, list[1].picsUrl);
+                    setBackgroundImage(top2Img, list[1].defaultPicUrl);
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit);
 
                     setDataId(top3, list[2].id);
-                    setBackgroundImage(top3Img, list[2].picsUrl);
+                    setBackgroundImage(top3Img, list[2].defaultPicUrl);
                     top3Price.innerHTML = formateMoney(list[2].price, list[2].priceUnit); 
                 }
             }
+            bindClick('.patterns');
         });
         // 获取新品列表
         listCompanyBindingProduct({
             classId: newPatternsDataId,
             companyId
         }, function(res) {
-            console.log('新品2', res);
+            console.log('新品分类', res);
             var list = res.data.list;
             var listStr = '';
             if (list.length) {
@@ -362,7 +225,7 @@ const companyId = 36444;
             }
             for (var i = 0; i < list.length; i++) {
                 listStr += `<div class="patterns" data-id="${list[i].id}">
-                                <div class="img" style="background-image:url(${list[i].picsUrl})"></div>
+                                <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
                                 <p class="number">#${list[i].productNo}</p>
                                 <p class="price">${formateMoney(list[i].price, list[i].priceUnit)}</p>
                             </div>`;
@@ -370,6 +233,7 @@ const companyId = 36444;
             c('#newPatterns').getElementsByClassName('patterns-wrapper')[0].innerHTML = listStr;
             /* eslint-disable no-new */
             new BScroll(c('#wrapper1'), { click: true });
+            bindClick('.patterns');
         });
     });
 
@@ -380,18 +244,18 @@ const companyId = 36444;
         pageNo: 1,
         pageSize: 50
     }, function(res) {
-        console.log('listVisitUserProductCategory', res);
+        console.log('listVisitUserProductCategory 获取用户自定义花型分类', res);
         var list = res.data.list;
         list.forEach(function(item) {
             // 店铺分类绑定的花型列表
-            console.log('自定义item', item);
+            // console.log('自定义item', item);
             listCompanyBindingProduct({
                 classId: item.id,
                 companyId,
                 pageNo: 1,
                 pageSize: 10
             }, function(res) {
-                console.log('自定义列表', res);
+                console.log('用户自定义分类', res);
                 var len;
                 var MAX_LENGTH = 4;
                 var itemList = res.data.list;
@@ -413,8 +277,8 @@ const companyId = 36444;
                 }
                 // 这里最多只展示 4 条，查过部分查看更多
                 for (var i = 0; i < len; i++) {
-                    listStr += `<div class="patterns" data-id="${itemList[i].id}">
-                                    <div class="img" style="background-image:url(${itemList[i].picsUrl})"></div>
+                    listStr += `<div class="patterns" onclick="goDetail()" data-id="${itemList[i].id}">
+                                    <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
                                     <p class="number">#${itemList[i].productNo}</p>
                                     <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                                 </div>`;
@@ -430,9 +294,20 @@ const companyId = 36444;
                 document.getElementById('wrapper1Div').appendChild(typeWrapper);
                 /* eslint-disable no-new */
                 new BScroll(document.getElementById('wrapper1'), { click: true });
+                bindClick('.patterns');
             });
         });
     });
+
+    function bindClick(selector) {
+        var eles = c(selector);
+        for (let item of eles) {
+            item.onclick = function() {
+                var dataId = this.getAttribute('data-id');
+                location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
+            };
+        }
+    }
 
     var tabItem = document.getElementsByClassName('tab-item'),
         footerItem = document.getElementsByClassName('footer-item'),

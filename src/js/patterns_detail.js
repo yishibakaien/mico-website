@@ -48,7 +48,7 @@ var detailPic = c('#detailPic');
 
     // 获取详细工厂信息介绍
     getCompanyInfo({
-        id: companyId
+        companyId
     }, function(res) {
         console.log('获取详细工厂信息', res);
         var data = res.data;
