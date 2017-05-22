@@ -1,0 +1,135 @@
+@charset "utf-8";
+
+body
+    background #f2f2f2
+.search-container
+    padding 16px
+    background #fff
+    position fixed
+    z-index 10
+    top 0
+    left 0
+    right 0
+    .search-wrapper
+        display flex
+        // border 1px solid red
+        .input-wrapper
+            flex 1
+            .search-input
+                display inline-block
+                height 30px
+                width 100%
+                padding 4px 16px
+                border-radius 16px
+                font-size 16px
+                background #f2f2f2
+                &::-webkit-input-placeholder 
+                    font-size 16px
+                    color #999
+                &:focus
+                    outline 0
+        .camera-wrapper
+            position relative
+            flex 0 0 50px
+            width 50px
+            text-align center
+            .file-input
+                display inline-block
+                position absolute
+                width 50px
+                height 30px
+                left 0
+                top 0
+                overflow hidden
+                z-index 1
+                opacity 0
+            .iconfont
+                display inline-block
+                height 30px
+                font-size 25px
+                line-height 30px
+                text-align center
+                color #ff7011
+        .btn-wrapper
+            flex 0 0 60px
+            width 30px
+            .search-btn
+                height 30px
+                line-height 30px
+                font-size 16px
+                width 100%
+                &:focus
+                    outline 0
+// 过滤器
+.filter-wrapper
+    display flex
+    .fileter-item
+        flex 1
+        text-align center
+        height 30px
+        line-height 30px
+        font-size 15px
+        color #666
+        background #fff
+
+// 结果容器
+.result-container
+    margin 62px 0 32px 0
+
+.search-text
+    padding 16px
+    color #999
+    font-size 14px
+.search-list
+    .patterns {
+        float: left;
+        box-sizing: border-box;
+        width: 50%;
+        padding: 12px;
+        background #fff
+    }
+
+    .patterns:nth-of-type(odd) {
+        border-right: 1px solid rgba(7, 17, 27, 0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+    }
+
+    .patterns:nth-of-type(even) {
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+        border-right: 1px solid transparent;
+    }
+
+    .patterns .img {
+        padding-top: 100%;
+        background: url('../images/patterns2.png');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
+
+    .patterns .number {
+        display: block;
+        height: 16px;
+        line-height: 16px; 
+        margin: 8px 0 0 7px;
+        font-size: 16px;
+    }
+
+    .patterns .price {
+        display: block;
+        margin: 10px 0 0 7px;
+        height: 12px;
+        line-height: 12px;
+        font-size: 12px;
+        color: #f53535;
+    }
+
+.more
+    display none
+    margin-top 16px
+    padding 12px 0
+    text-align center
+    color #666
+    background #fff
+    &:active
+        color #4c93fd

@@ -70,7 +70,7 @@ var detailPic = c('#detailPic');
             var _companyId = this.getAttribute('company-id');
             // alert(_companyId);
             if (_companyId) {
-                location.href = '/';
+                location.href = './index.html';
             }
         };
     });

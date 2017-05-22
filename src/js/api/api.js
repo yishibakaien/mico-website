@@ -54,6 +54,10 @@ const API = {
 
         // 获取供应详情
         getCompanySupply: '/companySupply/getCompanySupply/'
+    },
+    search: {
+        // 文本搜索
+        search: '/company/search'
     }
 };
 
@@ -178,4 +182,9 @@ export function listVisitSystemProductCategory(data, cb, err) {
 // 店铺自定义花型分类列表
 export function listVisitUserProductCategory(data, cb, err) {
     return _fetch(METHODS.post, data, API.main.listVisitUserProductCategory, cb, err);
+}
+
+// 搜索
+export function search(data, cb, err) {
+    return _fetch(METHODS.post, data, API.search.search, cb, err);
 }

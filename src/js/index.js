@@ -18,18 +18,20 @@ import {
     // 设置图片背景
     setBackgroundImage,
     // 设置data-id 属性
-    setDataId
+    setDataId,
+    // 获取url参数
+    getQueryString
 } from './utils/utils';
 import {
-    // 获取店铺花型分类
-    // listProductCategory,
+    // 获取店铺花型分类 这个用于花型分类的跳转
+    listProductCategory,
     // // 获取花型列表
     // listProducts,
     // 获取系统定义花型分类列表
     // listSystemProductCategory,
     // 获取自定义花型分类列表
     // listUserProductCategory,
-    // 
+
     // 店铺分类绑定的花型列表
     listCompanyBindingProduct,
     // 店铺供应列表
@@ -52,6 +54,7 @@ import {
 // 
 const companyId = 36444;
 const MAX_LENGTH = 6;
+const activeIndex = getQueryString('activeIndex');
 
 // 宁博 店铺id 36438
 (function() {
@@ -75,6 +78,16 @@ const MAX_LENGTH = 6;
         top3Price = c('#top3Price'),
         // 新品
         newPatterns = c('#newPatterns');
+
+    // 花型分类按钮
+    var patternsClassfiy = c('#patternsClassfiy');
+
+    // 点击跳转搜索界面
+    var searchBtn = c('#searchBtn');
+
+    searchBtn.onclick = function() {
+        location.href = './search.html';
+    };
     // 获取简单店铺信息
     // getCompanySimpleInfo({
     //     id: companyId
@@ -101,7 +114,9 @@ const MAX_LENGTH = 6;
         // 公司名称
         companyName.innerHTML = res.data.companyName;
         // 公司主营项目
-        companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness;
+        if (res.data.companyExtendBO.companyBusiness) {
+            companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness;
+        }
     });
 
     // 店铺供应列表
@@ -159,6 +174,25 @@ const MAX_LENGTH = 6;
                 location.href = `./supply_list.html?companyId=${companyId}`;
             });
         }
+    });
+
+    // 这里获取花型的分类信息，用于花型分类的跳转
+    listProductCategory({
+        companyId
+    }, function(res) {
+        console.log('--花型分类的跳转', res);
+        var situation = res.data.situation;
+        patternsClassfiy.onclick = function() {
+
+            if (situation === 0) {
+                location.href = './no_patterns.html?companyId=' + companyId;
+                // alert('该店铺暂未上传花型');
+            } else if (situation === 1) {
+                location.href = './default_classify.html?companyId=' + companyId;
+            } else if (situation === 2) {
+                location.href = './patterns_classify.html?companyId=' + companyId;
+            }
+        };
     });
 
     // 2017年5月18日 新增？
@@ -343,26 +377,14 @@ const MAX_LENGTH = 6;
     }
     
 
-    var tabItem = document.getElementsByClassName('tab-item'),
-        footerItem = document.getElementsByClassName('footer-item'),
-        contentSwiper = new Swiper('#content', {
-            onSlideChangeEnd: swiperControl
-        }),
-        supplyList = document.getElementsByClassName('supply-list'),
-        moreButton = document.getElementsByClassName('more-button')[0];
-
+    var tabItem = document.getElementsByClassName('tab-item');
+    var footerItem = document.getElementsByClassName('footer-item');
+    var contentSwiper = new Swiper('#content', {
+        onSlideChangeEnd: swiperControl,
+        initialSlide: activeIndex ? activeIndex : 0
+    });
     addActive(tabItem);
-    goTo(supplyList);
     footerClick(footerItem);
-    footerClick(moreButton);
-    moreButton.addEventListener('click', function() {
-        var url = this.getAttribute('link');
-        if (url) {
-            console.log(url);
-            location.href = url;
-            return;
-        }
-    }, false);
     slideControl();
 
     function slideControl() {
@@ -387,6 +409,7 @@ const MAX_LENGTH = 6;
         tabItem[swiper.activeIndex].className += ' active';
     }
 
+
     function footerClick(eles) {
         var i,
             url,
@@ -406,18 +429,6 @@ const MAX_LENGTH = 6;
                         console.log(tel);
                         location.href = 'tel:' + tel;
                     }
-                }, false);
-            })(i);
-        }
-    }
-
-    function goTo(eles) {
-        var i,
-            len = eles.length;
-        for (i = 0; i < len; i++) {
-            (function(i) {
-                eles[i].addEventListener('click', function() {
-                    location.href = './patterns_detail.html';
                 }, false);
             })(i);
         }

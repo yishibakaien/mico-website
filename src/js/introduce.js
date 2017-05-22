@@ -15,9 +15,19 @@ import {
 import {
     getCompanyInfo
 } from './api/api';
-
+import qrcode from './utils/qrcode.js';
 // import qrcode from './utils/qrcode2';
-// console.log(qrcode);
+
+// 生成二维码
+(function() {
+    // 拼接地址字符串
+    // var href = location.href;
+    var src = location.origin;
+    var qrNode = new qrcode({
+        text: src
+    });
+    c('#qrcodeBody').appendChild(qrNode);
+})();
 
 // 导航的根地址
 const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0'; 
