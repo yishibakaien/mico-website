@@ -23,6 +23,10 @@ var userClassify = document.getElementById('userClassify');
 var systemClassify = document.getElementById('systemClassify');
 
 console.log(allPatterns);
+allPatterns.onclick = function() {
+    location.href = `./patterns_list.html?companyId=${companyId}&all=1`;
+};
+
 listVisitUserProductCategory({
     companyId,
     pageSize: 100

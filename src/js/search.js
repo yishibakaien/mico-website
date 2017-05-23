@@ -6,7 +6,9 @@ import '../stylus/search';
 
 import {
     c,
-    getQueryString
+    getQueryString,
+    formateMoney,
+
 } from './utils/utils';
 
 import blackTip from './utils/blackTip';
@@ -19,8 +21,13 @@ import {
     var companyId = getQueryString('companyId');
     var searchBtn = c('#searchBtn');
     var searchIpt = c('#searchIpt');
-    var tip = null; // 为提示预留的变量
+    var searchText = c('#searchText');
+    var searchResultBox = c('#searchResultBox');
 
+    var more = c('#more');
+    var noMore = c('#noMore');
+
+    var tip = null; // 为提示预留的变量
     var pageNo = 1;
     var pageSize = 10;
 
@@ -41,12 +48,11 @@ import {
         queryParams.keywords = this.value;
     };
     searchBtn.onclick = function() {
-        console.log(queryParams);
         var value = queryParams.keywords;
         if (!value.length) {
             return;
         }
-        console.log(value);
+        console.log('关键字', value);
         tip = blackTip({
             text: '正在加载中',
             time: 10000
@@ -54,9 +60,47 @@ import {
         dosearch();
     };
     function dosearch() {
+        console.log('查询参数', queryParams);
+        searchText.innerHTML = queryParams.keywords;
         search(queryParams, function(res) {
             console.log('搜索返回的结果', res);
             tip.remove();
+            htmlHandler(res, searchResultBox);
         });
+    }
+
+    function htmlHandler(res, ele) {
+        var list = res.data.list;
+        var listStr = '';
+        var div = document.createElement('div');
+        for (var i = 0; i < list.length; i++) {
+            listStr += `<div class="patterns" data-id="${list[i].id}">
+                            <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
+                            <p class="number">${list[i].productNo}</p>
+                            <p class="price">${formateMoney(list[i].price,list[i].priceUnit)}</p>
+                        </div>`;
+        }
+        // 这里有个坑  pageNo => pageNO 这个o 是大写
+        if (res.data.pageSize * res.data.pageNO >= res.data.totalNum) {
+            noMore.style.display = 'block';
+            more.style.display = 'none';
+        } else {
+            more.style.display = 'block';
+            noMore.style.display = 'none';
+        }
+        div.innerHTML = listStr;
+        ele.appendChild(div);
+        bindClickEvent(ele);
+    }
+    function bindClickEvent(ele) {
+        var patterns = ele.getElementsByClassName('patterns');
+        for (var i = 0; i < patterns.length; i++) {
+            (function(i) {
+                patterns[i].onclick = function() {
+                    var dataId = this.getAttribute('data-id');
+                    location.href = `./patterns_detail.html?companyId=${companyId}&dataId=${dataId}`;
+                };
+            })(i);
+        }
     }
 })();

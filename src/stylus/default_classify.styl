@@ -3,9 +3,22 @@
 body {
     background: #f2f2f2;
 }
-
+.more {
+    // display none
+    float left
+    height 40px
+    line-height 40px
+    margin-top 16px
+    width 100%
+    text-align center
+    font-size 14px
+    color #999
+    background #fff
+}
+.more:active
+    color #4c93fd
 .main .tab {
-    display: flex;
+    display: none;
     position: relative;
     z-index: 2;
     height: 40px;
@@ -26,4 +39,47 @@ body {
 .main .tab-item.active .text {
     color: #4c93fd;
     border-bottom:2px solid #4c93fd;
+}
+// 花型
+.patterns {
+    /*-webkit-flex: 0 0 50%;
+    flex: 0 0 50%;*/
+    float: left;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 12px;
+    background: #fff;
+}
+.patterns:nth-of-type(odd) {
+    border-right: 1px solid rgba(7, 17, 27, 0.1);
+    border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+}
+.patterns:nth-of-type(even) {
+    border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+    border-right: 1px solid transparent;
+}
+.patterns .img {
+    padding-top: 100%;
+    background: url('../images/patterns2.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.patterns .number {
+    display: block;
+    height: 16px;
+    line-height: 16px; 
+    margin: 8px 0 0 7px;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.patterns .price {
+    display: block;
+    margin: 10px 0 0 7px;
+    height: 12px;
+    line-height: 12px;
+    font-size: 12px;
+    color: #f53535;
 }

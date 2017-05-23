@@ -7,6 +7,7 @@
     <title>花型搜索</title>
 </head>
 <body>
+    
     <div class="search-container  border-bottom">
         <div class="search-wrapper">
             <div class="input-wrapper">
@@ -23,18 +24,23 @@
     </div>
     <!-- <div class="filter-wrapper">
         <div class="filter-time fileter-item">
-            <span class="text">时间</span><span class="triangle-double triangle"></span>
+            <span class="text">时间</span>
+            <span class="triangle-double triangle triangle-up"></span><span class="triangle-double triangle triangle-down"></span>
         </div>
         <div class="filter-filters fileter-item">
-            <span class="text">筛选</span><span class="triangle-one triangle"></span>
+            <span class="text">筛选</span><span class="triangle-one triangle triangle-down"></span>
         </div>
-    </div> -->
+        <div class="hidden-filter border-top">
+            sss
+        </div>
+    </div>
+    <div class="mask filter-mask"></div> -->
     <div class="result-container">
         <div class="search-text border-bottom">
-            <span>搜索结果：</span><span></span>
+            <span>搜索结果：</span><span id="searchText"></span>
         </div>
-        <div class="search-list clearfix">
-            <div class="patterns">
+        <div class="search-list clearfix" id="searchResultBox">
+            <!-- <div class="patterns">
                 <div class="img"></div>
                 <p class="number">#20001</p>
                 <p class="price">价格面议</p>
@@ -68,15 +74,14 @@
                 <div class="img"></div>
                 <p class="number">#20001</p>
                 <p class="price">价格面议</p>
-            </div>
+            </div> -->
         </div>
-        <div class="seemore more border-top border-bottom">
+        <div class="seemore more border-top border-bottom" id="more">
             查看更多
         </div>
-        <div class="no-more more border-top border-bottom">
+        <div class="no-more more border-top border-bottom" id="noMore">
             没有更多了
         </div>
     </div>
-    
 </body>
 </html>

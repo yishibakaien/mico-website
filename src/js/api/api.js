@@ -30,7 +30,10 @@ const API = {
 
         // 2017年5月18日 新增？
         // 店铺自定义花型分类列表
-        listVisitUserProductCategory: '/productCategory/listVisitUserProductCategory'
+        listVisitUserProductCategory: '/productCategory/listVisitUserProductCategory',
+
+        // 获取店铺花型列表
+        listVistitCompanyProducts: '/product/listVistitCompanyProducts'
     },
     company: {
         // 获取档口OR工厂信息
@@ -43,7 +46,7 @@ const API = {
         listProductCategory: '/productCategory/listProductCategory',
 
         // 获取花型列表
-        listProducts: '/product/listProducts',        
+        listProducts: '/product/listProducts',
 
         // 获取分类绑定的花型列表
         listBindingProduct: '/productCategoryBanding/listBindingProduct'        
@@ -57,7 +60,7 @@ const API = {
     },
     search: {
         // 文本搜索
-        search: '/company/search'
+        search: '/product/search'
     }
 };
 
@@ -182,6 +185,11 @@ export function listVisitSystemProductCategory(data, cb, err) {
 // 店铺自定义花型分类列表
 export function listVisitUserProductCategory(data, cb, err) {
     return _fetch(METHODS.post, data, API.main.listVisitUserProductCategory, cb, err);
+}
+
+// 获取店铺花型列表
+export function listVistitCompanyProducts(data, cb, err) {
+    return _fetch(METHODS.post, data, API.main.listVistitCompanyProducts, cb, err);
 }
 
 // 搜索

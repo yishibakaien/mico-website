@@ -44,19 +44,25 @@ import {
     // 2017年5月18日 新增？
     // 店铺系统定义花型分类列表
     listVisitSystemProductCategory,
+
+    // 获取店铺花型列表
+    listVistitCompanyProducts,
+
     // 获取简单店铺信息
     // getCompanySimpleInfo,
     // 获取详细店铺信息
     getCompanyInfo
  } from './api/api.js';
 
-// 守均店铺id 36444
-// 
-const companyId = 36444;
+// 守均 店铺id 36444
+// 宁博 店铺id 36438
+// 无自定义花型 只有 [一种] 花型店铺id  36520
+// 无自定义花型 有 [两种] 或以上花型的店铺id 36521
+// const companyId = 36510;
+const companyId = getQueryString('companyId');
 const MAX_LENGTH = 6;
 const activeIndex = getQueryString('activeIndex');
 
-// 宁博 店铺id 36438
 (function() {
     // 页面元素的获取
     var bgPic = c('#bgPic'),
@@ -79,6 +85,9 @@ const activeIndex = getQueryString('activeIndex');
         // 新品
         newPatterns = c('#newPatterns');
 
+    // 分割器，这里来分割 自定义分类和全部花型
+    var spliter = c('#spliter');
+
     // 花型分类按钮
     var patternsClassfiy = c('#patternsClassfiy');
 
@@ -86,7 +95,7 @@ const activeIndex = getQueryString('activeIndex');
     var searchBtn = c('#searchBtn');
 
     searchBtn.onclick = function() {
-        location.href = './search.html';
+        location.href = './search.html?companyId=' + companyId;
     };
     // 获取简单店铺信息
     // getCompanySimpleInfo({
@@ -188,13 +197,67 @@ const activeIndex = getQueryString('activeIndex');
                 location.href = './no_patterns.html?companyId=' + companyId;
                 // alert('该店铺暂未上传花型');
             } else if (situation === 1) {
-                location.href = './default_classify.html?companyId=' + companyId;
+                var cateGorysArr = res.data.categorys.map(function(item) {
+                    return item;
+                });
+                var str = cateGorysArr.join('-');
+                console.log('cateGorysStr', str);
+                location.href = './default_classify.html?companyId=' + companyId + '&categorys=' + str;
             } else if (situation === 2) {
                 location.href = './patterns_classify.html?companyId=' + companyId;
             }
         };
     });
+    // 这里获取全部花型 2017年5月23日11:50:36
+    listVistitCompanyProducts({
+        companyId,
+        pageNo: 1,
+        pageSize: 6
+    }, function(res) {
+        console.log('全部花型分类', res);
+        var len;
+        var itemList = res.data.list;
 
+        // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
+        function showFlag(num) {
+            if (num === 0) {
+                return ' style="display:none" ';
+            }
+        }
+        var typeWrapper = document.createElement('div');
+        typeWrapper.className = 'type clearfix';
+        var listStr = `<div class="name border-bottom" ${showFlag(itemList.length)}>全部花型</div>
+                    <div class="patterns-wrapper clearfix">`;
+        
+        if (itemList.length > MAX_LENGTH) {
+            len = MAX_LENGTH;
+        } else {
+            len = itemList.length;
+        }
+        // 这里最多只展示 6 条，超过部分查看更多
+        for (var i = 0; i < len; i++) {
+            listStr += `<div class="patterns" data-id="${itemList[i].id}">
+                            <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
+                            <p class="number">${itemList[i].productNo}</p>
+                            <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
+                        </div>`;
+        }
+        listStr += '</div></div>';
+        // 这里的pageNO 的 o 为大写
+        if ((res.data.pageNO * res.data.pageSize) < res.data.totalNum) {
+            console.log(11);
+            listStr += '<div class="seemore" id="seeAllPatterns">查看全部花型</div>';
+        }
+        typeWrapper.innerHTML = listStr;
+        document.getElementById('wrapper1Div').appendChild(typeWrapper);
+        if (c('#seeAllPatterns')) {
+            c('#seeAllPatterns').onclick = function() {
+                // all 这个参数用于下个页面判断是否为查看全部花型
+                location.href = './patterns_list.html?all=1&companyId=' + companyId;
+            };
+        }
+        bindClick('.type .patterns');
+    });
     // 2017年5月18日 新增？
     // 系统自定义花型分类列表
     listVisitSystemProductCategory({
@@ -344,7 +407,8 @@ const activeIndex = getQueryString('activeIndex');
                     listStr += `<div class="seemore seeSelfPatterns" class-id="${item.id}">查看更多${listTile}</div>`;
                 }
                 typeWrapper.innerHTML = listStr;
-                document.getElementById('wrapper1Div').appendChild(typeWrapper);
+                // document.getElementById('wrapper1Div').appendChild(typeWrapper);
+                document.getElementById('wrapper1Div').insertBefore(typeWrapper, spliter);
                 /* eslint-disable no-new */
                 // new BScroll(document.getElementById('wrapper1'), { click: true });
                 var seeSelfPatterns = c('.seeSelfPatterns');

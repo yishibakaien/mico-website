@@ -130,6 +130,7 @@ function formateSupplyShape(num) {
 }
 
 function formateSupplyType(num) {
+    num = Number(num);
     if (num === 100010) {
         return '面料';
     } else if (num === 100011) {

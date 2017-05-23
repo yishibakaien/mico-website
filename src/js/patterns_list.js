@@ -8,7 +8,9 @@ import {
     formateMoney
 } from './utils/utils';
 import {
-    listCompanyBindingProduct
+    listCompanyBindingProduct,
+    // 获取全部花型
+    listVistitCompanyProducts
 } from './api/api';
 
 // String.prototype.repeat = String.prototype.repeat || function(num) {
@@ -25,6 +27,7 @@ import {
 
 var companyId = getQueryString('companyId');
 var classId = getQueryString('classId');
+var all = getQueryString('all');
 
 var pageSize = 10;
 var pageNo = 1;
@@ -36,6 +39,9 @@ var noData = document.getElementById('noData');
 
 getData();
 function getData() {
+    if (!classId) {
+        return;
+    }
     listCompanyBindingProduct({
         companyId,
         classId,
@@ -43,6 +49,22 @@ function getData() {
         pageNo
     }, function(res) {
         console.log('分类花型列表', res);
+        htmlHandler(res);
+    });
+}
+
+// 请求全部花型
+getAllData();
+function getAllData() {
+    if (!all) {
+        return;
+    }
+    listVistitCompanyProducts({
+        companyId,
+        pageNo,
+        pageSize
+    }, function(res) {
+        console.log('请求全部花型', res);
         htmlHandler(res);
     });
 }
@@ -78,7 +100,11 @@ function htmlHandler(res) {
 
 more.onclick = function() {
     pageNo++;
-    getData();
+    if (all) {
+        getAllData();
+    } else {
+        getData();
+    }
 };
 function bindClickEvent(ele) {
     var patterns = ele.getElementsByClassName('patterns');
