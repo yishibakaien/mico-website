@@ -35,15 +35,20 @@ import {
     } else {
         tab.style.cssText += 'display:flex;display:-webkit-box;';
         var tabStr = '<div class="tab-item active"><span class="text">全部</span></div>';
-        var swiperStr = '<div class="swiper-slide allPatterns"></div>';
+        var swiperStr = '<div class="swiper-slide allPatterns"><div class="spliter"></div><div class="more no-more">没有更多了</div><div class="more has-more">查看更多</div></div>';
         categorysArr.forEach(function(item) {
             tabStr += `<div class="tab-item">
                             <span class="text">${formateSupplyType(item)}</span>
                         </div>`;
-            swiperStr += `<div class="swiper-slide category_${item}"></div>`;
+            swiperStr += `<div class="swiper-slide category_${item}">
+                            <div class="spliter"></div>
+                            <div class="more no-more">没有更多了</div>
+                            <div class="more has-more more_category_${item}">查看更多</div>
+                        </div>`;
         });
         tab.innerHTML = tabStr;
         sildeWrapper.innerHTML = swiperStr;
+        // 当花型数量大于1的时候 此时 allPatterns 已经被重新 innerHTML了，要重新获取
         allPatterns = document.getElementsByClassName('allPatterns')[0];
     }
 
@@ -88,17 +93,21 @@ import {
                         </div>`;
         }
         // 这里有个坑  pageNo => pageNO 这个o 是大写
-        if (res.data.pageSize * res.data.pageNO >= res.data.totalNum) {
-            // noMore.style.display = 'block';
-            // more.style.display = 'none';
-            console.log('没有更多数据了');
-            listStr += '<div class="more no-more">没有更多了</div>';
-        } else {
-            console.log('还有更多数据');
-            listStr += '<div class="more has-more">查看更多</div>';
-        }
+        
         div.innerHTML = listStr;
-        ele.appendChild(div);
+        var spliter = ele.getElementsByClassName('spliter')[0];
+        ele.insertBefore(div, spliter);
+
+        var more = ele.getElementsByClassName('has-more')[0];
+        var noMore = ele.getElementsByClassName('no-more')[0];
+
+        if (res.data.pageSize * res.data.pageNO >= res.data.totalNum) {
+            noMore.style.display = 'block';
+            more.style.display = 'none';
+        } else {
+            noMore.style.display = 'none';
+            more.style.display = 'block';
+        }
         if (ele.getElementsByClassName('has-more').length) {
             ele.getElementsByClassName('has-more')[0].onclick = function() {
                 pageNo++;
@@ -107,7 +116,6 @@ import {
         }
         bindClickEvent(ele);
     }
-
 
     // 生成swiper
     var swiper = new Swiper('.swiper-container', { 

@@ -394,7 +394,7 @@ const activeIndex = getQueryString('activeIndex');
                 } else {
                     len = itemList.length;
                 }
-                // 这里最多只展示 6 条，查过部分查看更多
+                // 这里最多只展示 6 条，超过部分查看更多
                 for (var i = 0; i < len; i++) {
                     listStr += `<div class="patterns" data-id="${itemList[i].id}">
                                     <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>

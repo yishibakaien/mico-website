@@ -23,6 +23,7 @@ import {
     var searchIpt = c('#searchIpt');
     var searchText = c('#searchText');
     var searchResultBox = c('#searchResultBox');
+    var isSeemore = false;
 
     var more = c('#more');
     var noMore = c('#noMore');
@@ -40,27 +41,30 @@ import {
         pageNo: pageNo,
         pageSize: pageSize,
         priceSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
-        searchType: 1, // 1:店铺搜索 2:全局搜索
-        stockType: '' // 0:需要开机, 1:正在开机, 2:现货
+        searchType: 1 // 1:店铺搜索 2:全局搜索
     };
     // 店铺文本搜索
     searchIpt.oninput = function() {
         queryParams.keywords = this.value;
     };
     searchBtn.onclick = function() {
-        var value = queryParams.keywords;
+        var value = queryParams.keywords = searchIpt.value;
         if (!value.length) {
             return;
         }
         console.log('关键字', value);
         tip = blackTip({
             text: '正在加载中',
-            time: 10000
+            time: 100000
         });
         dosearch();
     };
     function dosearch() {
         console.log('查询参数', queryParams);
+        if (!isSeemore) {
+            searchResultBox.innerHTML = '';
+            isSeemore = false;
+        }
         searchText.innerHTML = queryParams.keywords;
         search(queryParams, function(res) {
             console.log('搜索返回的结果', res);
@@ -89,6 +93,11 @@ import {
             noMore.style.display = 'none';
         }
         div.innerHTML = listStr;
+        more.onclick = function() {
+            isSeemore = true;
+            pageNo++;
+            dosearch();
+        };
         ele.appendChild(div);
         bindClickEvent(ele);
     }

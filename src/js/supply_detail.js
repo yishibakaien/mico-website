@@ -100,7 +100,6 @@ var id = getQueryString('dataId');
         }
     });
     
-
     // message.addEventListener('click', function() {
     //     location.href = './introduce.html';
     // }, false);
@@ -133,9 +132,9 @@ var id = getQueryString('dataId');
     }
 
     companyMessage.addEventListener('click', function() {
-        // var id = this.getAttribute('company-id');
+        var id = this.getAttribute('company-id');
         // location.href = '../introduce.html?companyId=' + id;
-        location.href = './index.html?activeIndex=1';
+        location.href = './index.html?activeIndex=1&companyId=' + id;
     }, false);
     phone.addEventListener('click', function() {
         var phoneNumber = this.getAttribute('tel');

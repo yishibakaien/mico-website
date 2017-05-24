@@ -30,6 +30,7 @@ var price = c('#price');
 var companyMessage = c('#companyMessage');
 var avatar = c('#avatar');
 var tag = c('#tag');
+var viewNum = c('#viewNum');
 var companyName = c('#companyName');
 var companyBusiness = c('#companyBusiness');
 
@@ -70,7 +71,7 @@ var detailPic = c('#detailPic');
             var _companyId = this.getAttribute('company-id');
             // alert(_companyId);
             if (_companyId) {
-                location.href = './index.html';
+                location.href = './index.html?companyId=' + _companyId;
             }
         };
     });
@@ -85,13 +86,20 @@ var detailPic = c('#detailPic');
         detailPic.src = data.defaultPicUrl;
         productNo.innerHTML = data.productNo;
         price.innerHTML = formateMoney(data.price, data.priceUnit);
-        category.innerHTML = formateSupplyType(data.category);
+        viewNum.innerHTML = data.viewCount ? data.viewCount : 0;
 
+        // 类型
+        category.innerHTML = formateSupplyType(data.category);
+        // 成分
         ingredient.innerHTML = data.ingredient;
-        stock.innerHTML = data.stock + ' ' + formateUnit(data.stockUnit);
+        // 库存
+        stock.innerHTML = (data.stock ? data.stock : '') + ' ' + formateUnit(data.stockUnit);
+        // 货型
         shape.innerHTML = formateProduceShape(data.productShape);
-        width.innerHTML = (data.width ? data.width : 0);
-        height.innerHTML = (data.height ? data.height : 0);
+        // 宽
+        width.innerHTML = data.width;
+        // 高
+        height.innerHTML = data.height;
 
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + data.defaultPicUrl;
