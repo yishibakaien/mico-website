@@ -15,8 +15,15 @@ import {
 } from './api/api';
 
 (function() {
-    var pageNo = 1;
+
     var pageSize = 10;
+    // 用于处理分页
+    var pageHandler = {
+        allPatterns: {
+            pageNo: 1
+        }
+    };
+
     var companyId = getQueryString('companyId');
 
     var cateGroysStr = getQueryString('categorys');
@@ -45,6 +52,10 @@ import {
                             <div class="more no-more">没有更多了</div>
                             <div class="more has-more more_category_${item}">查看更多</div>
                         </div>`;
+            pageHandler['category_' + item] = {
+                pageNo: 1
+            };
+            console.log(pageHandler);
         });
         tab.innerHTML = tabStr;
         sildeWrapper.innerHTML = swiperStr;
@@ -53,17 +64,21 @@ import {
     }
 
     if (categorysArr.length > 1) {
-        categorysArr.forEach(function(item) {
-            listVistitCompanyProducts({
-                category: item,
-                companyId,
-                pageNo,
-                pageSize
-            }, function(res) {
-                console.log('请求的单独的花型分类', res);
-                var ele = document.getElementsByClassName('category_' + item)[0];
-                htmlHandler(res, ele);
-            });
+        categorysArr.forEach(function(category) {
+            var ele = document.getElementsByClassName('category_' + category)[0];
+            getDefaultCategoryData(ele, category);
+        });
+    }
+    function getDefaultCategoryData(ele, category) {
+
+        listVistitCompanyProducts({
+            category: category,
+            companyId,
+            pageNo: pageHandler['category_' + category].pageNo,
+            pageSize
+        }, function(res) {
+            console.log('请求的单独的花型分类', res);
+            htmlHandler(res, ele);
         });
     }
 
@@ -73,7 +88,7 @@ import {
     function getAllData() {
         listVistitCompanyProducts({
             companyId,
-            pageNo,
+            pageNo: pageHandler.allPatterns.pageNo,
             pageSize
         }, function(res) {
             console.log('请求全部花型', res);
@@ -108,18 +123,27 @@ import {
             noMore.style.display = 'none';
             more.style.display = 'block';
         }
-        if (ele.getElementsByClassName('has-more').length) {
-            ele.getElementsByClassName('has-more')[0].onclick = function() {
-                pageNo++;
+        
+        ele.getElementsByClassName('has-more')[0].onclick = function() {
+            if (ele.className.indexOf('allPatterns') !== -1) {
+                pageHandler.allPatterns.pageNo++;
                 getAllData();
-            };
-        }
+            }
+            if (ele.className.indexOf('category_') !== -1) {
+                // 获取类名中的数字 （即category编号）
+                var category = ele.className.match(/\d+/ig);
+                console.log('点击时候请求的category', category);
+                pageHandler['category_' + category[0]].pageNo++;
+                getDefaultCategoryData(ele, category[0]);
+            }
+        };
         bindClickEvent(ele);
     }
 
     // 生成swiper
     var swiper = new Swiper('.swiper-container', { 
-        onSlideChangeEnd: swiperControl
+        onSlideChangeEnd: swiperControl,
+        spaceBetween: 50
         // initialSlide: activeIndex ? activeIndex : 0
     });
     // 添加active 类 高亮显示
