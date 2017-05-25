@@ -94,6 +94,9 @@ const activeIndex = getQueryString('activeIndex');
     // 点击跳转搜索界面
     var searchBtn = c('#searchBtn');
 
+    // 电话联系按钮
+    var contcat = c('#contcat');
+
     searchBtn.onclick = function() {
         location.href = './search.html?companyId=' + companyId;
     };
@@ -126,6 +129,8 @@ const activeIndex = getQueryString('activeIndex');
         if (res.data.companyExtendBO.companyBusiness) {
             companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness;
         }
+        // 联系电话
+        contcat.setAttribute('tel', res.data.phone);
     });
 
     // 店铺供应列表

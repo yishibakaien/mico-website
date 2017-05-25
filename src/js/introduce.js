@@ -22,11 +22,19 @@ import qrcode from './utils/qrcode.js';
 (function() {
     // 拼接地址字符串
     // var href = location.href;
-    var src = location.origin;
+    var src = location.href.split('introduce').join('index');
+    console.log(src);
     var qrNode = new qrcode({
         text: src
     });
     c('#qrcodeBody').appendChild(qrNode);
+    var saveQRCode = c('#saveQRCode');
+    saveQRCode.onclick = function() {
+        // var image = qrNode.toDataURL('image/png').replace('image/png', 'image/octet-stream;');
+        var image = qrNode.toDataURL('image/png');
+        alert(image);
+        window.location.href = image;
+    };
 })();
 
 // 导航的根地址

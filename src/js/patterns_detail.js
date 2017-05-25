@@ -54,7 +54,7 @@ var detailPic = c('#detailPic');
     }, function(res) {
         console.log('获取详细工厂信息', res);
         var data = res.data;
-        companyMessage.setAttribute('company-id', data.userId);
+        companyMessage.setAttribute('company-id', data.id);
         if (data.companyHeadIcon) {
             avatar.src = data.companyHeadIcon;
         }
