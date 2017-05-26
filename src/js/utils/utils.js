@@ -112,7 +112,7 @@ function formateMoney(price, unit) {
     } else if (unit === 400012) {
         _unit = '条';
     }
-    return '￥ ' + (price / 100).toFixed(1) + ' / ' + _unit;
+    return '￥ ' + (price / 100) + ' / ' + _unit;
 }
 /*格式化供应类型*/
 function formateSupplyShape(num) {

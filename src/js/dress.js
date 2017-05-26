@@ -72,7 +72,6 @@ console.log(baseURL);
         if (file.files && file.files[0]) {
             var reader = new FileReader();
             bind(reader, 'load', function(evt) {
-
                 wrapper.style.background = 'url(' + evt.target.result + ')';
             });
             reader.readAsDataURL(file.files[0]);
