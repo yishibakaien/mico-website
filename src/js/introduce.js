@@ -32,7 +32,7 @@ import qrcode from './utils/qrcode.js';
     saveQRCode.onclick = function() {
         // var image = qrNode.toDataURL('image/png').replace('image/png', 'image/octet-stream;');
         var image = qrNode.toDataURL('image/png');
-        alert(image);
+        // alert(image);
         window.location.href = image;
     };
 })();

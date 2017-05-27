@@ -64,7 +64,12 @@ var detailPic = c('#detailPic');
             tag.className = 'tag stalls';
         }
         companyName.innerHTML = data.companyName;
-        companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness;
+        try {
+            companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness ? data.companyExtendBO.companyBusiness : '';
+        } catch (e) {
+            console.log(e);
+        }
+        
 
         // 厂家点击事件
         companyMessage.onclick = function() {

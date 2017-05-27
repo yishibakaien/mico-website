@@ -14,7 +14,10 @@ import {
 import blackTip from './utils/blackTip';
 
 import {
-    search
+    search,
+    // 2017年5月27日10:00:23 
+    // 现在要求搜索 页面 默认显示一部分 店铺已有的花型
+    listVistitCompanyProducts
 } from './api/api';
 
 (function() {
@@ -29,7 +32,7 @@ import {
     var noMore = c('#noMore');
 
     var tip = null; // 为提示预留的变量
-    var pageNo = 1;
+    var pageNo = 1; // 这个pageNo 是为默认展示的数据预留的
     var pageSize = 10;
 
     var queryParams = {
@@ -38,7 +41,7 @@ import {
         dateSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
         ingredient: '', // 成分
         keywords: '',
-        pageNo: pageNo,
+        pageNo: 1,
         pageSize: pageSize,
         priceSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
         searchType: 1 // 1:店铺搜索 2:全局搜索
@@ -59,6 +62,20 @@ import {
         });
         dosearch();
     };
+
+    // 页面一进入 默认显示 店铺已有的一些花型
+    showDefaultResult();
+    function showDefaultResult() {
+        listVistitCompanyProducts({
+            companyId,
+            pageNo,
+            pageSize
+        }, function(res) {
+            console.log('默认显示搜索结果的花型', res);
+            htmlHandler(res, searchResultBox, true);
+        });
+    }
+    
     function dosearch() {
         console.log('查询参数', queryParams);
         if (!isSeemore) {
@@ -68,12 +85,12 @@ import {
         searchText.innerHTML = queryParams.keywords;
         search(queryParams, function(res) {
             console.log('搜索返回的结果', res);
-            tip.remove();
+            tip.hide();
             htmlHandler(res, searchResultBox);
         });
     }
 
-    function htmlHandler(res, ele) {
+    function htmlHandler(res, ele, isDefaultResult) {
         var list = res.data.list;
         var listStr = '';
         var div = document.createElement('div');
@@ -95,8 +112,17 @@ import {
         div.innerHTML = listStr;
         more.onclick = function() {
             isSeemore = true;
-            pageNo++;
-            dosearch();
+            // 如果 不是 默认展示的数据的 更多按钮 点击
+            if (!isDefaultResult) {
+                queryParams.pageNo++;
+                console.log('点击查看更多之后的请求参数列表', queryParams);
+                dosearch();
+            } else {
+                // 如果 是 默认展示数据的 更多按钮 点击
+                pageNo++;
+                showDefaultResult();
+            }
+            
         };
         ele.appendChild(div);
         bindClickEvent(ele);

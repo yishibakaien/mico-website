@@ -21,7 +21,7 @@ var companyId = getQueryString('companyId');
 // 当前页码
 var pageNo = 1;
 // 店铺供应列表
-var pageSize = 2;
+var pageSize = 10;
 
 // 页面元素的获取
 // 查看更多按钮

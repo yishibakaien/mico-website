@@ -126,11 +126,16 @@ const activeIndex = getQueryString('activeIndex');
         // 公司名称
         companyName.innerHTML = res.data.companyName;
         // 公司主营项目
-        if (res.data.companyExtendBO.companyBusiness) {
-            companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness;
+        
+        try {
+            companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness ? res.data.companyExtendBO.companyBusiness : '';
+        } catch (e) {
+            console.log(e);
         }
+           
         // 联系电话
         contcat.setAttribute('tel', res.data.phone);
+        console.log(res.data.phone);
     });
 
     // 店铺供应列表

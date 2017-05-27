@@ -32,9 +32,16 @@ import {
     var tab = document.getElementById('tab');
     var sildeWrapper = document.getElementById('sildeWrapper');
     var tabItem = document.getElementsByClassName('tab-item');
-        
+
+    // 搜索花型页面入口
+    var searchBtn = document.getElementById('searchBtn');
+
     // 只有一种花型时 的 情况需要获取 花型展示盒子
     var allPatterns = document.getElementsByClassName('allPatterns')[0];
+
+    searchBtn.onclick = function() {
+        location.href = './search.html?companyId=' + companyId;
+    };
 
     // 如果只有一种分类则不显示tab条
     if (categorysArr.length === 1) {

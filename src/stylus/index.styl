@@ -70,23 +70,6 @@
     border-left: 15px solid transparent;
     border-bottom: 15px solid transparent;
 }
-/*搜索小icon*/
-.search-icon-wrapper {
-    position fixed
-    z-index 11
-    bottom 60px
-    right 20px
-    width 40px
-    height 40px
-    line-height 40px
-    text-align center
-    border-radius 50%
-    color #fff
-    opacity 0.8
-    box-shadow 0 0 10px rgba(0, 0, 0, .75)
-    background #ff7011
-}
-
 
 // 新修改滚动
 #wrapper1,
@@ -410,6 +393,10 @@
     padding-right: 16px;
     font-size: 15px;
     line-height: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 .main .supply-list .content .type {
     position: absolute;
