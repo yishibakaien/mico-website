@@ -6,6 +6,8 @@ import '../stylus/patterns_detail.styl';
 import '../stylus/static/plugin/swiper-3.4.2.min.css';
 
 import Swiper from 'swiper';
+import wx from 'weixin-js-sdk';
+
 import {
     getCompanyInfo,
     // 获取花型详情
@@ -109,41 +111,51 @@ var detailPic = c('#detailPic');
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + data.defaultPicUrl;
         }, false);
+        picContainer.onclick = function() {
+            wx.previewImage({
+                urls: [
+                    data.defaultPicUrl
+                ]
+            });
+        };
     });
+    /* eslint-disable no-new */
+    new Swiper('.swiper-container');
 
-    var activeNumber = document.getElementsByClassName('active-number')[0],
+    // var activeNumber = document.getElementsByClassName('active-number')[0],
         // message = document.getElementsByClassName('message')[0],
+        
         // 查看图片详情 swiper
-        pictureMask = document.getElementById('pictureMask'),
-        pics = document.querySelectorAll('#topSwiper .swiper-slide'),
-        swiperClose = document.querySelector('#pictureMask .close');
+        // pictureMask = document.getElementById('pictureMask'),
+        // pics = document.querySelectorAll('#topSwiper .swiper-slide'),
+        // swiperClose = document.querySelector('#pictureMask .close');
     
     /* eslint-disable no-new */
-    new Swiper('.swiper-container', {
-        onSlideChangeEnd: function(swiper) {
-            activeNumber.innerHTML = swiper.activeIndex + 1;
-        }
-    });
+    // new Swiper('.swiper-container', {
+    //     onSlideChangeEnd: function(swiper) {
+    //         activeNumber.innerHTML = swiper.activeIndex + 1;
+    //     }
+    // });
     
-    swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
+    // swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
 
-    for (let i = 0; i < pics.length; i++) {
-        (function(i) {
-            pics[i].addEventListener('click', function() {
-                pictureMask.style.display = 'block';
-                /* eslint-disable no-new */
-                new Swiper('#content', {
-                    pagination: '.swiper-pagination',
-                    paginationClickable: true
-                });
+    // for (let i = 0; i < pics.length; i++) {
+    //     (function(i) {
+    //         pics[i].addEventListener('click', function() {
+    //             pictureMask.style.display = 'block';
+    //             /* eslint-disable no-new */
+    //             new Swiper('#content', {
+    //                 pagination: '.swiper-pagination',
+    //                 paginationClickable: true
+    //             });
                 
-            }, false);
-        })(i);
-    }
+    //         }, false);
+    //     })(i);
+    // }
 
-    function hideMask(mask) {
-        mask.style.display = 'none';
-    }
+    // function hideMask(mask) {
+    //     mask.style.display = 'none';
+    // }
 
     // function showMask(mask) {
     //     mask.style.display = 'block';

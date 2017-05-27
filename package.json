@@ -46,6 +46,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
-    "swiper": "^3.4.2"
+    "swiper": "^3.4.2",
+    "weixin-js-sdk": "^1.2.0"
   }
 }

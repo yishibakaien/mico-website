@@ -15,8 +15,8 @@ import {
     formatDate
 } from './utils/utils';
 
-import blackTip from './utils/blackTip';
-
+// import blackTip from './utils/blackTip';
+import wx from 'weixin-js-sdk';
 import {
     // getCompanySimpleInfo,
     getCompanyInfo,
@@ -48,9 +48,9 @@ var id = getQueryString('dataId');
     var dress = document.getElementsByClassName('dress')[0];
     // message = document.getElementsByClassName('message')[0],
     
-    var pictureMask = document.getElementById('pictureMask');
-    var pics = document.querySelectorAll('#topSwiper .swiper-slide');
-    var swiperClose = document.querySelector('#pictureMask .close');
+    // var pictureMask = document.getElementById('pictureMask');
+    // var pics = document.querySelectorAll('#topSwiper .swiper-slide');
+    // var swiperClose = document.querySelector('#pictureMask .close');
     
     // 获取产品信息
     getCompanySupply({
@@ -73,6 +73,15 @@ var id = getQueryString('dataId');
         }, false);
 
         var companyId = res.data.companyId;
+
+        // 微信jssdk预览图片
+        supplyDetailPic.onclick = function() {
+            wx.previewImage({
+                urls: [
+                    res.data.productPicUrl
+                ]
+            });
+        };
         // 获取工厂信息介绍
         getCompanyInfo({
             companyId
@@ -104,32 +113,32 @@ var id = getQueryString('dataId');
     //     location.href = './introduce.html';
     // }, false);
 
-    swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
-    // 这里的双击事件好像是无效的
-    _supplyDetailPic.ondblclick = function() {
-        blackTip({
-            text: '双击',
-            type: 'success',
-            time: 200
-        });
-        this.style.width = '130%';
-    };
-    _supplyDetailPic.onclick = function() {
-        console.log('单击');
-    };
-    for (let i = 0; i < pics.length; i++) {
-        (function(i) {
-            pics[i].addEventListener('click', function() {
-                pictureMask.style.display = 'block';
-                /* eslint-disable no-new */
-                // new Swiper('#content', {
-                //     pagination: '.swiper-pagination',
-                //     paginationClickable: true
-                // });
+    // swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
+    // // 这里的双击事件好像是无效的
+    // _supplyDetailPic.ondblclick = function() {
+    //     blackTip({
+    //         text: '双击',
+    //         type: 'success',
+    //         time: 200
+    //     });
+    //     this.style.width = '130%';
+    // };
+    // _supplyDetailPic.onclick = function() {
+    //     console.log('单击');
+    // };
+    // for (let i = 0; i < pics.length; i++) {
+    //     (function(i) {
+    //         pics[i].addEventListener('click', function() {
+    //             pictureMask.style.display = 'block';
+    //             /* eslint-disable no-new */
+    //             // new Swiper('#content', {
+    //             //     pagination: '.swiper-pagination',
+    //             //     paginationClickable: true
+    //             // });
                 
-            }, false);
-        })(i);
-    }
+    //         }, false);
+    //     })(i);
+    // }
 
     companyMessage.addEventListener('click', function() {
         var id = this.getAttribute('company-id');
@@ -141,10 +150,11 @@ var id = getQueryString('dataId');
         console.log(phoneNumber);
         location.href = 'tel:' + phoneNumber;
     }, false);
-    function hideMask(mask) {
-        mask.style.display = 'none';
-        _supplyDetailPic.style.width = '100%';
-    }
+    
+    // function hideMask(mask) {
+    //     mask.style.display = 'none';
+    //     _supplyDetailPic.style.width = '100%';
+    // }
 
     // function showMask(mask) {
     //     mask.style.display = 'block';

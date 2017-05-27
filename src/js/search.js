@@ -51,10 +51,13 @@ import {
         queryParams.keywords = this.value;
     };
     searchBtn.onclick = function() {
+        
         var value = queryParams.keywords = searchIpt.value;
         if (!value.length) {
             return;
         }
+        // 每次点击 搜索按钮 时清空 页面
+        searchResultBox.innerHTML = '';
         console.log('关键字', value);
         tip = blackTip({
             text: '正在加载中',
@@ -94,6 +97,10 @@ import {
         var list = res.data.list;
         var listStr = '';
         var div = document.createElement('div');
+        // if (list.length === 0) {
+        //     ele.innerHTML = '<div class="on-patterns-tip">没有搜索到相应的内容</div>';
+        //     return;
+        // }
         for (var i = 0; i < list.length; i++) {
             listStr += `<div class="patterns" data-id="${list[i].id}">
                             <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
@@ -110,12 +117,20 @@ import {
             noMore.style.display = 'none';
         }
         div.innerHTML = listStr;
+
+        // 这里做了特殊处理，点击搜索时，如果 默认值查看过更多则清空 resultBox
+        if ( (!isDefaultResult) && (pageNo > 1)) {
+            console.log('pageNo', pageNo);
+            ele.innerHTML = '';
+            pageNo = 1;
+        }
         more.onclick = function() {
             isSeemore = true;
             // 如果 不是 默认展示的数据的 更多按钮 点击
             if (!isDefaultResult) {
                 queryParams.pageNo++;
                 console.log('点击查看更多之后的请求参数列表', queryParams);
+                // 默认展示的数据 被点击过查看更多
                 dosearch();
             } else {
                 // 如果 是 默认展示数据的 更多按钮 点击

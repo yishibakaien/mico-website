@@ -5,8 +5,7 @@ import '../stylus/static/reset/reset';
 import '../stylus/static/plugin/swiper-3.4.2.min.css';
 import '../stylus/introduce';
 
-// 还差一个生成二维码的插件
-import Swiper from 'swiper';
+// import Swiper from 'swiper';
 import {
     c,
     getQueryString
@@ -17,28 +16,34 @@ import {
 } from './api/api';
 import qrcode from './utils/qrcode.js';
 // import qrcode from './utils/qrcode2';
+import wx from 'weixin-js-sdk';
 
-// 生成二维码
+// 二维码模块
 (function() {
     // 拼接地址字符串
-    // var href = location.href;
     var src = location.href.split('introduce').join('index');
-    console.log(src);
+    // 生成二维码
     var qrNode = new qrcode({
         text: src
     });
-    c('#qrcodeBody').appendChild(qrNode);
+
+    var image = qrNode.toDataURL('image/png');
+    c('#qrcodeBody').getElementsByTagName('img')[0].src = image;
+
+    // c('#qrcodeBody').appendChild(qrNode);
     var saveQRCode = c('#saveQRCode');
     saveQRCode.onclick = function() {
-        // var image = qrNode.toDataURL('image/png').replace('image/png', 'image/octet-stream;');
-        var image = qrNode.toDataURL('image/png');
-        // alert(image);
-        window.location.href = image;
+        
+        wx.previewImage({
+            urls: [
+                image
+            ]
+        });
     };
 })();
 
 // 导航的根地址
-const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0'; 
+const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0';
 
 var companyId = getQueryString('companyId');
 
@@ -48,8 +53,8 @@ var companyId = getQueryString('companyId');
         qrcodeContent = document.getElementsByClassName('qrc-content')[0],
         // qrcodeBody = document.getElementById('qrcodeBody'),
         QRcodeMask = document.getElementById('QRcodeMask'),
-        pictureMask = document.getElementById('pictureMask'),
-        swiperClose = document.querySelector('#pictureMask .close'),
+        // pictureMask = document.getElementById('pictureMask'),
+        // swiperClose = document.querySelector('#pictureMask .close'),
         qrcodeClose = document.getElementsByClassName('close')[0];
     // 页面元素的获取
     // 公司简称
@@ -96,28 +101,36 @@ var companyId = getQueryString('companyId');
             location.href = 'tel:' + res.data.phone;
         }, false);
 
-        var picArr = res.data.presence;
+        var picArr = [];
+        res.data.presence.forEach(function(item) {
+            picArr.push(item.picUrl);
+        });
         var eleStr = '';
         var swiperStr = '';
         picArr.forEach(function(item) {
-            eleStr += `<li class="pic" style="background-image:url(${item.picUrl})"></li>`;
+            eleStr += `<li class="pic" style="background-image:url(${item})"></li>`;
             swiperStr += `<div class="swiper-slide">
-                            <img src="${item.picUrl}">
+                            <img src="${item}">
                         </div>`;
         });
         picWrapper.innerHTML = eleStr;
         swiperContent.innerHTML = swiperStr;
         /* eslint-disable no-new */
-        new Swiper('.swiper-container', {
-            pagination: '.swiper-pagination',
-            paginationClickable: true
-        });
+        // new Swiper('.swiper-container', {
+        //     pagination: '.swiper-pagination',
+        //     paginationClickable: true
+        // });
         var pics = document.querySelectorAll('#picWrapper .pic');
 
         for (var i = 0; i < pics.length; i++) {
             (function(i) {
                 pics[i].addEventListener('click', function() {
-                    pictureMask.style.display = 'block';
+                    var pic = picArr[i];
+                    console.log(pic);
+                    wx.previewImage({
+                        current: pic,
+                        urls: picArr
+                    });
                 }, false);
             })(i);
         }
@@ -148,7 +161,7 @@ var companyId = getQueryString('companyId');
 
     qrcodeClose.addEventListener('click', function() { hideMask(QRcodeMask); }, false);
 
-    swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
+    // swiperClose.addEventListener('click', function() { hideMask(pictureMask); }, false);
 
     // var qrcode = new QRCode(qrcodeBody, {
     //     text: location.href,

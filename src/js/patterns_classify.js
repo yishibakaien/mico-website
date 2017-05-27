@@ -14,6 +14,9 @@ import {
     // 店铺系统定义花型分类列表
     listVisitSystemProductCategory
 } from './api/api';
+// 进入搜索页面按钮
+var searchBtn = document.getElementById('searchBtn');
+
 var companyId = getQueryString('companyId');
 // 全部花型
 var allPatterns = document.getElementById('allPatterns');
@@ -26,7 +29,9 @@ console.log(allPatterns);
 allPatterns.onclick = function() {
     location.href = `./patterns_list.html?companyId=${companyId}&all=1`;
 };
-
+searchBtn.onclick = function() {
+    location.href = './search.html?companyId=' + companyId;
+};
 listVisitUserProductCategory({
     companyId,
     pageSize: 100
