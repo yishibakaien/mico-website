@@ -63,6 +63,7 @@ console.log(baseURL);
     });
 
     bind(iptUpload, 'change', function() {
+        // alert('图片已上传');
         previewImage(this);
     });
 
@@ -85,9 +86,12 @@ console.log(baseURL);
 
     function previewImage(file) {
         // console.log('file', file.files);
+        alert('开始转码图片');
         if (file.files && file.files[0]) {
+            // alert('成功进入转码，转码文件：', file.files[0]);
             var reader = new FileReader();
             bind(reader, 'load', function(evt) {
+                // alert('转码完毕图片地址为:', evt.target.result);
                 wrapper.style.background = 'url(' + evt.target.result + ')';
             });
             reader.readAsDataURL(file.files[0]);
