@@ -4,7 +4,7 @@ import '../stylus/static/reset/reset';
 import '../stylus/dress';
 import { baseURL } from '../../config/config';
 import { bind, getQueryString, c } from './utils/utils';
-
+import blackTip from './utils/blackTip';
 console.log(baseURL);
 
 (function() { 
@@ -31,13 +31,29 @@ console.log(baseURL);
     for (var i = 0; i < modles.length; i++) {
         (function(i) {
             bind(modles[i], 'click', function() {
+                var b = blackTip({
+                    text: '正在加载中',
+                    time: 10000
+                });
                 modlePic.onload = function() {
+                    b.remove();
                     modle.style.display = 'block';
                     modlePic.onload = null;
                 };
                 modlePic.src = this.src.split('modles_prototype').join('modles').replace('.jpg', '.png');
             });
             bind(leftSideModlesImg[i], 'click', function() {
+                var b = blackTip({
+                    text: '正在加载中',
+                    time: 10000
+                });
+                modlePic.onload = function() {
+                    b.remove();
+                    // modle.style.display = 'block';
+                    mask.style.display = 'none';
+                    leftSideModles.className = 'modles-leftside-container hide-slide';
+                    modlePic.onload = null;
+                };
                 modlePic.src = this.src.split('modles_prototype').join('modles').replace('.jpg', '.png');
             });
         })(i);
@@ -52,7 +68,7 @@ console.log(baseURL);
 
     bind(range, 'input', function() {
         wrapper.style.backgroundSize = this.value + '%';
-        console.log('缩放比例', this.value);
+        // console.log('缩放比例', this.value);
     });
 
     bind(btnSwitch, 'click', function() {
