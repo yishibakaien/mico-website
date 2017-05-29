@@ -49,7 +49,7 @@ let config = {
             test: /\.js$/, 
             enforce: 'pre', // 取代preloader
             loader: 'eslint-loader', 
-            exclude: /node_modules/
+            exclude: path.resolve(__dirname, 'node_modules'),
         }, {
             test: /\.css$/,
             // loader: ExtractTextPlugin.extract('style', 'css')
@@ -86,7 +86,8 @@ let config = {
         }, {
             test: /\.js$/,
             loader: 'babel-loader',
-            exclude: /node_modules/,
+            include: path.resolve(__dirname, 'src'),
+            exclude: path.resolve(__dirname, 'node_modules'),
             query: {
                 presets: ['es2015']
             }
