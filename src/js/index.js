@@ -64,6 +64,7 @@ const MAX_LENGTH = 6;
 const activeIndex = getQueryString('activeIndex');
 
 (function() {
+    // alert(companyId);
     // 页面元素的获取
     var bgPic = c('#bgPic'),
         companyHeadIcon = c('#companyHeadIcon'),
@@ -111,6 +112,7 @@ const activeIndex = getQueryString('activeIndex');
         companyId
     }, function(res) {
         console.log('获取详细店铺信息', res);
+        // alert(JSON.stringify(res));
         // 头像
         if (res.data.companyHeadIcon) {
             companyHeadIcon.src = res.data.companyHeadIcon;

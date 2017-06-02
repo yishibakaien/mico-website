@@ -60,7 +60,13 @@ const API = {
     },
     search: {
         // 文本搜索
-        search: '/product/search'
+        search: '/product/search',
+        // 图片搜索会返回阿里云url 
+        encoded: '/search/encoded',
+        // 图片搜索发起后像客户端 轮询 搜索结果
+        polling: '/search/polling/',
+        // 通过url 搜索图片
+        url: '/search/url'
     }
 };
 
@@ -86,7 +92,7 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
     let _headers = headers;
     // 模拟用户登录token
     // _headers['x-token'] = 'c01312548ab141769dfa3d4ef05ca6a1';
-
+    // alert(JSON.stringify(data));
     let param = {
         method: method,
         url: baseURL + url,
@@ -195,4 +201,18 @@ export function listVistitCompanyProducts(data, cb, err) {
 // 搜索
 export function search(data, cb, err) {
     return _fetch(METHODS.post, data, API.search.search, cb, err);
+}
+// 图片搜索
+export function encoded(data, cb, err) {
+    return _fetch(METHODS.post, data, API.search.encoded, cb, err);
+}
+// 图片搜索结果 轮询
+export function polling(data, cb, err) {
+    let _data = data;
+    let url = API.search.polling.toString() + _data.searchKey.toString();
+    return _fetch(METHODS.get, {}, url, cb, err);
+}
+// 通过url搜索 图片
+export function urlSearch(data, cb, err) {
+    return _fetch(METHODS.post, data, API.search.url, cb, err);
 }
