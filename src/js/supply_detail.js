@@ -65,7 +65,7 @@ var id = getQueryString('dataId');
         pageView.innerHTML = res.data.viewCount;
         supplyDetailDesc.innerHTML = res.data.supplyDesc;
         supplyType.innerHTML = formateSupplyType(res.data.supplyType);
-        supplyNumber.innerHTML = res.data.supplyNum + ' ' + formateUnit(res.data.supplyUnit);
+        supplyNumber.innerHTML = (res.data.supplyNum ? res.data.supplyNum : 0) + ' ' + formateUnit(res.data.supplyUnit);
         supplyTime.innerHTML = formatDate(res.data.createDate, 'yyyy-MM-dd');
 
         dress.addEventListener('click', function() {
