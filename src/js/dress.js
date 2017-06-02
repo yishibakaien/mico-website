@@ -86,7 +86,7 @@ console.log(baseURL);
 
     function previewImage(file) {
         // console.log('file', file.files);
-        alert('开始转码图片');
+        // alert('开始转码图片');
         if (file.files && file.files[0]) {
             // alert('成功进入转码，转码文件：', file.files[0]);
             var reader = new FileReader();

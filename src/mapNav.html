@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+    body,
+    html,
+    #allmap {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+    }
+    </style>
+    <!-- v1.0极速版 -->
+    <!-- <script src="https://api.map.baidu.com/api?type=quick&ak=wfVtswfFOWdpZfZ8o8HF3YCqREkYcCfT&v=1.0" type="text/javascript"></script> -->
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=wfVtswfFOWdpZfZ8o8HF3YCqREkYcCfT">
+    //v2.0版本的引用方式：src="http://api.map.baidu.com/api?v=2.0&ak=您的密钥"
+    //v1.4版本及以前版本的引用方式：src="http://api.map.baidu.com/api?v=1.4&key=您的密钥&callback=initialize"
+    </script>
+    <title>行车导航</title>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+<script>
+// var title = getQueryString('title');
+// var lat = getQueryString('lat');
+// var lng = getQueryString('lng');
+
+// 实例化地图
+/* eslint-disable no-undef */
+// var map = new BMap.Map('l-map');
+
+// // 示例地图中心点
+// /* eslint-disable no-undef */
+// // var point = new BMap.Point(116.404, 39.915);
+// var point = new BMap.Point(119.36166666666666, 26.105833333333333);
+
+// // 设置地图中心点
+// map.centerAndZoom(point, 14);
+
+// map.addControl(new BMap.ZoomControl());
+
+// var opts = {
+//     width: 300, // 信息窗口宽度
+//     height: 50, // 信息窗口高度
+//     title: '哈哈' // 信息窗口标题
+// };
+
+// var infoWindow = new BMap.InfoWindow('点击红色标记进入导航', opts); // 创建信息窗口对象
+
+// map.openInfoWindow(infoWindow, point); //开启信息窗口
+
+// var marker1 = new BMap.Marker(new BMap.Point(119.36166666666666, 26.105833333333333)); // 创建标注
+
+// map.addOverlay(marker1); // 将标注添加到地图中
+
+// marker1.addEventListener('click', function() {
+//     /*start|end：（必选）
+//     {name:string,latlng:Lnglat}
+//     opts:
+//     mode：导航模式，固定为
+//     BMAP_MODE_TRANSIT、BMAP_MODE_DRIVING、
+//     BMAP_MODE_WALKING、BMAP_MODE_NAVIGATION
+//     分别表示公交、驾车、步行和导航，（必选）
+//     region：城市名或县名  当给定region时，认为起点和终点都在同一城市，除非单独给定起点或终点的城市
+//     origin_region/destination_region：同上
+//     */
+//     var start = {
+//         name: '王府井'
+//     };
+//     var end = {
+//         name: '西单'
+//     };
+//     var opts = {
+//         mode: BMAP_MODE_DRIVING
+//     };
+//     var ss = new BMap.RouteSearch();
+//     ss.routeCall(start, end, opts);
+// });
+
+// var map = new BMap.Map("l-map");    
+// map.centerAndZoom(new BMap.Point(119.36166666666666, 26.105833333333333), 14);    
+// var driving = new BMap.DrivingRoute(map, {    
+//  renderOptions: {    
+//    map: map,    
+//    panel : "results",
+//    autoViewport: true    
+//  }    
+// });    
+// driving.search("中关村", "天安门");
+
+// 获取URL参数
+var lat = getQueryString('lat');
+var lng = getQueryString('lng');
+var title = getQueryString('title');
+var address = getQueryString('address');
+// 百度地图API功能
+var map = new BMap.Map("allmap");
+var start;
+var end;
+if (lat && lng) {
+    end = new BMap.Point(lng, lat);
+} else {
+    end = new BMap.Point(116.39722824, 39.90960456);
+}
+map.centerAndZoom(end, 14);
+var marker = new BMap.Marker(end);
+// 增加点
+map.addOverlay(marker);
+
+// 文字描述信息
+if (lat && lng) {
+    var label = new BMap.Label('<span style="display:inline-block;padding:8px;color:#888"><p style="font-size:14px;padding:4px 0;color:#333">' + title + '</p>点击前往:' + address + '</span>', {
+        offset: new BMap.Size(30, -15)
+    });
+    marker.setLabel(label);
+} else {
+    alert('公司暂未填写地址信息');
+}
+
+// 实例化获取地理位置信息 控件
+var geolocation = new BMap.Geolocation();
+
+marker.addEventListener("click", function() {
+    var b = blackTip({
+        text: '正在加载中',
+        time: 10000
+    });
+    geolocation.getCurrentPosition(function(r) {
+        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            // var mk = new BMap.Marker(r.point);
+            // map.addOverlay(mk);
+            // map.panTo(r.point);
+            // alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+            b.remove();
+            map.clearOverlays();
+            start = new BMap.Point(r.point.lng, r.point.lat);
+
+            var driving = new BMap.DrivingRoute(map, {
+                renderOptions: {
+                    map: map,
+                    autoViewport: true
+                }
+            });
+            driving.search(start, end);
+
+        } else {
+            // alert('failed' + this.getStatus());
+            alert('获取您位置信息失败');
+            // 默认设置为天安门
+            start = new BMap.Point(116.331398, 39.897445);
+
+            var driving = new BMap.DrivingRoute(map, {
+                renderOptions: {
+                    map: map,
+                    autoViewport: true
+                }
+            });
+            driving.search(start, end);
+        }
+    }, {
+        enableHighAccuracy: true
+    });
+});
+// 获取用户当前位置
+
+
+function getAttr() {
+    var p = marker.getPosition(); //获取marker的位置
+    alert("marker的位置是" + p.lng + "," + p.lat);
+}
+// 添加带有定位的导航控件
+var navigationControl = new BMap.NavigationControl({
+    // 靠左上角位置
+    anchor: BMAP_ANCHOR_BOTTOM_RIGHT,
+    // LARGE类型
+    type: BMAP_NAVIGATION_CONTROL_LARGE,
+    // 启用显示定位
+    enableGeolocation: true
+});
+map.addControl(navigationControl);
+// 添加定位控件
+var geolocationControl = new BMap.GeolocationControl();
+geolocationControl.addEventListener("locationSuccess", function(e) {
+    // 定位成功事件
+    var address = '';
+    console.log(e);
+    address += e.addressComponent.province;
+    address += e.addressComponent.city;
+    address += e.addressComponent.district;
+    address += e.addressComponent.street;
+    address += e.addressComponent.streetNumber;
+    // alert("当前定位地址为：" + address);
+
+    start = new BMap.Point(e.point.lng, e.point.lat);
+
+    var driving = new BMap.DrivingRoute(map, {
+        renderOptions: {
+            map: map,
+            autoViewport: true
+        }
+    });
+    driving.search(start, end);
+});
+geolocationControl.addEventListener("locationError", function(e) {
+    // 定位失败事件
+    alert(e.message);
+});
+map.addControl(geolocationControl);
+
+
+// var lng = getQueryString('lng');
+// var lat = getQueryString('lat');
+
+// var map = new BMap.Map("l-map");
+// var start;
+// var end = new BMap.Point(116.508328, 39.919141);
+// 根据起终点经纬度驾车导航
+
+// function getLocation() {
+//     navigator.geolocation.getCurrentPosition(
+
+//         function(pos) { // 如果成果则执行该回调函数
+//             console.log('获取位置成功');
+//             localStorage.lat = pos.coords.latitude;
+//             localStorage.lng = pos.coords.longitude;
+
+//             map.centerAndZoom(end, 11);
+
+//             start = new BMap.Point(pos.coords.longitude, pos.coords.latitude);
+//             var driving = new BMap.DrivingRoute(map, {
+//                 renderOptions: {
+//                     map: map,
+//                     autoViewport: true
+//                 }
+//             });
+//             driving.search(start, end);
+//         },
+//         function(err) { // 如果失败则执行该回调函数
+
+//             // blackTip("获取当前位置失败");
+//             if (err.code === 1 || err.code === 2 || err.code === 3) {
+//                 //获取位置信息失败时，默认位置设置为北京天安门
+//                 localStorage.lat = 39.9096;
+//                 localStorage.lng = 116.3972;
+//                 console.log('获取位置失败');
+//                 map.centerAndZoom(end, 11);
+
+//                 start = new BMap.Point(localStorage.lng, localStorage.lat);
+//                 var driving = new BMap.DrivingRoute(map, {
+//                     renderOptions: {
+//                         map: map,
+//                         autoViewport: true
+//                     }
+//                 });
+//                 driving.search(start, end);
+//             }
+//         }, { // 附带参数
+//             enableHighAccuracy: false, // 提高精度(耗费资源)
+//             timeout: 3000, // 超过timeout则调用失败的回调函数
+//             maximumAge: 60000 // 获取到的地理信息的有效期ms （毫秒），超过有效期则重新获取一次位置信息 
+//         }
+//     );
+// }
+
+function getQueryString(key) {
+    var reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)');
+    var result = window.location.search.substr(1).match(reg);
+    return result ? decodeURIComponent(result[2]) : null;
+}
+// create by cloud_cb on 2017/04/14.
+
+'use strict';
+
+var TIP_ID = '_blackTip_';
+var STATE_HIDE = 0;
+var STATE_SHOW = 1;
+
+var id = 0;
+
+function _getId() {
+    return ++id;
+}
+
+function BlackTip(config) {
+    this.defaults = {
+        text: '',
+        type: 'loading',
+        time: 1500,
+        mask: false,
+        zIndex: 999,
+        complete: null
+    };
+    this.timer = null;
+    this._init(config);
+}
+
+BlackTip.prototype._init = function(config) {
+    this.eleId = _getId();
+
+    if (typeof config !== 'object') {
+        return;
+    }
+
+    for (var key in config) {
+        if (!config.hasOwnProperty(key)) {
+            continue;
+        }
+        this.defaults[key] = config[key];
+    }
+
+    if (!document.getElementById(TIP_ID + 'style')) {
+        this._insertStyle();
+    }
+
+    this._createDom();
+
+    this.timer = setTimeout(function() {
+        this.hide();
+        if (typeof this.defaults.complete === 'function') {
+            this.defaults.complete();
+        }
+    }.bind(this), this.defaults.time);
+};
+
+BlackTip.prototype.set = function() {
+    switch (this.defaults.type) {
+        case 'default':
+            this.icon.style.display = 'none';
+            break;
+        case 'info':
+            this.icon.innerText = '!';
+            this.icon.className += ' info';
+            break;
+        case 'success':
+            // this.icon.innerText = '√';
+            this.icon.className += ' success';
+            break;
+        case 'loading':
+            this.icon.className += ' loading';
+            break;
+        default:
+            this.icon.style.display = 'none';
+            break;
+    }
+    if (this.defaults.text) {
+        this.text.innerText = this.defaults.text;
+    } else {
+        this.text.display = 'none';
+    }
+    if (this.defaults.zIndex) {
+        this.blackTip.style.zIndex = this.defaults.zIndex;
+    }
+    this.show();
+};
+
+BlackTip.prototype.show = function() {
+    this.state = STATE_SHOW;
+    document.body.appendChild(this.blackTip);
+};
+
+BlackTip.prototype.hide = function() {
+    this.blackTip.style.display = 'none';
+    this.state = STATE_HIDE;
+};
+
+BlackTip.prototype.remove = function() {
+    document.body.removeChild(this.blackTip);
+
+    // console.log(window[TIP_ID + this.eleId]);
+    try {
+        delete window[TIP_ID + this.eleId];
+    } catch (e) {
+        console.log(e);
+    }
+    // console.info(window[TIP_ID + this.eleId]);
+    this.timer = null;
+    clearTimeout(this.timer);
+};
+
+BlackTip.prototype._createDom = function() {
+    this.blackTip = window[TIP_ID + this.eleId] = document.createElement('div', TIP_ID + this.eleId);
+    this.state = STATE_SHOW;
+
+    this.blackTip.className = TIP_ID;
+
+    this.icon = document.createElement('div');
+    this.icon.className = 'icon';
+
+    this.text = document.createElement('p');
+    this.text.className = 'text';
+
+    this.blackTip.appendChild(this.icon);
+    this.blackTip.appendChild(this.text);
+
+    this.set();
+};
+
+BlackTip.prototype._insertStyle = function() {
+    this.style = document.createElement('style');
+    this.style.id = TIP_ID + 'style';
+    this.style.innerText = '._blackTip_{margin:0;padding:0;line-height:1.6;position:fixed;z-index:5000;width:7.6em;min-height:7.6em;top:180px;left:50%;margin-left:-3.8em;background:rgba(17,17,17,0.7);text-align:center;border-radius:5px;color:#fff;word-break:break-all}._blackTip_ .icon.info{display:inline-block;height:40px;line-height:40px;width:40px;margin-bottom:6px;margin-top:28px;font-size:30px;border-radius:50%;color:rgba(7,17,27,0.8);background-color:#fff}._blackTip_ .icon.loading{display:inline-block;margin-top:30px;width:38px;height:38px;-webkit-animation:blackTipLoading 1s steps(12,end) infinite;animation:blackTipLoading 1s steps(12,end) infinite;background:transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=) no-repeat;background-size:100%}._blackTip_ .icon.success{display:inline-block;margin:22px 0 -5px 0;width:52px;height:52px;background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGMAAABHCAYAAAATBvm1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTQ1NTJEN0UzODc4MTFFNzk2QzBDNzMwNjc2MjQxMzciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTQ1NTJEN0YzODc4MTFFNzk2QzBDNzMwNjc2MjQxMzciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5NDU1MkQ3QzM4NzgxMUU3OTZDMEM3MzA2NzYyNDEzNyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5NDU1MkQ3RDM4NzgxMUU3OTZDMEM3MzA2NzYyNDEzNyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PoJXkggAAAOkSURBVHja7Jw/aBRBFMb34on/AuqBBLTwMCaIESwESRCE2IgIEQvR2GljoY2VTSptgoWgIHbBKoWNoGCIBtFCYmEKBVGDiGAUBU0gakQNWb8HL7gcd7nc7tuZt3vvg4+FI2Rn3u92vp3ZnQsCk1OFYbjou/BL+ATcSp+Z3ILYCL8L/2se/gk/JxgrrETOQOzEYRLeFPm4BZ6D/8BFq5KbYelYuLR+wffsykgXRAGHQfhqnT+lq+KbVSw9ECvhkXD5sqI5Cup6emYB7i6ol9IE3AMvWPXcBnWlxmk4s+oJBzU82CCIh7CNTJ6D2kAoCWoDkVZQ82StEY0YCP9BTboNt1gF/Qa1gVAS1AZCSVCThg2E/6AmDfFCocljUBsIJUFtIJQENem6gfAf1KQr9kzCf1AbCCVBbSCUBDXpkoHwH9SkAQPhP6gNhJKgNhBKgpp0XgWIyAu7zRjUpLNq+p5VGAJB7Q8EPRaE2ypPnkUYAkHtHgROtg2+DN+HH3EjLkTXWbIGQyCoSadcg1jPD0EW4L8VjRmD1zRhUJP6nX/xcMIeeJZhVNMM3NFEQe0HBHfgADdgtk4DT2seooSC2h8I7kQfb2dajm5pfDdUKKhJR7x+4XDy3gYbPAVvzllQkw5p6MwG+GuMxvf5/BYJBrUOEJFOPY7ZiRs+XlcUDGo9ICIw+hN0hvYylzIY1KT9Gu/LyWcSdIrmJ/vSHrYEg5rUrXmiFPDUP4kupvV2hGBQ6wVRBcpAwo4+gdcpDepsgBAG8h3epSyoSbuzuP4f8FsPSXUu7rAlHNSkriCrYiDXBIpwB17lMaizDaJimBgSKMYXeKuHoM4HiAogw0KFOV7r9jeFoKbb7fYgb6INH7wDR0I34WLKQU0gykFexUDGhIpFeVDm/1mCRw1EEBQaBELrUA/gXqX9mYc7CoXC+9zDYCA0xDyF9yjryxyD+JTV0Sf2HACHcUVACEQ7QHzOchTEXkfiucMLuNNAyCj2tlh0/jcOtLwwaSA8XxmRK6QVh9fwFsdtn+aMmM7LHavIcjcDeQu3OQSxHSBm8jR9EHv2QOtJDKRkIDzDYCAE4gO81kA4DPAaoU7FaudgldZHuJxXEOJXRuQKoTCnWXBREMQOgPgRmGIBKVd5kTqOpvgGwZQQSKeB0AWkKyaIN/Bqq6A8kL0GQheQbgOhC8hBA6ELyOEaICbsd8HdwyCfhF9FQIzy1gQrkCcgi/sJj0Z30jYzkH8CDACzAKL6kyfM1wAAAABJRU5ErkJggg==) no-repeat;background-size:100%;background-position:center}._blackTip_ .text{margin:0;padding:0 12px}@keyframes blackTipLoading{0%{transform:rotate3d(0,0,1,0deg)}100%{transform:rotate3d(0,0,1,360deg)}}@-webkit-keyframes blackTipLoading{0%{-webkit-transform:rotate3d(0,0,1,0deg)}100%{-webkit-transform:rotate3d(0,0,1,360deg)}}';
+    document.head.appendChild(this.style);
+};
+
+function blackTip(obj) {
+    return new BlackTip(obj);
+};
+</script>
+
+</html>

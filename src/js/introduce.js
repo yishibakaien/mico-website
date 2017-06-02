@@ -43,7 +43,10 @@ import wx from 'weixin-js-sdk';
 })();
 
 // 导航的根地址
-const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0';
+// 
+// 2017年6月2日14:12:15 ！！ 废弃，采用百度api！！
+// const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0';
+// console.log(NAVIGATOR_BASE_URL);
 
 var companyId = getQueryString('companyId');
 
@@ -172,8 +175,12 @@ var companyId = getQueryString('companyId');
     //     correctLevel : QRCode.CorrectLevel.H
     // });
     // lat ：维度 （一般较小）
+
     function mapNavigation(mapAddress) {
-        location.href = NAVIGATOR_BASE_URL + `&marker=coord:${mapAddress.lat},${mapAddress.lng};title:${mapAddress.title};addr:${mapAddress.address}`;
+        console.log('mapAddress', mapAddress);
+        // ！！2017年6月2日14:13:15 废弃！！采用百度地图api
+        // location.href = NAVIGATOR_BASE_URL + `&marker=coord:${mapAddress.lat},${mapAddress.lng};title:${mapAddress.title};addr:${mapAddress.address}`;
+        location.href = `./mapNav.html?lat=${mapAddress.lat}&lng=${mapAddress.lng}&title=${mapAddress.title}&address=${mapAddress.address}`;
     }
 
     function hideMask(mask) {

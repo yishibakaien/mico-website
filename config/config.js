@@ -1,11 +1,11 @@
 'use strict';
 
-// const env = 'dev'; // 开发环境
+// const env = 'test'; // 开发环境
 const env = 'test_new'; // 测试环境
 
 const headers = {
     'x-version': '1.0',
-    'x-client': '1'
+    'x-client': '4'
 };
 
 var baseURL = (function(env) {

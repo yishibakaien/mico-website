@@ -142,18 +142,18 @@ let config = {
         host: '127.0.0.1',
         port: 3001, // 端口
         inline: true,
-        hot: false,
-        proxy: {
-            '/api/*': {
-                target: 'http://192.168.1.11:8080',
-                // target: 'http://192.168.1.250:8080',
-                secure: false,
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            }
-        }
+        hot: false
+        // proxy: {
+        //     '/api/*': {
+        //         target: 'http://192.168.1.11:8080',
+        //         // target: 'http://192.168.1.250:8080',
+        //         secure: false,
+        //         changeOrigin: true,
+        //         pathRewrite: {
+        //             '^/api': ''
+        //         }
+        //     }
+        // }
     }
 };
 
