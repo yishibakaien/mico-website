@@ -66,7 +66,9 @@ const API = {
         // 图片搜索发起后像客户端 轮询 搜索结果
         polling: '/search/polling/',
         // 通过url 搜索图片
-        url: '/search/url'
+        url: '/search/url',
+        // 获取最终的结果
+        getResult: '/search/getResult'
     }
 };
 
@@ -99,6 +101,14 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
         headers: _headers,
         data: _formatData(method, data),
         success: function(res) {
+            if (res.code !== 0) {
+                blackTip({
+                    type: 'info',
+                    time: 2100,
+                    text: '请求错误:' + res.message
+                });
+                return;
+            }
             if (typeof cb === 'function') {
                 cb(res);
             }
@@ -215,4 +225,9 @@ export function polling(data, cb, err) {
 // 通过url搜索 图片
 export function urlSearch(data, cb, err) {
     return _fetch(METHODS.post, data, API.search.url, cb, err);
+}
+
+// 获取搜索结果 图片
+export function getResult(data, cb, err) {
+    return _fetch(METHODS.get, data, API.search.getResult, cb, err);
 }

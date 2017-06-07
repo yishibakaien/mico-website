@@ -40,9 +40,23 @@
     </div>
     <div class="mask filter-mask"></div> -->
     <div class="result-container">
-        <div class="search-text border-bottom">
-            <span>搜索结果：</span><span id="searchText"></span>
+        <div class="search-text border-bottom" id="searchTextBox">
+            <span>搜索结果：</span>
+            <span  class="search-text-text" id="searchText"></span>
         </div>
+        <div class="search-pic border-bottom" id="searchPicBox">
+            <span>目标图片：</span>
+            
+            <img class="search-pic-pic" id="searchPic" src="">
+           
+            <div class="search-btn-wrapper">
+                <button class="button button-blue" data-categroy="100010">搜面料</button>
+                <button class="button button-blue" data-categroy="100011">搜大边</button>
+                <button class="button button-blue" data-categroy="100012">搜小边</button>
+                <button class="button button-blue" data-categroy="100013">搜睫毛</button>
+            </div>
+        </div>
+
         <div class="search-list clearfix" id="searchResultBox">
             <!-- <div class="patterns">
                 <div class="img"></div>

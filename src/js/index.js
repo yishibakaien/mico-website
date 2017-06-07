@@ -117,6 +117,9 @@ const activeIndex = getQueryString('activeIndex');
         if (res.data.companyHeadIcon) {
             companyHeadIcon.src = res.data.companyHeadIcon;
             bgPic.src = res.data.companyBanner;
+        } else {
+            // 如果没有头像这里的 文字原本是白色的就看不见了，所以设为黑色
+            companyBusiness.style.color = companyName.style.color = '#333';
         }
         // 店铺类型 厂家 or 档口，这里应该只有厂家，但还是做判断较好
         if (res.data.companyType === 1) {

@@ -169,10 +169,10 @@ html,body
   font-size inherit
   border 0
     
-.buttonfocus
+.button:focus
   outline none
     
-.buttonafter
+.button:after
   position absolute
   width 200%
   height 200%
@@ -181,10 +181,8 @@ html,body
   top 0
   left 0
   border 1px solid rgba(7, 17, 27, 0.1)
-  -webkit-transform scale(0.5)
-          transform scale(0.5)
-  -webkit-transform-origin 0 0
-          transform-origin 0 0
+  transform scale(0.5)
+  transform-origin 0 0
   content ' '
     
 .button[disabled]
@@ -218,10 +216,10 @@ html,body
   background-color #E64340
   color #fff
     
-.button.button-redactive
+.button.button-red:active
   background-color #CE3C39
     
-.button.button-blueactive
+.button.button-blue:active
   opacity 0.7
     
 .button.button-blue[disabled]
@@ -239,7 +237,7 @@ html,body
   font-size 20px
   padding 8px 0
   
-.button.button-plainafter
+.button.button-plain:after
   display none
   
 .button.button-plain.button-plain-blue
@@ -255,7 +253,7 @@ html,body
   border 1px solid #ff7478
   
 /*搜索小icon*/
-.search-icon-wrapper {
+.search-icon-wrapper
     position fixed
     z-index 11
     bottom 60px
@@ -269,4 +267,3 @@ html,body
     opacity 0.8
     box-shadow 0 0 10px rgba(0, 0, 0, .75)
     background #ff7011
-}
