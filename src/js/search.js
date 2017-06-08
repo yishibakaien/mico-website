@@ -76,9 +76,7 @@ import {
                 width: 240,
                 height: 240,
                 ok: function(base64, canvas) {
-
                     searchPic.src = base64;
-                    hideTextBox();
                     showPicBox();
                     bindSearchPicEvent(base64);
                     console.log(canvas);
@@ -141,7 +139,6 @@ import {
         });
     }
     
-
     // 店铺图片搜索
     // var base64str = 'aaa';
 
@@ -217,7 +214,20 @@ import {
         searchText.innerHTML = queryParams.keywords;
         search(queryParams, function(res) {
             console.log('搜索返回的结果', res);
-            tip.hide();
+            if (res.data.list.length === 0) {
+                tip.remove();
+                blackTip({
+                    text: '无匹配结果',
+                    type: 'info'
+                });
+            } else {
+                tip.remove();
+                blackTip({
+                    type: 'success',
+                    text: '已完成'
+                });
+            }
+            
             htmlHandler(res, searchResultBox);
         });
     }
@@ -285,10 +295,13 @@ import {
     }
     function showPicBox() {
         searchPicBox.style.display = 'block';
-    }
-    function hideTextBox() {
         searchTextBox.style.display = 'none';
     }
+    function showTextBox() {
+        searchTextBox.style.display = 'block';
+        searchPicBox.style.display = 'none';
+    }
+    console.log(showTextBox.name);
     // function hidePicBox() {
     //     searchPicBox.style.display = 'none';
     // }

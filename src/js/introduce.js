@@ -83,6 +83,11 @@ var companyId = getQueryString('companyId');
     // 公司图片轮播图
     var swiperContent = c('#swiperContent');
 
+    // 公司信息
+    var infomation = c('#infomation');
+    infomation.addEventListener('click', function() {
+        location.href = './infomation.html?companyId=' + companyId;
+    }, false);
     getCompanyInfo({
         companyId
     }, function(res) {
