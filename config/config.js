@@ -1,7 +1,7 @@
 'use strict';
 
 // const env = 'test'; // 开发环境
-const env = 'test'; // 测试环境
+const env = 'test_new'; // 测试环境
 
 const headers = {
     'x-version': '1.0',
@@ -14,7 +14,7 @@ var baseURL = (function(env) {
     var urls = {
         dev: 'http://localhost:3001',
         test: 'http://192.168.2.11:8080',
-        test_new: 'http://192.168.2.11/api',
+        test_new: 'http://api.tswq.wang',
         prod: ''
     };
     if (env === 'dev') {
