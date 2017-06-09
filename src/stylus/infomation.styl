@@ -1,4 +1,4 @@
-html, body, div, h4, p, ul, li {
+html, body, div, h4, p, ul {
     margin: 0;
     padding: 0;
 }
@@ -13,18 +13,18 @@ h4 {
     margin-bottom: 16px;
 }
 
-p {
-    color: #999;
-    font-size: 14px;
-    text-indent: 2rem;
-    margin: 0 8px 0 8px;
-}
-
 ul {
     list-style: none;
 }
 .wrapper {
-    padding: 16px;
+    padding: 12px;
+}
+
+#companyProfile{
+    color: #999;
+    font-size: 14px;
+    text-indent: 2rem;
+    margin: 0 8px 0 8px;
 }
 
 .table {
@@ -35,7 +35,6 @@ ul {
 .table li {
     font-size: 12px;
     height: 50px;
-    text-align: center;
     line-height: 50px;
     display: inline-block;
     float: left;
@@ -45,19 +44,59 @@ ul {
 }
 
 .table li:nth-child(odd){
-    width: 18%;
+    width: 19%;
     color: #fff;
+    text-align: center;
     background-color: #00b5f6;
+    
 }
 
 .table li:nth-child(even){
-    width: 32%;
+    width: 31%;
     color: #666;
+    text-align: left;
     background-color: #c4efff;
+    padding-left: 4px;
 }
 
-.base-info-container .table li:nth-child(14){
-    width: 82%;
+.address-container {
+    margin: 0 auto;
+    font-size: 12px;
+    background-color: #00b5f6;
+    display: flex;
+}
+
+.address-container .address-item {
+    color: #fff;
+    width: 19%;
+    background-color: #00b5f6;
+    text-align: center;
+    box-sizing: border-box; 
+    border-right: 3px solid #fff;
+    padding: 17px 0;
+    }
+
+.address-container .address-outer {
+    width: 81%;
+    color: #666;
+    min-height: 50px;
+    max-height: 58px;
+    height: auto;
+    text-align: left;
+    background-color: #c4efff;
+    padding: 17px 0;
+    padding-left: 4px;
+    box-sizing: border-box;
+    border-right: 3px solid #fff;
+}
+
+.address-outer .address{
+    overflow: hidden;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .telephone-container{
@@ -65,9 +104,19 @@ ul {
     position: relative;
 }
 
-.telephone-container p{
+.telephone-container #phone{
     height: 21px;
+    font-size: 18px;
+    color: #666;
     position: absolute;
-    top: 20px;
-    left: 45px;
+    top: 15px;
+    left: 75px;
+}
+
+.telephone-container .phone-tip {
+    font-size: 12px;
+    color: #999;
+    position: absolute;
+    top: 18px;
+    left: 190px;
 }
