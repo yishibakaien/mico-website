@@ -14,6 +14,7 @@ var companyId = getQueryString('companyId');
 
 var companyProfile = c('#companyProfile'),
     phone = c('#phone'),
+    phoneTip = c('#phoneTip'),
     registeredMoney = c('#registeredMoney'),
     area = c('#area'),
     companyCreateDate = c('#companyCreateDate'),
@@ -38,6 +39,10 @@ getCompanyInfo({
     phone.innerHTML = _formate(data.phone);
     phone.setAttribute('tel', data.phone);
     phone.addEventListener('click', function() {
+        location.href = 'tel:' + data.phone;
+    }, false);
+    phoneTip.setAttribute('tel', data.phone);
+    phoneTip.addEventListener('click', function() {
         location.href = 'tel:' + data.phone;
     }, false);
 
