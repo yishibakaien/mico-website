@@ -37,6 +37,7 @@ getCompanyInfo({
     var data = res.data;
 
     phone.innerHTML = _formate(data.phone);
+    phoneTip.innerHTML = '(点击拨打)';
     phone.setAttribute('tel', data.phone);
     phone.addEventListener('click', function() {
         location.href = 'tel:' + data.phone;
