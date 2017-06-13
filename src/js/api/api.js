@@ -49,7 +49,10 @@ const API = {
         listProducts: '/product/listProducts',
 
         // 获取分类绑定的花型列表
-        listBindingProduct: '/productCategoryBanding/listBindingProduct'        
+        listBindingProduct: '/productCategoryBanding/listBindingProduct',
+
+        // 获取店铺二维码
+        getCompanyQRcode: '/company/getCompanyQRcode'        
     },
     detail: {
         // 获取花型详情
@@ -230,4 +233,9 @@ export function urlSearch(data, cb, err) {
 // 获取搜索结果 图片
 export function getResult(data, cb, err) {
     return _fetch(METHODS.get, data, API.search.getResult, cb, err);
+}
+
+// 获取店铺二维码
+export function getCompanyQRcode(data, cb, err) {
+    return _fetch(METHODS.get, data, API.company.getCompanyQRcode, cb, err);
 }

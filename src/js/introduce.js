@@ -12,34 +12,41 @@ import {
 } from './utils/utils';
 
 import {
-    getCompanyInfo
+    getCompanyInfo,
+    getCompanyQRcode
 } from './api/api';
-import qrcode from './utils/qrcode.js';
-// import qrcode from './utils/qrcode2';
+// import qrcode from './utils/qrcode.js';
 import wx from 'weixin-js-sdk';
+
+var companyId = getQueryString('companyId');
 
 // 二维码模块
 (function() {
     // 拼接地址字符串
-    var src = location.href.split('introduce').join('index');
+    // var src = location.href.split('introduce').join('index');
     // 生成二维码
-    var qrNode = new qrcode({
-        text: src
-    });
+    // var qrNode = new qrcode({
+    //     text: src
+    // });
 
-    var image = qrNode.toDataURL('image/png');
-    c('#qrcodeBody').getElementsByTagName('img')[0].src = image;
+    getCompanyQRcode({
+        companyId
+    }, function(res) {
+        console.log('获取二维码成功', res);
+        var image = 'data:image/jpeg;base64,' + res.data;
+        c('#qrcodeBody').getElementsByTagName('img')[0].src = image;
+        var saveQRCode = c('#saveQRCode');
+        saveQRCode.onclick = function() {
+            wx.previewImage({
+                urls: [image]
+            });
+        };
+    });
+    // var image = qrNode.toDataURL('image/png');
+    // c('#qrcodeBody').getElementsByTagName('img')[0].src = image;
 
     // c('#qrcodeBody').appendChild(qrNode);
-    var saveQRCode = c('#saveQRCode');
-    saveQRCode.onclick = function() {
-        
-        wx.previewImage({
-            urls: [
-                image
-            ]
-        });
-    };
+    
 })();
 
 // 导航的根地址
@@ -47,8 +54,6 @@ import wx from 'weixin-js-sdk';
 // 2017年6月2日14:12:15 ！！ 废弃，采用百度api！！
 // const NAVIGATOR_BASE_URL = 'http://apis.map.qq.com/tools/poimarker?key=AM3BZ-TXLEJ-OTKFZ-FMNHW-DQMLO-35BND&referer=sasas&type=0';
 // console.log(NAVIGATOR_BASE_URL);
-
-var companyId = getQueryString('companyId');
 
 (function() {
     var locationIcon = document.getElementById('location'),
