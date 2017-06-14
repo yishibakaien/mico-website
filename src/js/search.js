@@ -54,7 +54,8 @@ var TEXT_RESULT = 2;
     var searchPicBox = c('#searchPicBox');
     // 上传图片input
     var searchPicIpt = c('#searchPicIpt');
-
+    // camera 相机图标
+    var camera = c('#camera');
     // 缩略图
     var searchPic = c('#searchPic');
 
@@ -68,9 +69,11 @@ var TEXT_RESULT = 2;
     var noMore = c('#noMore');
 
     var tip = null; // 为提示预留的变量
-    // var pageNo = 1; // 这个pageNo 是为默认展示的数据预留的
-    // var pageSize = 10;
 
+    // 点击事件转发
+    camera.onclick = function() {
+        searchPicIpt.click();
+    };
     searchPicIpt.onchange = function() {
         uploadPictrue(this, function(value) {
             // cropPic.src = value;
@@ -252,7 +255,7 @@ var TEXT_RESULT = 2;
     };
 
     function bindSearchPicEvent(base64) {
-        console.log(base64);
+        // console.log(base64);
         Array.prototype.forEach.call(searchPicButtons, function(item) {
             item.onclick = function() {
                 var b = blackTip({
@@ -281,7 +284,7 @@ var TEXT_RESULT = 2;
                                     pageNo: 1,
                                     pageSize: 10
                                 }, function(res) {
-                                    res = mockData;
+                                    mockData.res = 1;
                                     console.log(res);
                                 });
                             }
