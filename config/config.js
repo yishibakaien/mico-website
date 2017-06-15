@@ -1,7 +1,7 @@
 'use strict';
 
-// const env = 'test'; // 开发环境
-const env = 'test'; // 测试环境
+const env = 'test'; // 开发环境
+// const env = 'test_news'; // 测试环境
 
 const headers = {
     'x-version': '1.0',
@@ -9,29 +9,14 @@ const headers = {
 };
 
 var baseURL = (function(env) {
-
-    var baseURL;
     var urls = {
         dev: 'http://localhost:3001',
         test: 'http://192.168.2.11:8080',
-        test_new: 'https://api.tswq.wang',
+        test_new: 'http://api.tswq.wang',
+        test_news: 'https://api.tswq.wang',
         prod: ''
     };
-    if (env === 'dev') {
-        baseURL = urls.dev + '/api'; // 这里的这个 /api 是proxy跨域代理的配置
-        // baseURL = 'http://localhost:3001/api';
-    }
-    if (env === 'test') {
-        baseURL = urls.test;
-    }
-    if (env === 'prod') {
-        baseURL = urls.prod;
-    }
-    if (env === 'test_new') {
-        baseURL = urls.test_new;
-    }
-    return baseURL;
-
+    return urls[env];
 })(env);
 
 export {
