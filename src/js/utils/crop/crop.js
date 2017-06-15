@@ -171,26 +171,40 @@ import AlloyFinger from './AlloyFinger';
                 marginLeft: this.img_width / -2 + 'px',
                 marginTop: this.img_height / -2 + 'px'
             });
-
             this._css(this.ok_btn, {
                 position: 'fixed',
                 zIndex: '101',
-                width: '80%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                '-webkit-transform': 'translateX(-50%)',
-                bottom: '88px'
+                width: '30%',
+                right: '10%',
+                bottom: '20px'
             });
 
             this._css(this.cancel_btn, {
                 position: 'fixed',
                 zIndex: '101',
-                width: '80%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                '-webkit-transform': 'translateX(-50%)',
+                width: '30%',
+                left: '10%',
                 bottom: '20px'
             });
+            // this._css(this.ok_btn, {
+            //     position: 'fixed',
+            //     zIndex: '101',
+            //     width: '80%',
+            //     left: '50%',
+            //     transform: 'translateX(-50%)',
+            //     '-webkit-transform': 'translateX(-50%)',
+            //     bottom: '88px'
+            // });
+
+            // this._css(this.cancel_btn, {
+            //     position: 'fixed',
+            //     zIndex: '101',
+            //     width: '80%',
+            //     left: '50%',
+            //     transform: 'translateX(-50%)',
+            //     '-webkit-transform': 'translateX(-50%)',
+            //     bottom: '20px'
+            // });
         },
         crop: function() {
             this.calculateRect();

@@ -1,8 +1,8 @@
 'use strict';
 
-const env = 'test'; // 开发环境
+// const env = 'test'; // 开发环境
 // const env = 'test_news'; // 测试环境
-
+const env = 'prod';
 const headers = {
     'x-version': '1.0',
     'x-client': '4'
@@ -14,7 +14,7 @@ var baseURL = (function(env) {
         test: 'http://192.168.2.11:8080',
         test_new: 'http://api.tswq.wang',
         test_news: 'https://api.tswq.wang',
-        prod: ''
+        prod: 'https://api.ts57.cn'
     };
     return urls[env];
 })(env);

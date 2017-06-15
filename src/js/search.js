@@ -39,7 +39,7 @@ import {
 
 var DEFAULT_RESULT = 1;
 var TEXT_RESULT = 2;
-// var PIC_RESULT = 3;
+var PIC_RESULT = 3;
 
 (function() {
     var companyId = getQueryString('companyId');
@@ -112,6 +112,17 @@ var TEXT_RESULT = 2;
         pageSize: 10,
         // priceSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
         searchType: 1 // 1:店铺搜索 2:全局搜索
+    };
+    var picSearchQueryParams = {
+        category: 100010,
+        companyId: companyId,
+        encoded: '',
+        searchType: 110
+    };
+    var getResultQueryParams = {
+        id: '',
+        pageNo: 1,
+        pageSize: 20
     };
     var mockData = {
         'code': 0,
@@ -260,42 +271,45 @@ var TEXT_RESULT = 2;
         Array.prototype.forEach.call(searchPicButtons, function(item) {
             item.onclick = function() {
                 tip = blackTip({
-                    time: 100000,
+                    time: 10000000,
                     text: '正在搜索中'
                 });
-                var categroy = this.getAttribute('data-categroy');
-                console.log('搜索的类', categroy);
-                encoded({
-                    category: categroy,
-                    companyId,
-                    encoded: base64,
-                    searchType: 100
-                }, function(res) {
-                    console.log('搜索的key', res.data.searchKey);
-                    var pollingTimer = setInterval(function() {
-                        polling({
-                            searchKey: res.data.searchKey
-                        }, function(res) {
-                            console.log(res.data);
-                            if (res.data !== -1) {
-                                tip.remove();
-                                clearInterval(pollingTimer);
-                                getResult({
-                                    id: res.data,
-                                    pageNo: 1,
-                                    pageSize: 10
-                                }, function(res) {
-                                    mockData.res = 1;
-                                    console.log(res);
-                                });
-                            }
-                        });
-                    }, 1000);
-                });
+                var category = this.getAttribute('data-category');
+                console.log('搜索的类', category);
+                picSearchQueryParams.category = category;
+                picSearchQueryParams.encoded = base64;
+                doPicSearch();
             };
         });
     }
-
+    function doPicSearch() {
+        // hidePicBox();
+        console.log(picSearchQueryParams);
+        encoded(picSearchQueryParams, function(res) {
+            console.log('搜索的key', res.data.searchKey);
+            var pollingTimer = setInterval(function() {
+                polling({
+                    searchKey: res.data.searchKey
+                }, function(res) {
+                    console.log(res.data);
+                    if (res.data !== -1) {
+                        tip.remove();
+                        clearInterval(pollingTimer);
+                        getResultQueryParams.id = res.data;
+                        getResult(getResultQueryParams, function(res) {
+                            mockData.res = 1;
+                            console.log(res);
+                            htmlHandler(res, searchResultBox, PIC_RESULT);
+                            // tip = blackTip({
+                            //     text: '暂无搜索结果',
+                            //     time: 2000
+                            // });
+                        });
+                    }
+                });
+            }, 1000);
+        });
+    }
     // 店铺文本搜索
     searchIpt.oninput = function() {
         textSearchQueryParams.keywords = this.value;
@@ -378,25 +392,36 @@ var TEXT_RESULT = 2;
         div.innerHTML = listStr;
 
         // 这里做了特殊处理，文本搜索时，如果 默认值查看过更多则清空 resultBox
-        if ((resultType === 2) && (defaultQueryParams.pageNo > 1)) {
+        if ((resultType === TEXT_RESULT) && (defaultQueryParams.pageNo > 1)) {
             // console.log('pageNo', pageNo);
             ele.innerHTML = '';
             defaultQueryParams.pageNo = 1;
         }
+        if (resultType === PIC_RESULT) {
+            // console.log('pageNo', pageNo);
+            ele.innerHTML = '';
+            defaultQueryParams.pageNo = 1;
+            noMore.style.display = 'block';
+            more.style.display = 'none';
+        }
         more.onclick = function() {
             isSeemore = true;
             // 如果 不是 默认展示的数据的 更多按钮 点击
-            if (resultType === 2) {
+            if (resultType === TEXT_RESULT) {
                 textSearchQueryParams.pageNo++;
                 console.log('点击查看更多之后的请求参数列表', textSearchQueryParams);
                 // 默认展示的数据 被点击过查看更多
                 dosearch();
-            } else if (resultType === 1) {
+            } else if (resultType === DEFAULT_RESULT) {
                 // 如果 是 默认展示数据的 更多按钮 点击
                 defaultQueryParams.pageNo++;
                 showDefaultResult();
+            } else if (resultType === PIC_RESULT) {
+                getResultQueryParams.pageNo++;
+                getResult(getResultQueryParams, function(res) {
+                    htmlHandler(res, searchResultBox, PIC_RESULT);
+                });
             }
-
         };
         ele.appendChild(div);
         bindClickEvent(ele);
@@ -418,7 +443,6 @@ var TEXT_RESULT = 2;
         searchPicBox.style.display = 'block';
         searchTextBox.style.display = 'none';
     }
-
     function showTextBox() {
         searchTextBox.style.display = 'block';
         searchPicBox.style.display = 'none';
