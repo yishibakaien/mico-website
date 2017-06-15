@@ -19,7 +19,8 @@ import {
     getQueryString,
     formateProduceShape,
     formateSupplyType,
-    formateUnit
+    formateUnit,
+    formatPicUrl
 } from './utils/utils';
 
 var dataId = getQueryString('dataId');
@@ -66,6 +67,7 @@ var detailPic = c('#detailPic');
             tag.className = 'tag stalls';
         }
         companyName.innerHTML = data.companyName;
+        localStorage.companyName = data.companyName;
         try {
             companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness ? data.companyExtendBO.companyBusiness : '';
         } catch (e) {
@@ -88,9 +90,10 @@ var detailPic = c('#detailPic');
     }, function(res) {
         console.log('获取花型详情', res);
         var data = res.data;
+        var _picUrl = formatPicUrl(data.defaultPicUrl);
         // 这里返回的图片是个字符串，并不是数组
-        picContainer.style.backgroundImage = 'url(' + data.defaultPicUrl + ')';
-        detailPic.src = data.defaultPicUrl;
+        picContainer.style.backgroundImage = 'url(' + _picUrl + ')';
+        detailPic.src = _picUrl;
         productNo.innerHTML = data.productNo;
         price.innerHTML = formateMoney(data.price, data.priceUnit);
         viewNum.innerHTML = data.viewCount ? data.viewCount : 0;
@@ -114,7 +117,7 @@ var detailPic = c('#detailPic');
         picContainer.onclick = function() {
             wx.previewImage({
                 urls: [
-                    data.defaultPicUrl
+                    _picUrl
                 ]
             });
         };

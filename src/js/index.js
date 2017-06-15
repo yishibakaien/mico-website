@@ -20,7 +20,8 @@ import {
     // 设置data-id 属性
     setDataId,
     // 获取url参数
-    getQueryString
+    getQueryString,
+    formatPicUrl
 } from './utils/utils';
 import {
     // 获取店铺花型分类 这个用于花型分类的跳转
@@ -132,6 +133,9 @@ const activeIndex = getQueryString('activeIndex');
         companyName.innerHTML = res.data.companyName;
         // 公司主营项目
         
+        // 在本地 存储中 存入companyName 用于图片打水印 
+        localStorage.companyName = res.data.companyName;
+
         try {
             companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness ? res.data.companyExtendBO.companyBusiness : '';
         } catch (e) {
@@ -161,7 +165,7 @@ const activeIndex = getQueryString('activeIndex');
         // 这里最多只展示6条，超过部分 则点击查看全部来进行查看
         for (var i = 0; i < len; i++) {
             itemStr += `<div class="supply-list" data-id="${list[i].id}">
-                            <div class="img-wrapper" style="background-image:url(${list[i].productPicUrl})"></div>
+                            <div class="img-wrapper" style="background-image:url(${formatPicUrl(list[i].productPicUrl, true)})"></div>
                             <div class="content">
                                 <h1 class="title">${list[i].supplyDesc
 }</h1>
@@ -252,7 +256,7 @@ const activeIndex = getQueryString('activeIndex');
         // 这里最多只展示 6 条，超过部分查看更多
         for (var i = 0; i < len; i++) {
             listStr += `<div class="patterns" data-id="${itemList[i].id}">
-                            <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
+                            <div class="img" style="background-image:url(${formatPicUrl(itemList[i].defaultPicUrl, true)})"></div>
                             <p class="number">${itemList[i].productNo}</p>
                             <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                         </div>`;

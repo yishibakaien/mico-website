@@ -12,7 +12,8 @@ import {
     getQueryString,
     formateSupplyType,
     formateUnit,
-    formatDate
+    formatDate,
+    formatPicUrl
 } from './utils/utils';
 
 // import blackTip from './utils/blackTip';
@@ -60,8 +61,9 @@ var id = getQueryString('dataId');
         injectData(res);
     });
     function injectData(res) {
-        supplyDetailPic.style.backgroundImage =  `url(${res.data.productPicUrl})`;
-        _supplyDetailPic.src = res.data.productPicUrl;
+        var _picUrl = formatPicUrl(res.data.productPicUrl);
+        supplyDetailPic.style.backgroundImage =  `url(${_picUrl})`;
+        _supplyDetailPic.src = _picUrl;
         pageView.innerHTML = res.data.viewCount;
         supplyDetailDesc.innerHTML = res.data.supplyDesc;
         supplyType.innerHTML = formateSupplyType(res.data.supplyType);
@@ -78,7 +80,7 @@ var id = getQueryString('dataId');
         supplyDetailPic.onclick = function() {
             wx.previewImage({
                 urls: [
-                    res.data.productPicUrl
+                    _picUrl
                 ]
             });
         };
@@ -90,6 +92,8 @@ var id = getQueryString('dataId');
                 companyAvatar.src = res.data.companyHeadIcon;
             }
             companyName.innerHTML = res.data.companyName;
+            localStorage.companyName = res.data.companyName;
+
             companyMessage.setAttribute('company-id', res.data.id);
             console.log('获取工厂信息', res);
             phone.setAttribute('tel', res.data.phone);

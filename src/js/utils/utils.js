@@ -1,3 +1,4 @@
+import Base64 from './text2base64/text2base64';
 /**
  * 选择器
  * @param  {[type]} str [description]
@@ -160,6 +161,21 @@ function setBackgroundImage(ele, url) {
     // console.log(url);
     ele.style.backgroundImage = 'url(' + url +')';
 }
+
+function formatPicUrl(url, needSmall) {
+    var _url = url.split('?')[0];
+    var companyName = localStorage.companyName;
+    console.log('companyName', companyName);
+    if (companyName) {
+        if (companyName.replace(/./g, 'ii').length > 40) {
+            companyName = companyName.slice(0, 20);
+        }
+        companyName = Base64.encodeURI(companyName);
+        console.log('转换的base64', companyName);
+        return _url + '?x-oss-process=image/' + (needSmall ? 'resize,w_300,h_300/' : '') + 'watermark,color_FFFFFF,t_70,size_20,g_center,text_' + companyName;
+    }
+}
+
 function setDataId(ele, id) {
     ele.setAttribute('data-id', id);
 }
@@ -175,5 +191,6 @@ export {
     setBackgroundImage,
     setDataId,
     getQueryString,
-    c
+    c,
+    formatPicUrl
 };

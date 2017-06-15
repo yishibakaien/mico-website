@@ -7,7 +7,8 @@ import '../stylus/search';
 import {
     c,
     getQueryString,
-    formateMoney
+    formateMoney,
+    formatPicUrl
 } from './utils/utils';
 
 import blackTip from './utils/blackTip';
@@ -102,14 +103,14 @@ var TEXT_RESULT = 2;
         companyId: companyId
     };
     var textSearchQueryParams = {
-        category: '', // 面料-100010，大边-100011，小边-100012，睫毛-100013
+        category: null, // 面料-100010，大边-100011，小边-100012，睫毛-100013
         companyId: companyId,
-        dateSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
-        ingredient: '', // 成分
+        // dateSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
+        ingredient: null, // 成分
         keywords: '',
         pageNo: 1,
         pageSize: 10,
-        priceSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
+        // priceSort: 1, // 1 升序，2降序，如果不指定，则按匹配度自然排序
         searchType: 1 // 1:店铺搜索 2:全局搜索
     };
     var mockData = {
@@ -258,7 +259,7 @@ var TEXT_RESULT = 2;
         // console.log(base64);
         Array.prototype.forEach.call(searchPicButtons, function(item) {
             item.onclick = function() {
-                var b = blackTip({
+                tip = blackTip({
                     time: 100000,
                     text: '正在搜索中'
                 });
@@ -277,7 +278,7 @@ var TEXT_RESULT = 2;
                         }, function(res) {
                             console.log(res.data);
                             if (res.data !== -1) {
-                                b.remove();
+                                tip.remove();
                                 clearInterval(pollingTimer);
                                 getResult({
                                     id: res.data,
@@ -361,7 +362,7 @@ var TEXT_RESULT = 2;
         // }
         for (var i = 0; i < list.length; i++) {
             listStr += `<div class="patterns" data-id="${list[i].id}">
-                            <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
+                            <div class="img" style="background-image:url(${formatPicUrl(list[i].defaultPicUrl, true)})"></div>
                             <p class="number">${list[i].productNo}</p>
                             <p class="price">${formateMoney(list[i].price,list[i].priceUnit)}</p>
                         </div>`;

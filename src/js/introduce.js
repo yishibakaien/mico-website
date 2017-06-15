@@ -8,7 +8,8 @@ import '../stylus/introduce';
 // import Swiper from 'swiper';
 import {
     c,
-    getQueryString
+    getQueryString,
+    formatPicUrl
 } from './utils/utils';
 
 import {
@@ -116,7 +117,7 @@ var companyId = getQueryString('companyId');
 
         var picArr = [];
         res.data.presence.forEach(function(item) {
-            picArr.push(item.picUrl);
+            picArr.push(formatPicUrl(item.picUrl));
         });
         var eleStr = '';
         var swiperStr = '';

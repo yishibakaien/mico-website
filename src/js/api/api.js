@@ -80,6 +80,8 @@ const METHODS = {
     post: 'POST'
 };
 
+// const picKey = ['defaultPicUrl', 'productPicUrl'];
+
 function _formatData(method, data) {
 
     if (!data) {
@@ -113,6 +115,7 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
                 return;
             }
             if (typeof cb === 'function') {
+                
                 cb(res);
             }
         },

@@ -7,7 +7,8 @@ import {
     getQueryString,
     // 这个是拿来转义 布料分类
     formateSupplyType,
-    formateMoney
+    formateMoney,
+    formatPicUrl
 } from './utils/utils';
 import {
     // 获取全部花型
@@ -109,7 +110,7 @@ import {
         var div = document.createElement('div');
         for (var i = 0; i < list.length; i++) {
             listStr += `<div class="patterns" data-id="${list[i].id}">
-                            <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
+                            <div class="img" style="background-image:url(${formatPicUrl(list[i].defaultPicUrl, true)})"></div>
                             <p class="number">${list[i].productNo}</p>
                             <p class="price">${formateMoney(list[i].price,list[i].priceUnit)}</p>
                         </div>`;
