@@ -115,12 +115,18 @@ const activeIndex = getQueryString('activeIndex');
         console.log('获取详细店铺信息', res);
         // alert(JSON.stringify(res));
         // 头像
+        // if (res.data.companyHeadIcon) {
+        //     companyHeadIcon.src = res.data.companyHeadIcon;
+        //     bgPic.src = res.data.companyBanner;
+        // } else {
+        //     // 如果没有头像这里的 文字原本是白色的就看不见了，所以设为黑色
+        //     companyBusiness.style.color = companyName.style.color = '#333';
+        // }
         if (res.data.companyHeadIcon) {
             companyHeadIcon.src = res.data.companyHeadIcon;
+        }
+        if (res.data.companyBanner) {
             bgPic.src = res.data.companyBanner;
-        } else {
-            // 如果没有头像这里的 文字原本是白色的就看不见了，所以设为黑色
-            companyBusiness.style.color = companyName.style.color = '#333';
         }
         // 店铺类型 厂家 or 档口，这里应该只有厂家，但还是做判断较好
         if (res.data.companyType === 1) {
@@ -137,7 +143,7 @@ const activeIndex = getQueryString('activeIndex');
         localStorage.companyName = res.data.companyName;
 
         try {
-            companyBusiness.innerHTML = '主营：' + res.data.companyExtendBO.companyBusiness ? res.data.companyExtendBO.companyBusiness : '';
+            companyBusiness.innerHTML = res.data.companyExtendBO.companyBusiness ? '主营：' + res.data.companyExtendBO.companyBusiness : '';
         } catch (e) {
             console.log(e);
         }

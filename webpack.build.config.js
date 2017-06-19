@@ -125,7 +125,9 @@ let config = {
         // extractStyl,
         new webpack.optimize.UglifyJsPlugin({ // js压缩
             compress: {
-                warnings: false
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
             }
         }),
         new CopyWebpackPlugin([

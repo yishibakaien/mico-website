@@ -299,6 +299,12 @@ var PIC_RESULT = 3;
                         getResult(getResultQueryParams, function(res) {
                             mockData.res = 1;
                             console.log(res);
+                            if (res.data.list.length === 0) {
+                                blackTip({
+                                    text: '未找到相似的花型',
+                                    type: 'info'
+                                });
+                            }
                             htmlHandler(res, searchResultBox, PIC_RESULT);
                             // tip = blackTip({
                             //     text: '暂无搜索结果',
