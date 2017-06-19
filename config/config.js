@@ -2,8 +2,8 @@
 
 // const env = 'test'; // 开发环境
 // const env = 'test_news'; // 测试环境
-const env = 'prod';
-const headers = {
+var env = 'prod';
+var headers = {
     'x-version': '1.0',
     'x-client': '4'
 };
