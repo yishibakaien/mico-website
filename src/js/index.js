@@ -122,8 +122,14 @@ const activeIndex = getQueryString('activeIndex');
         //     // 如果没有头像这里的 文字原本是白色的就看不见了，所以设为黑色
         //     companyBusiness.style.color = companyName.style.color = '#333';
         // }
-        if (res.data.companyHeadIcon) {
+        
+        // 2017年7月4日14:47:17 修改 默认头像为公司名字第一个字，需要把index.html 中的头像图片 display 设置为 none
+        if (res.data.companyHeadIcon && res.data.companyHeadIcon.indexOf('defaultShopIco') === -1) {
+            companyHeadIcon.style.display = 'block';
             companyHeadIcon.src = res.data.companyHeadIcon;
+        } else {
+            console.log('头像的父级元素', companyHeadIcon.parentNode);
+            companyHeadIcon.parentNode.innerHTML = res.data.companyName.charAt(0);
         }
         if (res.data.companyBanner) {
             bgPic.src = res.data.companyBanner;
