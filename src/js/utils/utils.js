@@ -101,7 +101,9 @@ function formateUnit(unit) {
 /*格式化金额*/
 function formateMoney(price, unit) {
     // 金额以 分 作为单位
-    if (!price) {
+    price = Number(price);
+
+    if (price < 0.1 ) {
         return '价格面议';
     }
     unit = Number(unit);
@@ -113,7 +115,7 @@ function formateMoney(price, unit) {
     } else if (unit === 400012) {
         _unit = '条';
     }
-    return '￥ ' + (price / 100) + ' / ' + _unit;
+    return '￥ ' + (price / 100).toFixed(2) + ' / ' + _unit;
 }
 /*格式化供应类型*/
 function formateSupplyShape(num) {

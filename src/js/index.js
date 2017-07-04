@@ -163,6 +163,9 @@ const activeIndex = getQueryString('activeIndex');
         var len;
         var list = res.data.list;
         var itemStr = '';
+        if (list.length === 0) {
+            return;
+        }
         if (list.length > MAX_LENGTH) {
             len = MAX_LENGTH;
         } else {
@@ -242,7 +245,9 @@ const activeIndex = getQueryString('activeIndex');
         console.log('全部花型分类', res);
         var len;
         var itemList = res.data.list;
-
+        if (itemList.length === 0) {
+            return;
+        }
         // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
         function showFlag(num) {
             if (num === 0) {
@@ -312,6 +317,7 @@ const activeIndex = getQueryString('activeIndex');
                 setDataId(top1, list[0].id);
                 // console.log(setBackgroundImage);
                 setBackgroundImage(top1Img, list[0].defaultPicUrl);
+                console.log('爆款0', list[0].price, list[0].priceUnit);
                 top1Price.innerHTML = formateMoney(list[0].price, list[0].priceUnit); 
 
                 if (len === 1) {
@@ -324,10 +330,12 @@ const activeIndex = getQueryString('activeIndex');
                     //---------//
                     setDataId(top2, list[1].id);
                     setBackgroundImage(top2Img, list[1].defaultPicUrl);
+                    console.log('爆款1', list[1].price, list[1].priceUnit);
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit); 
                 } else {
                     setDataId(top2, list[1].id);
                     setBackgroundImage(top2Img, list[1].defaultPicUrl);
+
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit);
 
                     setDataId(top3, list[2].id);
@@ -421,6 +429,7 @@ const activeIndex = getQueryString('activeIndex');
                 }
                 // 这里最多只展示 6 条，超过部分查看更多
                 for (var i = 0; i < len; i++) {
+
                     listStr += `<div class="patterns" data-id="${itemList[i].id}">
                                     <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
                                     <p class="number">${itemList[i].productNo}</p>

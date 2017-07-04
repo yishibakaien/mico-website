@@ -47,6 +47,8 @@ var height = c('#height');
 
 // 3D试衣
 var dress = c('#dress');
+// 电话
+var call = c('#call');
 // 弹起的轮播图
 var detailPic = c('#detailPic');
 (function() {
@@ -68,12 +70,17 @@ var detailPic = c('#detailPic');
         }
         companyName.innerHTML = data.companyName;
         localStorage.companyName = data.companyName;
+        call.setAttribute('phone', data.phone);
+
         try {
             companyBusiness.innerHTML = '主营：' + data.companyExtendBO.companyBusiness ? data.companyExtendBO.companyBusiness : '';
         } catch (e) {
             console.log(e);
         }
-        
+        call.addEventListener('click', function() {
+            var phone = this.getAttribute('phone');
+            location.href = 'tel:' + phone;
+        });
 
         // 厂家点击事件
         companyMessage.onclick = function() {
