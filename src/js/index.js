@@ -67,6 +67,8 @@ import {
 const companyId = getQueryString('companyId');
 const MAX_LENGTH = 6;
 const activeIndex = getQueryString('activeIndex');
+// 微信分享参数
+var wxShareArg = {};
 
 jsOAuth({
     url: location.href
@@ -115,19 +117,19 @@ jsOAuth({
             'openCard'
         ]
     });
-    wx.ready(function() {
+    // wx.ready(function() {
         // alert("jssdk注册页面成功:");
         // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，
         // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。
         // 对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。 
-        var wxShareArg = {
-            title: '呵呵',
-            link: 'https://www.baidu.com',
-            desc: '这是描述',
-            imgUrl: 'http://zsbg.oss-cn-shenzhen.aliyuncs.com/search/332522982897352704.jpg'
-        };
-        wxBindFunction(wxShareArg);
-    });
+        // var wxShareArg = {
+        //     title: '呵呵',
+        //     link: 'https://www.baidu.com',
+        //     desc: '这是描述',
+        //     imgUrl: 'http://zsbg.oss-cn-shenzhen.aliyuncs.com/search/332522982897352704.jpg'
+        // };
+        
+    // });
 });
 
 function wxBindFunction(wxShareArg) {
@@ -139,10 +141,10 @@ function wxBindFunction(wxShareArg) {
         imgUrl: wxShareArg.imgUrl, // 分享图标
         trigger : function() {},
         success : function() { 
-            alert('分享成功');
+            // alert('分享成功');
         },
         cancel : function() {
-            alert('取消分享');
+            // alert('取消分享');
         }
     });
     // 分享给朋友
@@ -154,10 +156,10 @@ function wxBindFunction(wxShareArg) {
         type: 'link', // 分享类型,music、video或link，不填默认为link
         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
         success: function() { 
-            alert('分享成功');
+            // alert('分享成功');
         },
         cancel: function() {
-            alert('取消分享');
+            // alert('取消分享');
         }
     });
 }
@@ -255,6 +257,16 @@ function wxBindFunction(wxShareArg) {
         // 联系电话
         contcat.setAttribute('tel', res.data.phone);
         console.log(res.data.phone);
+            wx.ready(function() {
+                wxShareArg = {
+                title: res.data.companyName,
+                imgUrl: res.data.companyHeadIcon,
+                link: location.href,
+                desc: '快来我的店铺逛逛吧，这里可以快照搜花和3D试衣哦'
+            };
+            wxBindFunction(wxShareArg);
+        }
+        
     });
 
     // 店铺供应列表

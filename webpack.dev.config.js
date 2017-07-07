@@ -140,7 +140,7 @@ let config = {
     devServer: {
         // contentBase: './',
         host: '127.0.0.1',
-        port: 800, // 端口
+        port: 80, // 端口
         inline: true,
         disableHostCheck: true,
         hot: false
