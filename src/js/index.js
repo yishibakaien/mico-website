@@ -6,6 +6,7 @@ import '../stylus/static/plugin/swiper-3.4.2.min.css';
 import '../stylus/index';
 
 import Swiper from 'swiper';
+import wx from 'weixin-js-sdk';
 // 升级版 iScroll
 // import BScroll from 'better-scroll';
 import {
@@ -52,7 +53,10 @@ import {
     // 获取简单店铺信息
     // getCompanySimpleInfo,
     // 获取详细店铺信息
-    getCompanyInfo
+    getCompanyInfo,
+
+    // 微信授权jssdk 签名
+    jsOAuth
  } from './api/api.js';
 
 // 守均 店铺id 36444
@@ -63,6 +67,100 @@ import {
 const companyId = getQueryString('companyId');
 const MAX_LENGTH = 6;
 const activeIndex = getQueryString('activeIndex');
+
+jsOAuth({
+    url: location.href
+}, function(res) {
+    console.log('微信授权返回信息', res);
+    wx.config({
+        debug: false,
+        appId: res.data.appId,
+        timestamp: res.data.timestamp,
+        noncestr: res.data.noncestr,
+        signature: res.data.signature,
+        jsApiList: [ // 必填，需要使用的JS接口列表
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onRecordEnd',
+            'playVoice',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode',
+            'chooseWXPay',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ]
+    });
+    wx.ready(function() {
+        // alert("jssdk注册页面成功:");
+        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，
+        // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。
+        // 对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。 
+        var wxShareArg = {
+            title: '呵呵',
+            link: 'https://www.baidu.com',
+            desc: '这是描述',
+            imgUrl: 'http://zsbg.oss-cn-shenzhen.aliyuncs.com/search/332522982897352704.jpg'
+        };
+        wxBindFunction(wxShareArg);
+    });
+});
+
+function wxBindFunction(wxShareArg) {
+    // alert("行程列表页面title: " + wxShareArg.title)
+    // 微信分享到朋友圈
+    wx.onMenuShareTimeline({
+        title: wxShareArg.title, // 分享标题
+        link: wxShareArg.link,   // 分享链接
+        imgUrl: wxShareArg.imgUrl, // 分享图标
+        trigger : function() {},
+        success : function() { 
+            alert('分享成功');
+        },
+        cancel : function() {
+            alert('取消分享');
+        }
+    });
+    // 分享给朋友
+    wx.onMenuShareAppMessage({
+        title: wxShareArg.title, // 分享标题
+        desc: wxShareArg.desc, // 分享描述
+        link: wxShareArg.link, // 分享链接
+        imgUrl: wxShareArg.imgUrl, // 分享图标
+        type: 'link', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function() { 
+            alert('分享成功');
+        },
+        cancel: function() {
+            alert('取消分享');
+        }
+    });
+}
 
 (function() {
     // alert(companyId);

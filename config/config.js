@@ -2,7 +2,7 @@
 
 // const env = 'test'; // 开发环境
 // const env = 'test_news'; // 测试环境
-var env = 'prod';
+var env = 'test2';
 var headers = {
     'x-version': '1.0',
     'x-client': '4'
@@ -12,6 +12,7 @@ var baseURL = (function(env) {
     var urls = {
         dev: 'http://localhost:3001',
         test: 'http://192.168.2.11:8080',
+        test2: 'http://zsbgdev.d1.natapp.cc',
         test_new: 'http://api.tswq.wang',
         test_news: 'https://api.tswq.wang',
         prod: 'https://api.ts57.cn'
