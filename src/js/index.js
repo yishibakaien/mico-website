@@ -68,7 +68,7 @@ const companyId = getQueryString('companyId');
 const MAX_LENGTH = 6;
 const activeIndex = getQueryString('activeIndex');
 // 微信分享参数
-// var wxShareArg = {};
+var wxShareArg = {};
 
 jsOAuth({
     url: location.href
@@ -78,7 +78,7 @@ jsOAuth({
         debug: false,
         appId: res.data.appId,
         timestamp: res.data.timestamp,
-        noncestr: res.data.noncestr,
+        nonceStr: res.data.noncestr,
         signature: res.data.signature,
         jsApiList: [ // 必填，需要使用的JS接口列表
             'checkJsApi',
@@ -118,6 +118,7 @@ jsOAuth({
         ]
     });
     // wx.ready(function() {
+    //     console.log('success');
     //     // alert("jssdk注册页面成功:");
     //     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，
     //     // config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。
@@ -132,37 +133,37 @@ jsOAuth({
     // });
 });
 
-// function wxBindFunction(wxShareArg) {
-//     // alert("行程列表页面title: " + wxShareArg.title)
-//     // 微信分享到朋友圈
-//     wx.onMenuShareTimeline({
-//         title: wxShareArg.title, // 分享标题
-//         link: wxShareArg.link,   // 分享链接
-//         imgUrl: wxShareArg.imgUrl, // 分享图标
-//         trigger : function() {},
-//         success : function() { 
-//             // alert('分享成功');
-//         },
-//         cancel : function() {
-//             // alert('取消分享');
-//         }
-//     });
-//     // 分享给朋友
-//     wx.onMenuShareAppMessage({
-//         title: wxShareArg.title, // 分享标题
-//         desc: wxShareArg.desc, // 分享描述
-//         link: wxShareArg.link, // 分享链接
-//         imgUrl: wxShareArg.imgUrl, // 分享图标
-//         type: 'link', // 分享类型,music、video或link，不填默认为link
-//         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-//         success: function() { 
-//             // alert('分享成功');
-//         },
-//         cancel: function() {
-//             // alert('取消分享');
-//         }
-//     });
-// }
+function wxBindFunction(wxShareArg) {
+    // alert("行程列表页面title: " + wxShareArg.title)
+    // 微信分享到朋友圈
+    wx.onMenuShareTimeline({
+        title: wxShareArg.title, // 分享标题
+        link: wxShareArg.link,   // 分享链接
+        imgUrl: wxShareArg.imgUrl, // 分享图标
+        trigger : function() {},
+        success : function() { 
+            // alert('分享成功');
+        },
+        cancel : function() {
+            // alert('取消分享');
+        }
+    });
+    // 分享给朋友
+    wx.onMenuShareAppMessage({
+        title: wxShareArg.title, // 分享标题
+        desc: wxShareArg.desc, // 分享描述
+        link: wxShareArg.link, // 分享链接
+        imgUrl: wxShareArg.imgUrl, // 分享图标
+        type: 'link', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function() { 
+            // alert('分享成功');
+        },
+        cancel: function() {
+            // alert('取消分享');
+        }
+    });
+}
 
 (function() {
     // alert(companyId);
@@ -257,12 +258,15 @@ jsOAuth({
         // 联系电话
         contcat.setAttribute('tel', res.data.phone);
         console.log(res.data.phone);
-        // wxShareArg = {
-        //     title: res.data.companyName,
-        //     imgUrl: res.data.companyHeadIcon,
-        //     link: location.href,
-        //     desc: '快来我的店铺逛逛吧，这里可以快照搜花和3D试衣哦'
-        // };
+        wxShareArg = {
+            title: res.data.companyName,
+            imgUrl: res.data.companyHeadIcon,
+            link: location.href,
+            desc: '快来我的店铺逛逛吧，这里可以快照搜花和3D试衣哦'
+        };
+        wx.ready(function() {
+            wxBindFunction(wxShareArg);
+        });
         
     });
     // 店铺供应列表
