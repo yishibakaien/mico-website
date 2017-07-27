@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
-    <title>
-        <%= htmlWebpackPlugin.options.title %>
-    </title>
+    <title>3D试衣</title>
 </head>
 
 <body>
@@ -52,6 +50,19 @@
                 <li>
                     <img src="./images/cpwz_images/modles_prototype/modle3_all.jpg">
                 </li>
+                <!--  -->
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_front.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_side.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_back.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_all.jpg">
+                </li>
             </ul>
         </div>
         <h1>选择模特</h1>
@@ -94,19 +105,54 @@
                 <li>
                     <img src="./images/cpwz_images/modles_prototype/modle3_all.jpg">
                 </li>
+                <!--  -->
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_front.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_side.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_back.jpg">
+                </li>
+                <li>
+                    <img src="./images/cpwz_images/modles_prototype/modle4_all.jpg">
+                </li>
             </ul>
+        </div>
+        <div class="shop-patterns" id="patterns">
+            <div class="patterns-wrapper clearfix" id="listWrapper">
+                <!-- <div class="patterns">
+                    <div class="img"></div>
+                    <p class="number">#20001</p>
+                    <p class="price">￥10/码</p>
+                </div> -->
+            </div>
+            <div class="no-data" id="noData">
+                店铺暂无合适花型
+                <button id="goBabck" class="button button-block button-blue">返回</button>
+            </div>
+            <div class="seemore more" id="more">
+                查看更多
+            </div>
+            <div class="seemore" id="noMore">
+                没有更多了
+            </div>
+            <!-- <div style="height: 2000px;width: 200px;background: red"></div> -->
         </div>
         <div class="modle-container clearfix">
             <div id="back">模特列表</div>
             <div id="switch">切换模特</div>
             <div id="uploadfilebtn">拍照试衣</div>
-            <input type="file" id="iptUpload" accept="image/*" capture="camera" name="file" />
+            <div id="choose">店内花型</div>
+            <input type="file" id="iptUpload" capture="camera" name="file" />
             <!-- <div id="preview">
           <img id="imghead" width=100 height=100 border=0>
         </div>
  -->
             <div class="modle-img-wrapper">
-                <img src="./images/cpwz_images/modles/modle4_all.png">
+                <img id="modlePic" src="./images/cpwz_images/modles/modle3_all.png">
+                <!-- <img src="" alt=""> -->
             </div>
             <div class="range">
                 <div>花纹大小</div>

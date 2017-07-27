@@ -59,7 +59,10 @@ const API = {
         getProduct: '/product/getProduct/',
 
         // 获取供应详情
-        getCompanySupply: '/companySupply/getCompanySupply/'
+        getCompanySupply: '/companySupply/getCompanySupply/',
+
+        // 2017年7月27日17:41:09 新增获取色卡
+        getColorCards: '/productColor/getColorCards'
     },
     search: {
         // 文本搜索
@@ -252,4 +255,11 @@ export function getCompanyQRcode(data, cb, err) {
 // 微信授权jssdk 签名
 export function jsOAuth(data, cb, err) {
     return _fetch(METHODS.post, data, API.wx.jsOAuth, cb, err);
+}
+
+// =====
+// 获取色卡
+// 获取花型详情色卡
+export function getColorCards(data, cb, err) {
+    return _fetch(METHODS.get, data, API.detail.getColorCards, cb, err);
 }

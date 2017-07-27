@@ -11,7 +11,9 @@ import wx from 'weixin-js-sdk';
 import {
     getCompanyInfo,
     // 获取花型详情
-    getProduct
+    getProduct,
+    // 2017年7月27日17:43:51 获取色卡
+    getColorCards
 } from './api/api';
 import {
     c,
@@ -51,6 +53,14 @@ var dress = c('#dress');
 var call = c('#call');
 // 弹起的轮播图
 var detailPic = c('#detailPic');
+
+// 产品 id 用于色卡操作
+getColorCards({
+    productId: dataId
+}, function(res) {
+    console.log('获取色卡返回值', res);
+});
+
 (function() {
 
     // 获取详细工厂信息介绍
