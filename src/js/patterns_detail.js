@@ -54,12 +54,7 @@ var call = c('#call');
 // 弹起的轮播图
 var detailPic = c('#detailPic');
 
-// 产品 id 用于色卡操作
-getColorCards({
-    productId: dataId
-}, function(res) {
-    console.log('获取色卡返回值', res);
-});
+
 
 (function() {
 
@@ -141,6 +136,17 @@ getColorCards({
     });
     /* eslint-disable no-new */
     new Swiper('.swiper-container');
+
+    // 2017年7月28日08:39:56
+    // 产品 id 用于色卡操作
+    getColorCards({
+        productId: dataId
+    }, function(res) {
+        console.log('获取色卡返回值', res);
+    });
+
+
+
 
     // var activeNumber = document.getElementsByClassName('active-number')[0],
         // message = document.getElementsByClassName('message')[0],
