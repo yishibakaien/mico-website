@@ -323,11 +323,142 @@
 
 // 2017年7月28日08:33:25  新增色卡
 .color-card {
-    position: absolute;
-    // z-index: 6000;
-    // top: 25%;
+    display: none;
+    position: fixed;
+    z-index: 6000;
+    //top: 30%;
     left: 0;
     right: 0;
     bottom: 0;
+    background-color: #fff;
+    padding: 0 10px 0 10px;
+}
+
+.color-card .card-title {
+    height: 84px;
+}
+
+.color-card .card-title .avatar-wrapper {
+    height: 84px;
+    width: 84px;
+    border: 3px solid #fff;
+    float: left;
+    margin: -20px 5px 0 0;
+}
+
+.color-card .card-title .price {
+    line-height: 84px;
+    float: left;
+}
+
+.color-card .card-title .price .money {
+    color: #4c93fd;
+}
+
+.color-card .card-title .arrow {
+    float: right;
+}
+
+.color-card .card-title .arrow span {
+    display: inline-block;
+    font-size: 36px;
+    color: #909090;
+}
+
+.color-card .card-buy-type .name {
+    line-height: 48px;
+    display: inline-block;
+    margin-right: 16px;
+}
+
+.color-card .card-buy-type .value {
+    display: inline-block;
+    height: 22px;
+    width: 50px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 23px;
+    border: 1px solid #999;
+    border-radius: 2px;
+    color: #666;
+    margin: 13px 0 13px 20px;
+}
+
+.color-card .card-buy-type .value.active{
+    background-color: #4c93fd;
+    color: #fff;
+    border-color: #4c93fd;
+}
+
+.color-card .card-flower-color {
+    height: 90px;
+    padding: 12px 0 12px 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.color-card .card-flower-color img {
+    margin: 14px 12px 0 0;
+    border: 2px solid transparent;
+}
+
+.color-card .card-flower-color img.active {
+    border-color: #4c93fd;
+}
+
+.card-buy-num span, .card-user-name span , .card-phone span {
+    line-height: 45px;
+    display: inline-block;
+    width: 90px;
+}
+
+.card-buy-num input, .card-user-name input, .card-phone input {
+    outline: none;
+    -webkit-appearance:none;
+}
+
+.color-card .submit-tip .text {
+    font-size: 16px;
+    height: 36px;
+    line-height 36px;
+    display:inline-block;
+    margin: 5px 0 0 5px;
+}
+
+.card-footer {
+    display: flex;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
     background: #fff;
+}
+
+.card-footer .cancel {
+    flex: 1;
+    color: #4c93fd;
+}
+
+.card-footer .confirm{
+    flex: 1;
+    color: #fff;
+    background-color: #4c93fd;
+}
+
+.foot-wrapper-sticky {
+    height: 50px;
+}
+
+input.invalid::-webkit-input-placeholder {
+    color: red;
+}
+
+body.modal-open {
+    position: fixed;
+    width: 100%;
 }
