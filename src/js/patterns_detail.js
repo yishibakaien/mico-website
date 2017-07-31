@@ -11,9 +11,9 @@ import wx from 'weixin-js-sdk';
 import {
     getCompanyInfo,
     // 获取花型详情
-    getProduct,
+    getProduct
     // 2017年7月27日17:43:51 获取色卡
-    getColorCards
+    // getColorCards
 } from './api/api';
 import {
     c,
@@ -139,14 +139,11 @@ var detailPic = c('#detailPic');
 
     // 2017年7月28日08:39:56
     // 产品 id 用于色卡操作
-    getColorCards({
-        productId: dataId
-    }, function(res) {
-        console.log('获取色卡返回值', res);
-    });
-
-
-
+    // getColorCards({
+    //     productId: dataId
+    // }, function(res) {
+    //     console.log('获取色卡返回值', res);
+    // });
 
     // var activeNumber = document.getElementsByClassName('active-number')[0],
         // message = document.getElementsByClassName('message')[0],

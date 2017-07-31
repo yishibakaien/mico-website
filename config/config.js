@@ -2,7 +2,7 @@
 
 // const env = 'test'; // 开发环境
 // const env = 'test_news'; // 测试环境
-var env = 'test3';
+var env = 'prod';
 var headers = {
     'x-version': '1.0',
     'x-client': '4'

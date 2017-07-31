@@ -9,7 +9,8 @@ import '../stylus/introduce';
 import {
     c,
     getQueryString,
-    formatPicUrl
+    // formatPicUrl
+    _formatPicUrl
 } from './utils/utils';
 
 import {
@@ -117,7 +118,7 @@ var companyId = getQueryString('companyId');
 
         var picArr = [];
         res.data.presence.forEach(function(item) {
-            picArr.push(formatPicUrl(item.picUrl));
+            picArr.push(_formatPicUrl(item.picUrl, 300));
         });
         var eleStr = '';
         var swiperStr = '';
