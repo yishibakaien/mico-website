@@ -4,7 +4,7 @@ import { headers, baseURL } from '../../../config/config';
 
 import { Ajax } from './ajax';
 
-import blackTip from '../utils/blackTip';
+import Toast from '../utils/Toast';
 
 const API = {
     user: {
@@ -115,11 +115,12 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
         data: _formatData(method, data),
         success: function(res) {
             if (res.code !== 0) {
-                blackTip({
-                    type: 'info',
-                    time: 2100,
-                    text: '请求错误:' + res.message
-                });
+                Toast.info('请求错误:' + res.message, 2100);
+                // blackTip({
+                //     type: 'info',
+                //     time: 2100,
+                //     text: '请求错误:' + res.message
+                // });
                 return;
             }
             if (typeof cb === 'function') {
@@ -128,10 +129,11 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
             }
         },
         error: function(res) {
-            blackTip({
-                text: '请检查网络',
-                type: 'info'
-            });
+            Toast.info('请检查网络');
+            // blackTip({
+            //     text: '请检查网络',
+            //     type: 'info'
+            // });
             // 待定 也blackTip 统一处理
             if (typeof err === 'function') {
                 err(res);

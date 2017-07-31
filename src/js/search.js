@@ -8,15 +8,23 @@ import {
     c,
     getQueryString,
     formateMoney,
+    formateSupplyType,
     formatPicUrl
 } from './utils/utils';
 
 import blackTip from './utils/blackTip';
 
+import Toast from './utils/Toast';
+
 // AlloyTeam 图片裁剪
 import AlloyCrop from './utils/crop/crop';
 
 import uploadPictrue from './utils/uploadPictrue';
+
+// 2017年7月28日17:41:59  改版的切图
+import Cropper from './utils/crop2/cropper.js';
+import './utils/crop2/cropper.styl';
+
 
 // console.log(AlloyCrop);
 import {
@@ -41,7 +49,7 @@ var DEFAULT_RESULT = 1;
 var TEXT_RESULT = 2;
 var PIC_RESULT = 3;
 
-(function() {
+
     var companyId = getQueryString('companyId');
     var searchBtn = c('#searchBtn');
     var searchIpt = c('#searchIpt');
@@ -71,29 +79,27 @@ var PIC_RESULT = 3;
 
     var tip = null; // 为提示预留的变量
 
+    // 2017年7月29日09:07:24  切图修改
+    var image = c('#cropperImage'); // 拿来切的图
+    var cropperWrapper = c('#cropperWrapper'); // 切图器DOM
+    var buttons; // 用来点击切图的按钮
+    var cropper; // 切图器
+
     // 点击事件转发
     camera.onclick = function() {
         searchPicIpt.click();
     };
     searchPicIpt.onchange = function() {
-        uploadPictrue(this, function(value) {
-            // cropPic.src = value;
-            new AlloyCrop({
-                image_src: value,
-                circle: false, // optional parameters , the default value is false
-                width: 240,
-                height: 240,
-                ok: function(base64, canvas) {
-                    searchPic.src = base64;
-                    showPicBox();
-                    bindSearchPicEvent(base64);
-                    console.log(canvas);
-                },
-                cancel: function() {},
-                // 无损伤hack 判断当ok_text 为数组时，生成多个按钮
-                ok_text: '确定', // optional parameters , the default value is ok
-                cancel_text: '取消' // optional parameters , the default value is cancel
-            });
+        uploadPictrue(this, function(base64) {
+            image.src = base64;
+            cropper = new Cropper(image);
+            console.log('Cropper', cropper);
+            // console.log('Cropper.cropper', cropper.cropper);
+            cropperWrapper.style.display = 'block';
+            setTimeout(function() {
+                bindCropEvent();
+            }, 500);
+            
         });
     };
 
@@ -125,26 +131,52 @@ var PIC_RESULT = 3;
         pageSize: 20
     };
 
-    function bindSearchPicEvent(base64) {
-        // console.log(base64);
-        Array.prototype.forEach.call(searchPicButtons, function(item) {
-            item.onclick = function() {
-                tip = blackTip({
-                    time: 10000000,
-                    text: '正在搜索中'
-                });
-                var category = this.getAttribute('data-category');
-                console.log('搜索的类', category);
-                picSearchQueryParams.category = category;
-                picSearchQueryParams.encoded = base64;
-                doPicSearch();
-            };
+    function bindCropEvent() {
+        var btns = c('.btn-cell');
+        console.log(btns, btns.length);
+        Array.prototype.forEach.call(btns, function(item) {
+            item.onclick = picCroped;
         });
     }
+
+    function picCroped() {
+        console.log(this);
+        var category = this.getAttribute('category');
+        cropperWrapper.style.display = 'none';
+        var base64 = cropper.getCroppedCanvas().toDataURL('image/png');
+        cropper.destroy();
+        Toast.loading('搜索' + formateSupplyType(category) + '中');
+        picSearchQueryParams.category = category;
+        picSearchQueryParams.encoded = base64;
+        doPicSearch();
+    }
+    
+    // function bindSearchPicEvent(base64) {
+    //     // console.log(base64);
+    //     Array.prototype.forEach.call(searchPicButtons, function(item) {
+    //         item.onclick = function() {
+    //             tip = blackTip({
+    //                 time: 10000000,
+    //                 text: '正在搜索中'
+    //             });
+    //             var category = this.getAttribute('data-category');
+    //             console.log('搜索的类', category);
+    //             picSearchQueryParams.category = category;
+    //             picSearchQueryParams.encoded = base64;
+    //             doPicSearch();
+    //         };
+    //     });
+    // }
     function doPicSearch() {
         // hidePicBox();
         console.log(picSearchQueryParams);
         encoded(picSearchQueryParams, function(res) {
+            if (res.code !== 0) {
+                if (res.code === 210018) {
+                    Toast.error('用户未登录');
+                }
+            }
+            console.log('encoded的res', res);
             console.log('搜索的key', res.data.searchKey);
             var pollingTimer = setInterval(function() {
                 polling({
@@ -152,23 +184,16 @@ var PIC_RESULT = 3;
                 }, function(res) {
                     console.log(res.data);
                     if (res.data !== -1) {
-                        tip.remove();
+                        Toast.hide();
                         clearInterval(pollingTimer);
                         getResultQueryParams.id = res.data;
                         getResult(getResultQueryParams, function(res) {
                             // mockData.res = 1;
                             console.log(res);
                             if (res.data.list.length === 0) {
-                                blackTip({
-                                    text: '未找到相似的花型',
-                                    type: 'info'
-                                });
+                                Toast.info('未找到相似花型', 2000);
                             }
                             htmlHandler(res, searchResultBox, PIC_RESULT);
-                            // tip = blackTip({
-                            //     text: '暂无搜索结果',
-                            //     time: 2000
-                            // });
                         });
                     }
                 });
@@ -188,10 +213,7 @@ var PIC_RESULT = 3;
         // 每次点击 搜索按钮 时清空 页面
         searchResultBox.innerHTML = '';
         console.log('关键字', value);
-        tip = blackTip({
-            text: '正在加载中',
-            time: 100000
-        });
+        Toast.loading('正在加载中');
         dosearch();
     };
 
@@ -215,17 +237,9 @@ var PIC_RESULT = 3;
         search(textSearchQueryParams, function(res) {
             console.log('搜索返回的结果', res);
             if (res.data.list.length === 0) {
-                tip.remove();
-                blackTip({
-                    text: '无匹配结果',
-                    type: 'info'
-                });
+                Toast.info('无匹配结果');
             } else {
-                tip.remove();
-                blackTip({
-                    type: 'success',
-                    text: '已完成'
-                });
+                Toast.hide();
             }
             htmlHandler(res, searchResultBox, TEXT_RESULT);
         });
@@ -316,4 +330,5 @@ var PIC_RESULT = 3;
     // function hidePicBox() {
     //     searchPicBox.style.display = 'none';
     // }
-})();
+    
+// })();
