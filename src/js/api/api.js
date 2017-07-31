@@ -62,7 +62,9 @@ const API = {
         getCompanySupply: '/companySupply/getCompanySupply/',
 
         // 2017年7月27日17:41:09 新增获取色卡
-        getColorCards: '/productColor/getColorCards'
+        getColorCards: '/productColor/getColorCards',
+        // 2017年7月28日17:42:36 新增采购登记
+        askPurchase: '/enquiry/askPurchase'
     },
     search: {
         // 文本搜索
@@ -262,4 +264,10 @@ export function jsOAuth(data, cb, err) {
 // 获取花型详情色卡
 export function getColorCards(data, cb, err) {
     return _fetch(METHODS.get, data, API.detail.getColorCards, cb, err);
+}
+
+// =====
+// 采购登记
+export function askPurchase(data, cb, err) {
+    return _fetch(METHODS.post, data, API.detail.askPurchase, cb, err);
 }
