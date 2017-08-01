@@ -33,6 +33,8 @@ var companyId = getQueryString('companyId');
 // var picContainer = c('#picContainer');
 var productNo = c('#productNo');
 var price = c('#price');
+var cutPrice = c('#cutPrice');
+
 // 公司信息
 var companyMessage = c('#companyMessage');
 var avatar = c('#avatar');
@@ -81,7 +83,7 @@ var typePrice = c('#typePrice');
 var cardPrice = c('#cardPrice');
 var buyNumIptTip = ['1片', '请输入大货数量', '请输入剪版数量'];
 var typePriceTip = ['剪小样参考价:', '大货参考价:', '剪版参考价:'];
-var cardPriceTip = [' 免费', '价格面议', '价格面议'];
+var cardPriceTip = [' 免费'];
 var flowerColorsWrapper = c('.card-flower-color')[0].getElementsByClassName('value')[0];
 var flowerColors = c('.card-flower-color')[0].getElementsByClassName('color-img');
 var cardAvatar = c('#cardAvatar');
@@ -139,13 +141,18 @@ var phoneIpt = c('#phoneIpt');
         console.log('获取花型详情', res);
         var data = res.data;
         // cardPriceTip[2] = data.cutPrice;
-        cardPriceTip[2] = formateMoney(data.cutPrice, data.priceUnit);
+        // cardPriceTip[2] = formateMoney(data.cutPrice, data.priceUnit);
         // var _picUrl = _formatPicUrl(data.defaultPicUrl);
         // 这里返回的图片是个字符串，并不是数组
         // picContainer.style.backgroundImage = 'url(' + _picUrl + ')';
         // detailPic.src = _picUrl;
         productNo.innerHTML = data.productNo;
+
+        // 2017年8月1日14:30:14  大货价格
         price.innerHTML = formateMoney(data.price, data.priceUnit);
+        // 2017年8月1日14:35:00  剪版价格
+        cutPrice.innerHTML = formateMoney(data.cutPrice, data.priceUnit);
+
         viewNum.innerHTML = data.viewCount ? data.viewCount : 0;
 
         // 类型
@@ -164,7 +171,15 @@ var phoneIpt = c('#phoneIpt');
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + data.defaultPicUrl;
         }, false);
-        
+
+        // 正常价格(大货价格)
+        cardPriceTip.push(formateMoney(data.price, data.priceUnit));
+
+        // 剪版价格
+        cardPriceTip.push(formateMoney(data.cutPrice, data.priceUnit));
+
+        getColorCardMethod();
+
     });
     /* eslint-disable no-new */
     // new Swiper('.swiper-container');
@@ -172,90 +187,91 @@ var phoneIpt = c('#phoneIpt');
     // 2017年7月28日08:39:56
     // 产品 id 用于色卡操作
     //获取色卡信息
-    getColorCards({
-        productId: dataId
-    }, function(res) {
-        console.log('获取色卡返回值', res);
-        var data = res.data;
-        var imgStr = '';
-        var swiperStr = '';
-        var picArr = [];
-        var len = data.length;
-        c('.total-number')[0].innerHTML = '/' + len;
+    function getColorCardMethod() {
+        getColorCards({
+            productId: dataId
+        }, function(res) {
+            console.log('获取色卡返回值', res);
+            var data = res.data;
+            var imgStr = '';
+            var swiperStr = '';
+            var picArr = [];
+            var len = data.length;
+            c('.total-number')[0].innerHTML = '/' + len;
 
-        for (var i = 0; i < len; i++) {
-            swiperStr += '<div class="swiper-slide" style="background-image: url(' + data[i].picUrl + ')" url="' + data[i].picUrl + '"></div>';
-            imgStr += '<img class="color-img" src="' + data[i].picUrl + '" width="36" height="36">';
-            picArr.push(data[i].picUrl);
-        }
-        c('.swiper-wrapper')[0].innerHTML = swiperStr;
-        flowerColorsWrapper.innerHTML = imgStr;
-        /* eslint-disable no-new */
-        new Swiper('.swiper-container', {
-            spaceBetween: 30,
-            onSlideChangeEnd: function(swiper) {
-                console.log('activeIndex', swiper.activeIndex);
-                c('.active-number')[0].innerHTML = swiper.activeIndex + 1;
+            for (var i = 0; i < len; i++) {
+                swiperStr += '<div class="swiper-slide" style="background-image: url(' + data[i].picUrl + ')" url="' + data[i].picUrl + '"></div>';
+                imgStr += '<img class="color-img" src="' + data[i].picUrl + '" width="36" height="36">';
+                picArr.push(data[i].picUrl);
+            }
+            c('.swiper-wrapper')[0].innerHTML = swiperStr;
+            flowerColorsWrapper.innerHTML = imgStr;
+            /* eslint-disable no-new */
+            new Swiper('.swiper-container', {
+                spaceBetween: 30,
+                onSlideChangeEnd: function(swiper) {
+                    console.log('activeIndex', swiper.activeIndex);
+                    c('.active-number')[0].innerHTML = swiper.activeIndex + 1;
+                }
+            });
+            var swiperItem = document.querySelectorAll('.swiper-slide');
+            
+
+            Array.prototype.forEach.call(swiperItem, function(item) {
+                item.onclick = function() {
+                    console.log(this.getAttribute('url'), picArr);
+                    wx.previewImage({
+                        current: this.getAttribute('url'),
+                        urls: picArr
+                    });
+                };
+            });
+            // 小图、标签点击对应的切换
+            for(var m = 0; m < flowerColors.length; m++){
+                if( m === 0) {
+                    // 设置原始值
+                    flowerColors[0].className += ' active';
+                    cardAvatar.setAttribute('src', data[0].picUrl);
+                    askPurchaseData.colorId = data[0].id;
+                    askPurchaseData.productId = data[0].productId;
+                }
+                flowerColors[m].index = m;
+                flowerColors[m].onclick = function () {
+                    for(var n = 0; n < flowerColors.length; n++){
+                        flowerColors[n].className = flowerColors[n].className.replace(' active', '');
+                    }
+                    this.className += ' active';
+                    cardAvatar.setAttribute('src', data[this.index].picUrl);
+                    askPurchaseData.colorId = data[this.index].id;
+                    askPurchaseData.productId = data[this.index].productId;
+                };
+            }
+
+            for(var k = 0; k < buyTypes.length; k++) {
+                buyTypes[k].index = k;
+                cardPrice.innerHTML = cardPriceTip[0];
+                buyTypes[k].onclick = function () {
+                    for(var j = 0; j < buyTypes.length; j++){
+                        buyTypes[j].className = buyTypes[j].className.replace(' active', '');
+                    }
+                    this.className += ' active';
+                    askPurchaseData.purchaseType = this.index + 1;
+                    buyNumIpt.value = '';
+                    buyNumIpt.setAttribute('placeholder', buyNumIptTip[this.index]);
+                    if(buyNumIpt.getAttribute('placeholder') === '1片'){
+                        buyNumIpt.value = '1片';
+                        buyNumIpt.readOnly = true;
+                        askPurchaseData.purchaseNum = 1;
+                    }else{
+                        buyNumIpt.readOnly = false;
+                        askPurchaseData.purchaseNum = '';
+                    }
+                    typePrice.innerHTML = typePriceTip[this.index] + '&nbsp;&nbsp;';
+                    cardPrice.innerHTML = cardPriceTip[this.index];
+                };
             }
         });
-        var swiperItem = document.querySelectorAll('.swiper-slide');
-        
-
-        Array.prototype.forEach.call(swiperItem, function(item) {
-            item.onclick = function() {
-                console.log(this.getAttribute('url'), picArr);
-                wx.previewImage({
-                    current: this.getAttribute('url'),
-                    urls: picArr
-                });
-            };
-        });
-        // 小图、标签点击对应的切换
-        for(var m = 0; m < flowerColors.length; m++){
-            if( m === 0) {
-                // 设置原始值
-                flowerColors[0].className += ' active';
-                cardAvatar.setAttribute('src', data[0].picUrl);
-                askPurchaseData.colorId = data[0].id;
-                askPurchaseData.productId = data[0].productId;
-            }
-            flowerColors[m].index = m;
-            flowerColors[m].onclick = function () {
-                for(var n = 0; n < flowerColors.length; n++){
-                    flowerColors[n].className = flowerColors[n].className.replace(' active', '');
-                }
-                this.className += ' active';
-                cardAvatar.setAttribute('src', data[this.index].picUrl);
-                askPurchaseData.colorId = data[this.index].id;
-                askPurchaseData.productId = data[this.index].productId;
-            };
-        }
-
-        for(var k = 0; k < buyTypes.length; k++){
-            buyTypes[k].index = k;
-            cardPrice.innerHTML = cardPriceTip[0];
-            buyTypes[k].onclick = function () {
-                for(var j = 0; j < buyTypes.length; j++){
-                    buyTypes[j].className = buyTypes[j].className.replace(' active', '');
-                }
-                this.className += ' active';
-                askPurchaseData.purchaseType = this.index + 1;
-                buyNumIpt.value = '';
-                buyNumIpt.setAttribute('placeholder', buyNumIptTip[this.index]);
-                if(buyNumIpt.getAttribute('placeholder') === '1片'){
-                    buyNumIpt.value = '1片';
-                    buyNumIpt.readOnly = true;
-                    askPurchaseData.purchaseNum = 1;
-                }else{
-                    buyNumIpt.readOnly = false;
-                    askPurchaseData.purchaseNum = '';
-                }
-                typePrice.innerHTML = typePriceTip[this.index] + '&nbsp;&nbsp;';
-                cardPrice.innerHTML = cardPriceTip[this.index];
-            };
-        }
-    });
-
+    }
 
 
     // 获取色卡层用户输入框信息
