@@ -370,6 +370,7 @@ function wxBindFunction(wxShareArg) {
         if (itemList.length === 0) {
             return;
         }
+        dressBtn.style.display = 'block';
         // 这个是 type 的 wrapper 这样做是为了方便使用appendChild
         function showFlag(num) {
             if (num === 0) {
