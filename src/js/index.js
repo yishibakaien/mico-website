@@ -200,8 +200,14 @@ function wxBindFunction(wxShareArg) {
     // 电话联系按钮
     var contcat = c('#contcat');
 
+    // 试衣按钮
+    var dressBtn = c('#dressBtn');
+
     searchBtn.onclick = function() {
         location.href = './search.html?companyId=' + companyId;
+    };
+    dressBtn.onclick = function() {
+        location.href = './dress.html?companyId=' + companyId;
     };
     // 获取简单店铺信息
     // getCompanySimpleInfo({
