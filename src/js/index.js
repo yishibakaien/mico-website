@@ -22,7 +22,7 @@ import {
     setDataId,
     // 获取url参数
     getQueryString,
-    formatPicUrl
+    _formatPicUrl
 } from './utils/utils';
 import {
     // 获取店铺花型分类 这个用于花型分类的跳转
@@ -290,7 +290,7 @@ function wxBindFunction(wxShareArg) {
         // 这里最多只展示6条，超过部分 则点击查看全部来进行查看
         for (var i = 0; i < len; i++) {
             itemStr += `<div class="supply-list" data-id="${list[i].id}">
-                            <div class="img-wrapper" style="background-image:url(${formatPicUrl(list[i].productPicUrl, true)})"></div>
+                            <div class="img-wrapper" style="background-image:url(${_formatPicUrl(list[i].productPicUrl, 300)})"></div>
                             <div class="content">
                                 <h1 class="title">${list[i].supplyDesc
 }</h1>
@@ -383,7 +383,7 @@ function wxBindFunction(wxShareArg) {
         // 这里最多只展示 6 条，超过部分查看更多
         for (var i = 0; i < len; i++) {
             listStr += `<div class="patterns" data-id="${itemList[i].id}">
-                            <div class="img" style="background-image:url(${formatPicUrl(itemList[i].defaultPicUrl, true)})"></div>
+                            <div class="img" style="background-image:url(${_formatPicUrl(itemList[i].defaultPicUrl, 300)})"></div>
                             <p class="number">${itemList[i].productNo}</p>
                             <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                         </div>`;
@@ -432,7 +432,7 @@ function wxBindFunction(wxShareArg) {
                 // 插值data-id
                 setDataId(top1, list[0].id);
                 // console.log(setBackgroundImage);
-                setBackgroundImage(top1Img, list[0].defaultPicUrl);
+                setBackgroundImage(top1Img, _formatPicUrl(list[0].defaultPicUrl, 300));
                 console.log('爆款0', list[0].price, list[0].priceUnit);
                 top1Price.innerHTML = formateMoney(list[0].price, list[0].priceUnit); 
 
@@ -445,17 +445,17 @@ function wxBindFunction(wxShareArg) {
                     top3.style.display = 'none';
                     //---------//
                     setDataId(top2, list[1].id);
-                    setBackgroundImage(top2Img, list[1].defaultPicUrl);
+                    setBackgroundImage(top2Img, _formatPicUrl(list[1].defaultPicUrl, 300));
                     console.log('爆款1', list[1].price, list[1].priceUnit);
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit); 
                 } else {
                     setDataId(top2, list[1].id);
-                    setBackgroundImage(top2Img, list[1].defaultPicUrl);
+                    setBackgroundImage(top2Img, _formatPicUrl(list[1].defaultPicUrl, 300));
 
                     top2Price.innerHTML = formateMoney(list[1].price, list[1].priceUnit);
 
                     setDataId(top3, list[2].id);
-                    setBackgroundImage(top3Img, list[2].defaultPicUrl);
+                    setBackgroundImage(top3Img, _formatPicUrl(list[2].defaultPicUrl, 300));
                     top3Price.innerHTML = formateMoney(list[2].price, list[2].priceUnit); 
                 }
             }
@@ -480,7 +480,7 @@ function wxBindFunction(wxShareArg) {
             }
             for (let i = 0; i < len; i++) {
                 listStr += `<div class="patterns" data-id="${list[i].id}">
-                                <div class="img" style="background-image:url(${list[i].defaultPicUrl})"></div>
+                                <div class="img" style="background-image:url(${_formatPicUrl(list[i].defaultPicUrl, 300)})"></div>
                                 <p class="number">${list[i].productNo}</p>
                                 <p class="price">${formateMoney(list[i].price, list[i].priceUnit)}</p>
                             </div>`;
@@ -547,7 +547,7 @@ function wxBindFunction(wxShareArg) {
                 for (var i = 0; i < len; i++) {
 
                     listStr += `<div class="patterns" data-id="${itemList[i].id}">
-                                    <div class="img" style="background-image:url(${itemList[i].defaultPicUrl})"></div>
+                                    <div class="img" style="background-image:url(${_formatPicUrl(itemList[i].defaultPicUrl, 300)})"></div>
                                     <p class="number">${itemList[i].productNo}</p>
                                     <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
                                 </div>`;

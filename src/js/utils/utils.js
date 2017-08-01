@@ -187,7 +187,7 @@ function _formatPicUrl(url, size) {
     //     }
         // companyName = Base64.encodeURI(companyName);
         // console.log('转换的base64', companyName);
-    return _url + '?x-oss-process=image/' + (size ? 'resize,w_' + size + ',h_' + size + '/' : '');
+    return _url + (size ? '?x-oss-process=image/resize,w_' + size + ',h_' + size + '/' : '');
     // }
 }
 

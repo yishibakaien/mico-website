@@ -23,14 +23,14 @@ import {
     getQueryString,
     formateProduceShape,
     formateSupplyType,
-    formateUnit,
-    formatPicUrl
+    formateUnit
+    // _formatPicUrl
 } from './utils/utils';
 
 var dataId = getQueryString('dataId');
 var companyId = getQueryString('companyId');
 // 轮播图盒子
-var picContainer = c('#picContainer');
+// var picContainer = c('#picContainer');
 var productNo = c('#productNo');
 var price = c('#price');
 // 公司信息
@@ -54,7 +54,7 @@ var dress = c('#dress');
 // 电话
 var call = c('#call');
 // 弹起的轮播图
-var detailPic = c('#detailPic');
+// var detailPic = c('#detailPic');
 
 
 // 菜头添加
@@ -80,7 +80,7 @@ var buyNumIpt = c('#buyNumIpt');
 var typePrice = c('#typePrice');
 var cardPrice = c('#cardPrice');
 var buyNumIptTip = ['1片', '请输入大货数量', '请输入剪版数量'];
-var typePriceTip = ['剪版参考价:', '大货参考价:', '剪版参考价:'];
+var typePriceTip = ['剪小样参考价:', '大货参考价:', '剪版参考价:'];
 var cardPriceTip = [' 免费', '价格面议', '价格面议'];
 var flowerColorsWrapper = c('.card-flower-color')[0].getElementsByClassName('value')[0];
 var flowerColors = c('.card-flower-color')[0].getElementsByClassName('color-img');
@@ -140,10 +140,10 @@ var phoneIpt = c('#phoneIpt');
         var data = res.data;
         // cardPriceTip[2] = data.cutPrice;
         cardPriceTip[2] = formateMoney(data.cutPrice, data.priceUnit);
-        var _picUrl = formatPicUrl(data.defaultPicUrl);
+        // var _picUrl = _formatPicUrl(data.defaultPicUrl);
         // 这里返回的图片是个字符串，并不是数组
-        picContainer.style.backgroundImage = 'url(' + _picUrl + ')';
-        detailPic.src = _picUrl;
+        // picContainer.style.backgroundImage = 'url(' + _picUrl + ')';
+        // detailPic.src = _picUrl;
         productNo.innerHTML = data.productNo;
         price.innerHTML = formateMoney(data.price, data.priceUnit);
         viewNum.innerHTML = data.viewCount ? data.viewCount : 0;
@@ -164,16 +164,10 @@ var phoneIpt = c('#phoneIpt');
         dress.addEventListener('click', function() {
             location.href = './dress.html?url=' + data.defaultPicUrl;
         }, false);
-        picContainer.onclick = function() {
-            wx.previewImage({
-                urls: [
-                    _picUrl
-                ]
-            });
-        };
+        
     });
     /* eslint-disable no-new */
-    new Swiper('.swiper-container');
+    // new Swiper('.swiper-container');
 
     // 2017年7月28日08:39:56
     // 产品 id 用于色卡操作
@@ -183,9 +177,39 @@ var phoneIpt = c('#phoneIpt');
     }, function(res) {
         console.log('获取色卡返回值', res);
         var data = res.data;
-        for(var i = 0; i < data.length; i++){
-            flowerColorsWrapper.innerHTML = '<img class="color-img" src="' + data[i].picUrl + '" width="36" height="36">';
+        var imgStr = '';
+        var swiperStr = '';
+        var picArr = [];
+        var len = data.length;
+        c('.total-number')[0].innerHTML = '/' + len;
+
+        for (var i = 0; i < len; i++) {
+            swiperStr += '<div class="swiper-slide" style="background-image: url(' + data[i].picUrl + ')" url="' + data[i].picUrl + '"></div>';
+            imgStr += '<img class="color-img" src="' + data[i].picUrl + '" width="36" height="36">';
+            picArr.push(data[i].picUrl);
         }
+        c('.swiper-wrapper')[0].innerHTML = swiperStr;
+        flowerColorsWrapper.innerHTML = imgStr;
+        /* eslint-disable no-new */
+        new Swiper('.swiper-container', {
+            spaceBetween: 30,
+            onSlideChangeEnd: function(swiper) {
+                console.log('activeIndex', swiper.activeIndex);
+                c('.active-number')[0].innerHTML = swiper.activeIndex + 1;
+            }
+        });
+        var swiperItem = document.querySelectorAll('.swiper-slide');
+        
+
+        Array.prototype.forEach.call(swiperItem, function(item) {
+            item.onclick = function() {
+                console.log(this.getAttribute('url'), picArr);
+                wx.previewImage({
+                    current: this.getAttribute('url'),
+                    urls: picArr
+                });
+            };
+        });
         // 小图、标签点击对应的切换
         for(var m = 0; m < flowerColors.length; m++){
             if( m === 0) {
@@ -310,7 +334,7 @@ var phoneIpt = c('#phoneIpt');
             askPurchase(askPurchaseData, function(res) {
                 console.log('采购登记信息', res);
                 if(!res.code) {
-                    alert('求购成功！');
+                    alert('采购登记成功！');
                     colorCardClose();
                 }
             });
