@@ -194,6 +194,10 @@ function _formatPicUrl(url, size) {
 function setDataId(ele, id) {
     ele.setAttribute('data-id', id);
 }
+
+function checkAndroid() {
+    return navigator.userAgent.indexOf('Android') > -1;
+}
 export {
     bind,
     addActive,
@@ -208,5 +212,6 @@ export {
     getQueryString,
     c,
     formatPicUrl,
-    _formatPicUrl
+    _formatPicUrl,
+    checkAndroid
 };

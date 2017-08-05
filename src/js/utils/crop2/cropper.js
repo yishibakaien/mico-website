@@ -98,8 +98,8 @@ var DEFAULTS = {
   minCanvasHeight: 0,
   minCropBoxWidth: 0,
   minCropBoxHeight: 0,
-  minContainerWidth: 200,
-  minContainerHeight: 100,
+  minContainerWidth: 375,
+  minContainerHeight: 500,
 
   // Shortcuts of events
   ready: null,
@@ -956,9 +956,14 @@ var render$1 = {
       height: Math.max(container.offsetHeight, Number(options.minContainerHeight) || 100)
     };
 
+    // setStyle(cropper, {
+    //   width: containerData.width,
+    //   height: containerData.height
+    // });
+
     setStyle(cropper, {
-      width: containerData.width,
-      height: containerData.height
+      width: '100%',
+      height: '100%'
     });
 
     addClass(element, hidden);

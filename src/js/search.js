@@ -9,7 +9,8 @@ import {
     getQueryString,
     formateMoney,
     formateSupplyType,
-    formatPicUrl
+    formatPicUrl,
+    checkAndroid
 } from './utils/utils';
 
 import blackTip from './utils/blackTip';
@@ -84,6 +85,11 @@ var PIC_RESULT = 3;
     var cropperWrapper = c('#cropperWrapper'); // 切图器DOM
     var buttons; // 用来点击切图的按钮
     var cropper; // 切图器
+
+    // 2017年8月4日10:24:35  判断是否安卓客户端，移除 html input[type=file] 中的 capture="camera" 属性，动态添加，解决IOS端部分版本 直接打开相机而不能选择相册的BUG
+    if (checkAndroid()) {
+        searchPicIpt.setAttribute('captrue', 'camera');
+    }
 
     // 点击事件转发
     camera.onclick = function() {
