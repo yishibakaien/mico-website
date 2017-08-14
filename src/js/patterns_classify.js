@@ -69,7 +69,7 @@ function handleUserData(data) {
     console.log(list);
     var userClassifyStr = '';
     list.forEach(function(item) {
-        userClassifyStr += `<div class="list" data-id="${item.id}" company-id="${item.companyId}">
+        userClassifyStr += `<div class="list" style="display: ${item.bindingCount == 0 ? 'none' : 'block'}" data-id="${item.id}" company-id="${item.companyId}">
                                 <span class="text">${item.className} (${item.bindingCount}款)</span>
                                 <i class="iconfont icon-back"></i>
                             </div>`;

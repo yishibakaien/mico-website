@@ -43,11 +43,14 @@
     </div>
     <!-- 主题区域 -->
     <div class="main">
-        <div class="tab border-bottom">
+        <div class="tab border-bottom" style="display: none">
             <div class="tab-item active">
                 <span class="text">全部花型</span>
             </div>
-            <div class="tab-item">
+            <div class="tab-item" style="display: none">
+                <span class="text">独家花型</span>
+            </div>
+            <div class="tab-item" style="display: none">
                 <span class="text">厂家供应</span>
             </div>
         </div>
@@ -159,8 +162,14 @@
                         <div id="spliter"></div>
                     </div>
                 </div>
-
-                <div class="swiper-slide right" id="wrapper2">
+                <div class="swiper-slide middle" id="wrapperMiddle" style="display: none">
+                    <div id="wrapperMiddleDiv" style="padding: 16px">
+                        
+                        <p style="padding: 16px 0;color: #666; font-size: 14px">您需要输入密码才能查看独家花型</p>
+                        <button class="button button-blue button-block" id="getPassword">输入密码</button>
+                    </div>
+                </div>
+                <div class="swiper-slide right" id="wrapper2" style="display: none">
                     <div id="wrapper2Div">
                         <div class="empty-tip">
                             暂时没有供应花型
@@ -220,8 +229,39 @@
     </div>
     <div class="footer border-top">
         <div class="footer-item" id="patternsClassfiy"><i class="iconfont icon-fenlei"></i><span>花型分类</span></div>
-        <div class="footer-item" link="./introduce.html"><i class="iconfont icon-icon-yxj-empty-store"></i><span>厂家介绍</span></div>
-        <div class="footer-item" id="contcat" tel=""><i class="iconfont icon-iconfontdianhua"></i><span>联系厂家</span></div>
+        <div class="footer-item" link="./introduce.html"><i class="iconfont icon-icon-yxj-empty-store"></i><span id="introduceText">介绍</span></div>
+        <div class="footer-item" id="contcat" tel=""><i class="iconfont icon-iconfontdianhua"></i><span id="contactText">联系</span></div>
+    </div>
+
+    <!-- 输入密码 -->
+    <div class="mask" id="passwordMask">
+        <div class="password-inputter-container">
+            <div class="password-inputter-head border-bottom">
+                <p class="inputter-head">
+                    <span class="title">输入访问密码</span>
+                    <span class="icon-close" id="passwordMaskClose">&times;</span>
+                </p>
+            </div>
+            <div class="password-inputter-infomation">请输入访问密码</div>
+            <div class="password-inputter-wrapper">
+                <input class="password-inputter-item" maxlength="1" autofocus="true" type="tel" id="p1">
+                <input class="password-inputter-item" maxlength="1" type="tel" id="p2">
+                <input class="password-inputter-item" maxlength="1" type="tel" id="p3">
+                <input class="password-inputter-item" maxlength="1" type="tel" id="p4">
+                <input class="password-inputter-item" maxlength="1" type="tel" id="p5">
+                <input class="password-inputter-item" maxlength="1" type="tel" id="p6">
+            </div>
+            <div class="password-inputter-desc">
+                <span class="text">不知道密码？请联系商家索要密码！</span>
+                <span class="tel" id="passwordContact">
+                    <i class="iconfont icon-iconfontdianhua"></i>
+                    <span class="phone-text">联系商家</span>
+                </span>
+            </div>
+            <div class="password-inputter-foot">
+                安全输入键盘
+            </div>
+        </div>
     </div>
 </body>
 </html>

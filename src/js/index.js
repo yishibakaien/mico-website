@@ -56,7 +56,13 @@ import {
     getCompanyInfo,
 
     // 微信授权jssdk 签名
-    jsOAuth
+    jsOAuth,
+
+    // 获取独家花型分类
+    getExclusiveProduct
+
+    // 获取独家花型分类密码
+    // getExclusivePassword
  } from './api/api.js';
 
 // 守均 店铺id 36444
@@ -166,6 +172,10 @@ function wxBindFunction(wxShareArg) {
 }
 
 (function() {
+
+    // swiper 提前 为了添加独家花型 2017年8月12日14:28:09 
+    var contentSwiper;
+
     // alert(companyId);
     // 页面元素的获取
     var bgPic = c('#bgPic'),
@@ -203,12 +213,70 @@ function wxBindFunction(wxShareArg) {
     // 试衣按钮
     var dressBtn = c('#dressBtn');
 
+    // 区分档口和厂家
+    var contactText = c('#contactText');
+    var introduceText = c('#introduceText');
+
     searchBtn.onclick = function() {
         location.href = './search.html?companyId=' + companyId;
     };
     dressBtn.onclick = function() {
         location.href = './dress.html?companyId=' + companyId;
     };
+
+    // 独家花型输入密码模块
+    c('#getPassword').onclick = function() {
+        c('#passwordMask').style.display = 'block';
+    };
+    c('#passwordMaskClose').onclick = function() {
+        c('#passwordMask').style.display = 'none';
+    };
+    var getPassword = (function() {
+        let pwd = [];
+        return function(pwdInputItems) {
+            Array.prototype.forEach.call(pwdInputItems, function(item, index) {
+                var id;
+                item.oninput = function() {
+                    var _this = this;
+                    if (this.value.length === 0) {
+                        return;
+                    }
+                    pwd[index] = this.value;
+                    id = this.id.slice(1);
+                    if (id < 6) {
+                        id++;
+                        if (c('#p' + id).value.length === 0) {
+                            c('#p' + id).focus();
+                        }
+                    }
+                    console.log(pwd);
+                    setTimeout(function() {
+                        _this.value = '●';
+                    }, 500);
+
+                    if (/^\d{6}$/g.test(pwd.join(''))) {
+                        alert('有效的', pwd);
+                    } else {
+                        // alert('密码格式不正确');
+                    }
+                };
+                item.onfocus = function() {
+                    if (this.value.length) {
+                        this.value = '';
+                    }
+                };
+            });
+        };
+    })();
+    c('#passwordContact').onclick = function() {
+        var tel = this.getAttribute('tel');
+        if (tel) {
+            console.log('拨打电话：' + tel);
+            location.href = 'tel://' + tel;
+        }
+    };
+    getPassword(document.querySelectorAll('.password-inputter-item'));
+
     // 获取简单店铺信息
     // getCompanySimpleInfo({
     //     id: companyId
@@ -220,32 +288,88 @@ function wxBindFunction(wxShareArg) {
         companyId
     }, function(res) {
         console.log('获取详细店铺信息', res);
-        // alert(JSON.stringify(res));
-        // 头像
-        // if (res.data.companyHeadIcon) {
-        //     companyHeadIcon.src = res.data.companyHeadIcon;
-        //     bgPic.src = res.data.companyBanner;
-        // } else {
-        //     // 如果没有头像这里的 文字原本是白色的就看不见了，所以设为黑色
-        //     companyBusiness.style.color = companyName.style.color = '#333';
-        // }
-        
+
         // 2017年7月4日14:47:17 修改 默认头像为公司名字第一个字，需要把index.html 中的头像图片 display 设置为 none
         if (res.data.companyHeadIcon && res.data.companyHeadIcon.indexOf('default') === -1) {
             companyHeadIcon.style.display = 'block';
             companyHeadIcon.src = res.data.companyHeadIcon;
         } else {
-            console.log('头像的父级元素', companyHeadIcon.parentNode);
             companyHeadIcon.parentNode.innerHTML = res.data.companyName.charAt(0);
         }
         if (res.data.companyBanner) {
             bgPic.src = res.data.companyBanner;
         }
+        
         // 店铺类型 厂家 or 档口，这里应该只有厂家，但还是做判断较好
         if (res.data.companyType === 1) {
+            c('.tab')[0].style.display = 'flex';
+
+            c('.tab-item')[2].style.display = 'block';
+
+            c('#wrapper2').style.display = 'block';
+
             typeTag.className = 'tag factory';
+            contactText.innerHTML = '联系厂家';
+            introduceText.innerHTML = '厂家介绍';
+
+            // 获取独家花型分类 2017年8月14日14:43:16
+            getExclusiveProduct({
+                companyId: Number(companyId)
+            }, function(res) {
+                console.log('获取独家花型分类', res);
+                if (res.data === null) {
+                    console.log('厂家没有独家花型');
+                    contentSwiper = new Swiper('#content', {
+                        onSlideChangeEnd: swiperControl,
+                        initialSlide: activeIndex ? activeIndex : 0
+                    });
+                } else {
+                    console.log('厂家有独家花型');
+                    c('.tab-item')[1].style.display = 'block';
+                    c('#wrapperMiddle').style.display = 'block';
+                    // 2017年8月12日14:29:45 为了添加独家花型
+                    contentSwiper = new Swiper('#content', {
+                        onSlideChangeEnd: swiperControl,
+                        initialSlide: activeIndex ? activeIndex : 0
+                    });     
+                }
+            });
         } else if (res.data.companyType === 2) {
+            // 如果是档口 那么 ‘厂家供应’ 要隐藏
+            c('#wrapper2').style.display = 'none';
             typeTag.className = 'tag stalls';
+            contactText.innerHTML = '联系商家';
+            introduceText.innerHTML = '商家介绍';
+
+            getExclusiveProduct({
+                companyId: Number(companyId)
+            }, function(res) {
+                console.log('获取独家花型分类', res);
+                if (res.data === null) {
+                    console.log('档口没有独家花型');
+                    c('#content').style.top = '72px';
+                    contentSwiper = new Swiper('#content', {
+                        onSlideChangeEnd: swiperControl,
+                        initialSlide: activeIndex ? activeIndex : 0
+                    });
+                } else {
+                    console.log('档口有独家花型');
+                    c('.tab')[0].style.display = 'flex';
+                    c('.tab-item')[1].style.display = 'block';
+                    c('#wrapperMiddle').style.display = 'block';
+                    // 2017年8月12日14:29:45 为了添加独家花型
+                    contentSwiper = new Swiper('#content', {
+                        onSlideChangeEnd: swiperControl,
+                        initialSlide: activeIndex ? activeIndex : 0
+                    });     
+                }
+            });
+            
+            // 2017年8月12日14:30:06 为了添加独家花型
+            contentSwiper = new Swiper('#content', {
+                onSlideChangeEnd: swiperControl,
+                initialSlide: activeIndex ? activeIndex : 0
+            });
         }
         viewCount.innerHTML = res.data.viewCount;
         // 公司名称
@@ -263,6 +387,7 @@ function wxBindFunction(wxShareArg) {
            
         // 联系电话
         contcat.setAttribute('tel', res.data.phone);
+        c('#passwordContact').setAttribute('tel', res.data.phone);
         console.log(res.data.phone);
         wxShareArg = {
             title: res.data.companyName,
@@ -600,10 +725,7 @@ function wxBindFunction(wxShareArg) {
 
     var tabItem = document.getElementsByClassName('tab-item');
     var footerItem = document.getElementsByClassName('footer-item');
-    var contentSwiper = new Swiper('#content', {
-        onSlideChangeEnd: swiperControl,
-        initialSlide: activeIndex ? activeIndex : 0
-    });
+
     addActive(tabItem);
     footerClick(footerItem);
     slideControl();

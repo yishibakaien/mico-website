@@ -13,7 +13,7 @@ import {
     checkAndroid
 } from './utils/utils';
 
-import blackTip from './utils/blackTip';
+// import blackTip from './utils/blackTip';
 
 import Toast from './utils/Toast';
 
@@ -98,7 +98,10 @@ var PIC_RESULT = 3;
     searchPicIpt.onchange = function() {
         uploadPictrue(this, function(base64) {
             image.src = base64;
-            cropper = new Cropper(image);
+            cropper = new Cropper(image, {
+                scalable: false,
+                zoomable: false
+            });
             console.log('Cropper', cropper);
             // console.log('Cropper.cropper', cropper.cropper);
             cropperWrapper.style.display = 'block';
@@ -128,6 +131,7 @@ var PIC_RESULT = 3;
     var picSearchQueryParams = {
         category: 100010,
         companyId: companyId,
+        timeout: 60000,
         encoded: '',
         searchType: 110
     };
@@ -148,8 +152,13 @@ var PIC_RESULT = 3;
     function picCroped() {
         console.log(this);
         var category = this.getAttribute('category');
-        cropperWrapper.style.display = 'none';
         var base64 = cropper.getCroppedCanvas().toDataURL('image/png');
+        if (base64.length > 1000000) {
+            alert('图片体积过大，您截取的图片大小需要再减少 ' + Math.floor(((base64.length / 1000000) - 1) * 100) + '% 左右');
+            Toast.hide();
+            return;
+        };
+        cropperWrapper.style.display = 'none';
         cropper.destroy();
         Toast.loading('搜索' + formateSupplyType(category) + '中');
         picSearchQueryParams.category = category;
@@ -176,6 +185,7 @@ var PIC_RESULT = 3;
     function doPicSearch() {
         // hidePicBox();
         console.log(picSearchQueryParams);
+        
         encoded(picSearchQueryParams, function(res) {
             if (res.code !== 0) {
                 if (res.code === 210018) {

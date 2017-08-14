@@ -33,7 +33,13 @@ const API = {
         listVisitUserProductCategory: '/productCategory/listVisitUserProductCategory',
 
         // 获取店铺花型列表
-        listVistitCompanyProducts: '/product/listVistitCompanyProducts'
+        listVistitCompanyProducts: '/product/listVistitCompanyProducts',
+
+        // 2017年8月14日08:54:49 获取独家花型分类
+        getExclusiveProduct: '/productCategory/getExclusiveProduct'
+
+        // 获取独家花型密码
+        // getExclusivePassword: ' /productCategory/getExclusivePassword'
     },
     company: {
         // 获取档口OR工厂信息
@@ -112,6 +118,7 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
         method: method,
         url: baseURL + url,
         headers: _headers,
+        timeout: data.timeout || 10000,
         data: _formatData(method, data),
         success: function(res) {
             if (res.code !== 0) {
@@ -273,3 +280,23 @@ export function getColorCards(data, cb, err) {
 export function askPurchase(data, cb, err) {
     return _fetch(METHODS.post, data, API.detail.askPurchase, cb, err);
 }
+
+// =====  
+// 独家花型模块
+// 获取独家花型分类
+export function getExclusiveProduct(data, cb, err) {
+    return _fetch(METHODS.get, data, API.main.getExclusiveProduct, cb, err);
+}
+
+// // 获取独家花型分类密码
+// export function getExclusivePassword(data, cb, err) {
+//     return _fetch(METHODS.get, data, API.main.getExclusivePassword, cb, err);
+// }
+
+
+// 获取供应详情
+// export function getCompanySupply(data, cb, err) {
+//     let _data = data;
+//     let url = API.detail.getCompanySupply.toString() + _data.id.toString();
+//     return _fetch(METHODS.get, {}, url, cb, err);
+// }

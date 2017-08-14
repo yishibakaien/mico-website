@@ -2,7 +2,7 @@
 
 // const env = 'test'; // 开发环境
 // const env = 'test_news'; // 测试环境
-var env = 'prod';
+var env = 'test_ghe';
 var headers = {
     'x-version': '1.0',
     'x-client': '4'
@@ -16,7 +16,7 @@ var baseURL = (function(env) {
         test3: 'http://zsbg-dev.ngrok.cc',
         // test3: 'http://hwct3q.natappfree.cc',
         // test4: 'http://zsbg-rap.ngrok.cc',
-        
+        test_ghe: 'http://192.168.7.42:8080',
         test_new: 'http://api.tswq.wang',
         test_news: 'https://api.tswq.wang',
         prod: 'https://api.ts57.cn'

@@ -74,7 +74,7 @@ var askPurchaseData= {
     productId: '',
     purchaseNum: 1,
     purchaseType: 1,
-    userName: '',
+    userName: ''
 };
 // 小图、标签点击对应的切换
 var buyTypes = c('.card-buy-type')[0].getElementsByClassName('value');
