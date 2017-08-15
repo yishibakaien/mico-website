@@ -13,10 +13,7 @@ module.exports = {
         "no-console": 0,
         "indent": [
             "error",
-            4,
-            {
-                "SwitchCase": 4
-            }
+            4
         ],
         "linebreak-style": [
             "error",

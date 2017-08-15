@@ -1,0 +1,1 @@
+webpackJsonp([10],{12:function(n,e){},32:function(n,e,t){"use strict";t(2),t(3),t(12);var c=document.createElement("span");c.innerHTML="这个是js插入的文字about页面",document.body.appendChild(c)}},[32]);

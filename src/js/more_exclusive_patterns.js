@@ -59,21 +59,6 @@ function getData() {
 }
 
 // 请求全部花型
-getAllData();
-function getAllData() {
-    if (!all) {
-        return;
-    }
-
-    listVistitCompanyProducts({
-        companyId,
-        pageNo,
-        pageSize
-    }, function(res) {
-        console.log('请求全部花型', res);
-        htmlHandler(res);
-    });
-}
 
 function htmlHandler(res) {
     var list = res.data.list;
@@ -106,11 +91,9 @@ function htmlHandler(res) {
 
 more.onclick = function() {
     pageNo++;
-    if (all) {
-        getAllData();
-    } else {
-        getData();
-    }
+   
+    getData();
+
 };
 function bindClickEvent(ele) {
     var patterns = ele.getElementsByClassName('patterns');

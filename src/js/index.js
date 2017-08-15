@@ -7,7 +7,7 @@ import '../stylus/index';
 
 import Swiper from 'swiper';
 import wx from 'weixin-js-sdk';
-import Toast from './utils/Toast';
+// import Toast from './utils/Toast';
 // 升级版 iScroll
 // import BScroll from 'better-scroll';
 import {
@@ -259,7 +259,7 @@ function wxBindFunction(wxShareArg) {
                     
                     if (/^\d{6}$/g.test(pwd.join(''))) {
                         var _pwd = pwd.join('');
-                        Toast.loading();
+                        // Toast.loading();
                         console.info('有效的独家花型密码', _pwd);
                         listCompanyBindingProduct({
                             classId: exclusiveId,
@@ -269,19 +269,21 @@ function wxBindFunction(wxShareArg) {
                             password: _pwd
                         }, function(res) {
                             if (res.code === 1004001) {
-                                Toast.info('密码不正确', 2500);
+                                // Toast.info('密码不正确', 2500);
+                                alert('密码不正确');
                                 for (var n = 1; n < 7; n++) {
                                     c('#p' + n).value = '';
                                 }
                                 c('#p1').focus();
+
                                 pwd.length = 0;
                                 return;
                             }
                             sessionStorage['exclusivePwd'] = _pwd;
-                            Toast.success();
+                            // Toast.success();
                             renderExclusivePatterns(res);
                         }, function(res) {
-                            Toast.error('获取数据失败，请检查网络', 3000);
+                            alert('获取数据失败，请检查网络');
                         });
 
                     } else {
@@ -306,7 +308,7 @@ function wxBindFunction(wxShareArg) {
         }, function(res) {
             renderExclusivePatterns(res);
         }, function(res) {
-            Toast.error('获取数据失败，请检查网络', 3000);
+            alert('获取数据失败，请检查网络', 3000);
         });
     }
     // 渲染独家花型
@@ -335,23 +337,20 @@ function wxBindFunction(wxShareArg) {
                         </div>`;
         }
         listStr += '</div>';
-        if (itemList.length > 10) {
-            listStr += `<div class="seemore seeSelfPatterns" class-id="${exclusiveId}">查看更多独家花型</div>`;
+        console.log('独家花型长度', itemList.length);
+        if (res.data.totalPage > 1) {
+            console.log('独家花型长度大于10');
+            listStr += `<div id="moreEx" class-id="${sessionStorage.exclusiveId}" style="text-align:center; background: #fff;line-height: 40px;font-size:14px;">查看更多独家花型</div>`;
         }
         typeWrapper.innerHTML = listStr;
         
         c('#wrapperMiddleDiv').innerHTML = listStr;
-
-        var seeSelfPatterns = c('.seeSelfPatterns');
-        for (var m = 0; m < seeSelfPatterns.length; m++) {
-            (function(m) {
-                seeSelfPatterns[m].onclick = function() {
-                    var classId = this.getAttribute('class-id');
-                    location.href = `./more_exclusive_patterns.html?companyId=${companyId}&classId=${classId}`;
-                };
-            })(m);
-        }
-        bindClick('.type .patterns');
+        c('#moreEx').onclick = function() {
+            var classId = this.getAttribute('class-id');
+            location.href = `./more_exclusive_patterns.html?companyId=${companyId}&classId=${classId}`;
+        };
+           
+        bindClick('#wrapperMiddle .patterns');
     }
 
     c('#passwordContact').onclick = function() {
@@ -457,10 +456,10 @@ function wxBindFunction(wxShareArg) {
             });
             
             // 2017年8月12日14:30:06 为了添加独家花型
-            contentSwiper = new Swiper('#content', {
-                onSlideChangeEnd: swiperControl,
-                initialSlide: activeIndex ? activeIndex : 0
-            });
+            // contentSwiper = new Swiper('#content', {
+            //     onSlideChangeEnd: swiperControl,
+            //     initialSlide: activeIndex ? activeIndex : 0
+            // });
         }
         viewCount.innerHTML = res.data.viewCount;
         // 公司名称
@@ -637,7 +636,16 @@ function wxBindFunction(wxShareArg) {
         // 爆款id
         var hotPatternsDataId = res.data[0].id;
         // 新品id
-        var newPatternsDataId = res.data[1].id;
+        var newPatternsDataId;
+        // if (res.data.length === 2) {
+        //     console.log('新品是第二个');
+        //     newPatternsDataId = res.data[1].id;
+        // } else if(res.data.length === 3) {
+        //     console.log('新品是第三个');
+        //     // 这里兼容新独家花型，有独家花型的情况下，新品是第二个
+        newPatternsDataId = res.data[1].id;
+        // }
+        console.log('最终的新品id', newPatternsDataId); 
         // 获取爆款列表
         listCompanyBindingProduct({
             classId: hotPatternsDataId,

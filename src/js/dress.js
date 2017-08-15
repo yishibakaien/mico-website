@@ -161,8 +161,17 @@ function htmlHandler(res) {
                         <p class="price">${formateMoney(list[i].price,list[i].priceUnit)}</p>
                     </div>`;
     }
+    if (list.length === 1) {
+        listStr += `<div class="patterns" data-id="12345" style="opacity: 0">
+                        <div class="img" style=""></div>
+                        <p class="number">产品编号</p>
+                        <p class="price">默认价格</p>
+                    </div>`;
+    }
     div.innerHTML = listStr;
+    
     listWrapper.appendChild(div);
+    // listWrapper.innerHTML = listStr;
     // alert('花型插入完毕', div); 
     // 这里有个坑  pageNo => pageNO 这个o 是大写
     if (res.data.pageSize * res.data.pageNO >= res.data.totalNum) {
