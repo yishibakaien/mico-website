@@ -121,6 +121,11 @@ function _fetch(method = METHODS.get, data, url, cb, err) {
         timeout: data.timeout || 10000,
         data: _formatData(method, data),
         success: function(res) {
+            // 独家花型特殊处理
+            if (res.code === 1004001) {
+                cb(res);
+                return;
+            }
             if (res.code !== 0) {
                 Toast.info('请求错误:' + res.message, 2100);
                 // blackTip({

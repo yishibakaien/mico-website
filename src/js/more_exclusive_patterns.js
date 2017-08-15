@@ -42,11 +42,16 @@ function getData() {
     if (!classId) {
         return;
     }
+    if (!sessionStorage['exclusivePwd']) {
+        alert('独家花型需要输入密码才能查看');
+        return;
+    }
     listCompanyBindingProduct({
         companyId,
         classId,
         pageSize,
-        pageNo
+        pageNo,
+        password: sessionStorage['exclusivePwd']
     }, function(res) {
         console.log('分类花型列表', res);
         htmlHandler(res);
@@ -59,6 +64,7 @@ function getAllData() {
     if (!all) {
         return;
     }
+
     listVistitCompanyProducts({
         companyId,
         pageNo,

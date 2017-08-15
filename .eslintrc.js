@@ -9,10 +9,14 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "no-console":0,
+        "no-unused-vars": 0,
+        "no-console": 0,
         "indent": [
             "error",
-            4
+            4,
+            {
+                "SwitchCase": 4
+            }
         ],
         "linebreak-style": [
             "error",

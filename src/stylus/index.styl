@@ -73,11 +73,14 @@
 
 // 新修改滚动
 #wrapper1,
+#wrapperMiddle,
 #wrapper2 {
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
 }
-
+#wrapperMiddle .patterns{
+    background: #fff;
+}
 /* header START */
 .header
     display flex
@@ -232,7 +235,7 @@
     background: #fff;
 }
 
-#wrapper1Div, #wrapper2Div {
+#wrapper1Div, #wrapperMiddleDiv, #wrapper2Div {
     padding-bottom: 50px;
 }
 

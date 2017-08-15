@@ -7,6 +7,7 @@ import '../stylus/index';
 
 import Swiper from 'swiper';
 import wx from 'weixin-js-sdk';
+import Toast from './utils/Toast';
 // 升级版 iScroll
 // import BScroll from 'better-scroll';
 import {
@@ -175,6 +176,8 @@ function wxBindFunction(wxShareArg) {
 
     // swiper 提前 为了添加独家花型 2017年8月12日14:28:09 
     var contentSwiper;
+    // 独家花型的id
+    var exclusiveId;
 
     // alert(companyId);
     // 页面元素的获取
@@ -250,12 +253,37 @@ function wxBindFunction(wxShareArg) {
                         }
                     }
                     console.log(pwd);
-                    setTimeout(function() {
-                        _this.value = '●';
-                    }, 500);
-
+                    // setTimeout(function() {
+                    //     _this.value = '●';
+                    // }, 500);
+                    
                     if (/^\d{6}$/g.test(pwd.join(''))) {
-                        alert('有效的', pwd);
+                        var _pwd = pwd.join('');
+                        Toast.loading();
+                        console.info('有效的独家花型密码', _pwd);
+                        listCompanyBindingProduct({
+                            classId: exclusiveId,
+                            companyId: companyId,
+                            pageNo: 1,
+                            pageSize: 10,
+                            password: _pwd
+                        }, function(res) {
+                            if (res.code === 1004001) {
+                                Toast.info('密码不正确', 2500);
+                                for (var n = 1; n < 7; n++) {
+                                    c('#p' + n).value = '';
+                                }
+                                c('#p1').focus();
+                                pwd.length = 0;
+                                return;
+                            }
+                            sessionStorage['exclusivePwd'] = _pwd;
+                            Toast.success();
+                            renderExclusivePatterns(res);
+                        }, function(res) {
+                            Toast.error('获取数据失败，请检查网络', 3000);
+                        });
+
                     } else {
                         // alert('密码格式不正确');
                     }
@@ -268,6 +296,64 @@ function wxBindFunction(wxShareArg) {
             });
         };
     })();
+    if (sessionStorage['exclusiveId'] && sessionStorage['exclusivePwd']) {
+        listCompanyBindingProduct({
+            classId: sessionStorage['exclusiveId'],
+            companyId: companyId,
+            pageNo: 1,
+            pageSize: 10,
+            password: sessionStorage['exclusivePwd']
+        }, function(res) {
+            renderExclusivePatterns(res);
+        }, function(res) {
+            Toast.error('获取数据失败，请检查网络', 3000);
+        });
+    }
+    // 渲染独家花型
+    function renderExclusivePatterns(res) {
+        c('#passwordMask').style.display = 'none';
+        console.log('这里是获取到的独家花型的数据', res);
+        var len;
+        var itemList = res.data.list;
+
+        var typeWrapper = document.createElement('div');
+        typeWrapper.className = 'type clearfix';
+        var listStr = '<div class="patterns-wrapper clearfix">';
+        
+        if (itemList.length > 10) {
+            len = 10;
+        } else {
+            len = itemList.length;
+        }
+        // 这里最多只展示 10 条，超过部分查看更多
+        for (var i = 0; i < len; i++) {
+
+            listStr += `<div class="patterns" data-id="${itemList[i].id}">
+                            <div class="img" style="background-image:url(${_formatPicUrl(itemList[i].defaultPicUrl, 300)})"></div>
+                            <p class="number">${itemList[i].productNo}</p>
+                            <p class="price">${formateMoney(itemList[i].price, itemList[i].priceUnit)}</p>
+                        </div>`;
+        }
+        listStr += '</div>';
+        if (itemList.length > 10) {
+            listStr += `<div class="seemore seeSelfPatterns" class-id="${exclusiveId}">查看更多独家花型</div>`;
+        }
+        typeWrapper.innerHTML = listStr;
+        
+        c('#wrapperMiddleDiv').innerHTML = listStr;
+
+        var seeSelfPatterns = c('.seeSelfPatterns');
+        for (var m = 0; m < seeSelfPatterns.length; m++) {
+            (function(m) {
+                seeSelfPatterns[m].onclick = function() {
+                    var classId = this.getAttribute('class-id');
+                    location.href = `./more_exclusive_patterns.html?companyId=${companyId}&classId=${classId}`;
+                };
+            })(m);
+        }
+        bindClick('.type .patterns');
+    }
+
     c('#passwordContact').onclick = function() {
         var tel = this.getAttribute('tel');
         if (tel) {
@@ -327,6 +413,8 @@ function wxBindFunction(wxShareArg) {
                     console.log('厂家有独家花型');
                     c('.tab-item')[1].style.display = 'block';
                     c('#wrapperMiddle').style.display = 'block';
+                    exclusiveId = res.data;
+                    sessionStorage['exclusiveId'] = res.data;
                     // 2017年8月12日14:29:45 为了添加独家花型
                     contentSwiper = new Swiper('#content', {
                         onSlideChangeEnd: swiperControl,
@@ -357,6 +445,9 @@ function wxBindFunction(wxShareArg) {
                     c('.tab')[0].style.display = 'flex';
                     c('.tab-item')[1].style.display = 'block';
                     c('#wrapperMiddle').style.display = 'block';
+                    // 这里赋值独家花型Id;
+                    exclusiveId = res.data;
+                    sessionStorage['exclusiveId'] = res.data;
                     // 2017年8月12日14:29:45 为了添加独家花型
                     contentSwiper = new Swiper('#content', {
                         onSlideChangeEnd: swiperControl,
@@ -523,7 +614,7 @@ function wxBindFunction(wxShareArg) {
         listStr += '</div></div>';
         // 这里的pageNO 的 o 为大写
         if ((res.data.pageNO * res.data.pageSize) < res.data.totalNum) {
-            console.log(11);
+            // console.log(11);
             listStr += '<div class="seemore" id="seeAllPatterns">查看全部花型</div>';
         }
         typeWrapper.innerHTML = listStr;
