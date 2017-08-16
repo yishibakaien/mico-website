@@ -52,7 +52,7 @@ listVisitSystemProductCategory({
 function handleSystemData(data) {
     var systemClassifyStr = '';
     data.forEach(function(item) {
-        systemClassifyStr += `<div class="list" data-id="${item.id}" company-id="${item.companyId}">
+        systemClassifyStr += `<div class="list" data-id="${item.id}" company-id="${item.companyId}" style="${item.className === '独家花型' ? 'display: none' : 'display: block'}">
                                 <span class="text">${item.className} (${item.bindingCount}款)</span>
                                 <i class="iconfont icon-back"></i>
                             </div>`;

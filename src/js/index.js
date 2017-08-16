@@ -253,9 +253,6 @@ function wxBindFunction(wxShareArg) {
                         }
                     }
                     console.log(pwd);
-                    // setTimeout(function() {
-                    //     _this.value = '●';
-                    // }, 500);
                     
                     if (/^\d{6}$/g.test(pwd.join(''))) {
                         var _pwd = pwd.join('');
@@ -270,7 +267,8 @@ function wxBindFunction(wxShareArg) {
                         }, function(res) {
                             if (res.code === 1004001) {
                                 // Toast.info('密码不正确', 2500);
-                                alert('密码不正确');
+                                c('#incorrectPwd').style.display = 'block';
+
                                 for (var n = 1; n < 7; n++) {
                                     c('#p' + n).value = '';
                                 }
@@ -279,6 +277,7 @@ function wxBindFunction(wxShareArg) {
                                 pwd.length = 0;
                                 return;
                             }
+                            c('#incorrectPwd').style.display = 'none';
                             sessionStorage['exclusivePwd'] = _pwd;
                             // Toast.success();
                             renderExclusivePatterns(res);
@@ -345,11 +344,12 @@ function wxBindFunction(wxShareArg) {
         typeWrapper.innerHTML = listStr;
         
         c('#wrapperMiddleDiv').innerHTML = listStr;
-        c('#moreEx').onclick = function() {
-            var classId = this.getAttribute('class-id');
-            location.href = `./more_exclusive_patterns.html?companyId=${companyId}&classId=${classId}`;
-        };
-           
+        if (res.data.totalPage > 1) {
+            c('#moreEx').onclick = function() {
+                var classId = this.getAttribute('class-id');
+                location.href = `./more_exclusive_patterns.html?companyId=${companyId}&classId=${classId}`;
+            };
+        }
         bindClick('#wrapperMiddle .patterns');
     }
 
@@ -357,7 +357,7 @@ function wxBindFunction(wxShareArg) {
         var tel = this.getAttribute('tel');
         if (tel) {
             console.log('拨打电话：' + tel);
-            location.href = 'tel://' + tel;
+            location.href = 'tel:' + tel;
         }
     };
     getPassword(document.querySelectorAll('.password-inputter-item'));
@@ -634,17 +634,17 @@ function wxBindFunction(wxShareArg) {
         console.log('listVisitSystemProductCategory 获取系统定义花型分类（爆款、新品）', res);
 
         // 爆款id
-        var hotPatternsDataId = res.data[0].id;
+        var hotPatternsDataId;
         // 新品id
         var newPatternsDataId;
-        // if (res.data.length === 2) {
-        //     console.log('新品是第二个');
-        //     newPatternsDataId = res.data[1].id;
-        // } else if(res.data.length === 3) {
-        //     console.log('新品是第三个');
-        //     // 这里兼容新独家花型，有独家花型的情况下，新品是第二个
-        newPatternsDataId = res.data[1].id;
-        // }
+        res.data.forEach(function(item) {
+            if (item.className === '爆款') {
+                hotPatternsDataId = item.id;
+            }
+            if (item.className === '新品') {
+                newPatternsDataId = item.id;
+            }
+        });
         console.log('最终的新品id', newPatternsDataId); 
         // 获取爆款列表
         listCompanyBindingProduct({
