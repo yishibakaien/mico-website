@@ -100,7 +100,10 @@ var PIC_RESULT = 3;
             image.src = base64;
             cropper = new Cropper(image, {
                 scalable: false,
-                zoomable: false
+                zoomable: false,
+                autoCropArea: 0.6,
+                minCropBoxWidth: 60,
+                minCropBoxHeight: 60
             });
             console.log('Cropper', cropper);
             // console.log('Cropper.cropper', cropper.cropper);
