@@ -632,7 +632,9 @@ function wxBindFunction(wxShareArg) {
         companyId
     }, function(res) {
         console.log('listVisitSystemProductCategory 获取系统定义花型分类（爆款、新品）', res);
-
+        if (res.data.length === 0) {
+            return;
+        }
         // 爆款id
         var hotPatternsDataId;
         // 新品id
