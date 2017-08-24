@@ -237,7 +237,7 @@ var PIC_RESULT = 3;
     };
 
     // 页面一进入 默认显示 店铺已有的一些花型
-    showDefaultResult();
+    console.log(showDefaultResult);
 
     function showDefaultResult() {
         listVistitCompanyProducts(defaultQueryParams, function(res) {
