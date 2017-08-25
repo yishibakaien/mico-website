@@ -110,14 +110,32 @@ var DEFAULTS = {
   zoom: null
 };
 
-var TEMPLATE = '<div class="cropper-container">' + '<div class="cropper-wrap-box">' + '<div class="cropper-canvas"></div>' + '</div>' + '<div class="cropper-drag-box"></div>' + '<div class="cropper-crop-box">' + '<span class="cropper-view-box"></span>' + '<span class="cropper-dashed dashed-h"></span>' + '<span class="cropper-dashed dashed-v"></span>' + '<span class="cropper-center"></span>' + '<span class="cropper-face"></span>' + '<span class="cropper-line line-e" data-action="e"></span>' + '<span class="cropper-line line-n" data-action="n"></span>' + '<span class="cropper-line line-w" data-action="w"></span>' + '<span class="cropper-line line-s" data-action="s"></span>' + '<span class="cropper-point point-e" data-action="e"></span>' + '<span class="cropper-point point-n" data-action="n"></span>' + '<span class="cropper-point point-w" data-action="w"></span>' + '<span class="cropper-point point-s" data-action="s"></span>' + '<span class="cropper-point point-ne" data-action="ne"></span>' + '<span class="cropper-point point-nw" data-action="nw"></span>' + '<span class="cropper-point point-sw" data-action="sw"></span>' + '<span class="cropper-point point-se" data-action="se"></span>' + '</div>' + 
-  '<div class="cropper-btn-wrapper">' + 
-    '<div class="cropper-btn-text">请选择搜索范围</div>' + 
-    '<div class="btn-cell" category="100010"><span class="cropper-btn">面料</span></div>' + 
-    '<div class="btn-cell" category="100011"><span class="cropper-btn">大边</span></div>' + 
-    '<div class="btn-cell" category="100012"><span class="cropper-btn">小边</span></div>' + 
-    '<div class="btn-cell" category="100013"><span class="cropper-btn">睫毛</span></div>' + 
-  '</div>' + 
+var TEMPLATE = '<div class="cropper-container">' + '<div class="cropper-wrap-box">' + '<div class="cropper-canvas"></div>' + '</div>' + '<div class="cropper-drag-box"></div>' + '<div class="cropper-crop-box">' + '<span class="cropper-view-box"></span>' + '<span class="cropper-dashed dashed-h"></span>' + '<span class="cropper-dashed dashed-v"></span>' + '<span class="cropper-center"></span>' + '<span class="cropper-face"></span>' + '<span class="cropper-line line-e" data-action="e"></span>' + '<span class="cropper-line line-n" data-action="n"></span>' + '<span class="cropper-line line-w" data-action="w"></span>' + '<span class="cropper-line line-s" data-action="s"></span>'
+// 右点
++ '<span class="cropper-point point-e" data-action="e"><span>&harr;</span></span>'
+// 上点
++ '<span class="cropper-point point-n" data-action="n"><span>&varr;</span></span>'
+// 左点
++ '<span class="cropper-point point-w" data-action="w"><span>&harr;</span></span>'
+// 下点
++ '<span class="cropper-point point-s" data-action="s"><span>&varr;</span></span>'
+// 右上角
++ '<span class="cropper-point point-ne" data-action="ne"></span>'
+
+// 左上角
++ '<span class="cropper-point point-nw" data-action="nw"></span>'
+
+// 左下角
++ '<span class="cropper-point point-sw" data-action="sw"></span>'
+// 右下角
++ '<span class="cropper-point point-se" data-action="se"></span>' + '</div>' +
+  '<div class="cropper-btn-wrapper">' +
+    '<div class="cropper-btn-text">请选择搜索范围</div>' +
+    '<div class="btn-cell" category="100010"><span class="cropper-btn">面料</span></div>' +
+    '<div class="btn-cell" category="100011"><span class="cropper-btn">大边</span></div>' +
+    '<div class="btn-cell" category="100012"><span class="cropper-btn">小边</span></div>' +
+    '<div class="btn-cell" category="100013"><span class="cropper-btn">睫毛</span></div>' +
+  '</div>' +
 '</div>';
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
