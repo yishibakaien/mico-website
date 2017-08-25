@@ -850,9 +850,15 @@ function wxBindFunction(wxShareArg) {
         for (i = 0; i < len; i++) {
             tabItem[i].className = tabItem[i].className.split('active').join(' ');
         }
-        tabItem[swiper.activeIndex].className += ' active';
-    }
+        var activeIndex = swiper.activeIndex;
 
+        if (tabItem[1].style.display === 'none') {
+            tabItem[swiper.activeIndex].className += ' active';
+            tabItem[swiper.activeIndex + 1].className += ' active';
+        } else {
+            tabItem[swiper.activeIndex].className += ' active';
+        }
+    }
 
     function footerClick(eles) {
         var i,
