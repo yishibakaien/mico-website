@@ -2,7 +2,7 @@
 import '../stylus/common/common';
 import '../stylus/static/reset/reset';
 import '../stylus/dress';
-import { bind, c, getQueryString, formateMoney } from './utils/utils';
+import { bind, c, getQueryString, formateMoney, checkAndroid } from './utils/utils';
 import { listVistitCompanyProducts } from './api/api';
 import Toast from './utils/Toast';
 
@@ -200,4 +200,8 @@ function bindClickEvent(ele) {
             };
         })(i);
     }
+}
+// 检查安卓手机，再设置 captrue=camera 标签，如果直接设置会导致 IOS 直接调起相机
+if (checkAndroid()) {
+    document.getElementById('iptUpload').setAttribute('captrue', 'camera');
 }
