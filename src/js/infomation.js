@@ -4,7 +4,7 @@ import '../stylus/infomation.styl';
 import {
     c,
     getQueryString,
-    // formateDate
+    formatDate
 } from './utils/utils';
 import {
     getCompanyInfo
@@ -36,7 +36,7 @@ getCompanyInfo({
     console.log('公司详细信息', res);
     var data = res.data;
 
-    phone.innerHTML = _formate(data.phone);
+    phone.innerHTML = format(data.phone);
     phoneTip.innerHTML = '(点击拨打)';
     phone.setAttribute('tel', data.phone);
     phone.addEventListener('click', function() {
@@ -46,26 +46,59 @@ getCompanyInfo({
     phoneTip.addEventListener('click', function() {
         location.href = 'tel:' + data.phone;
     }, false);
+    // 企业简介
+    companyProfile.innerHTML = format(data.companyProfile);
 
-    companyProfile.innerHTML = _formate(data.companyProfile);
-    registeredMoney.innerHTML = _formate(data.registeredMoney) === 1 ? '0-1000万' : _formate(data.registeredMoney) === 2 ? '1001-5000万' : _formate(data.registeredMoney) === 3 ? '5001-15000万' : _formate(data.registeredMoney) === 4 ? '1亿五千万以上' : '';
-    area.innerHTML = _formate(data.area);
-    companyCreateDate.innerHTML = _formate(data.companyCreateDate);
-    companyType.innerHTML = _formate(data.companyType) === 1 ? '蕾丝生产企业' : _formate(data.companyType) === 2 ? '贸易企业' : _formate(data.companyType) === 3 ? '服装生产企业' : _formate(data.companyType) === 4 ? '其他企业' : '';
-    businessModel.innerHTML = _formate(data.businessModel);
-    // // 文档里写的是nop
-    staffNumber.innerHTML = _formate(data.nop);
-    firmAddress.innerHTML = _formate(data.address);
-    mainClient.innerHTML = _formate(data.mainClient);
-    turnover.innerHTML = _formate(data.turnover) === 1 ? '0-1000万' : _formate(data.turnover) === 2 ? '1001-5000万' : _formate(data.turnover) === 3 ? '5001-15000万' : _formate(data.turnover) === 4 ? '1亿五千万以上' : '';
-    mainProduct.innerHTML = _formate(data.mainProduct);
-    mainMarket.innerHTML = _formate(data.mainMarket);
-    plant.innerHTML = _formate(data.plant);
-    machineNum.innerHTML = _formate(data.machineNum) === 1 ? '0-10台' : _formate(data.machineNum) === 2 ? '11-20台' : _formate(data.machineNum) === 3 ? '21-50台' : _formate(data.machineNum) === 4 ?'51台以上' : '';
 
+    // registeredMoney.innerHTML = format(data.registeredMoney) === 1 ? '0-1000万' : format(data.registeredMoney) === 2 ? '1001-5000万' : format(data.registeredMoney) === 3 ? '5001-15000万' : format(data.registeredMoney) === 4 ? '1亿五千万以上' : '';
+    
+    var companyExtendBO = data.companyExtendBO;
+    // 注册资金
+    registeredMoney.innerHTML = companyExtendBO.registeredMoney;
+
+    // 地区
+    area.innerHTML = companyExtendBO.mainMarket;
+
+    // 成立时间
+    companyCreateDate.innerHTML = format(formatDate(companyExtendBO.companyCreateDate, 'yyyy-MM-dd'));
+
+    // 企业类型
+    companyType.innerHTML = format(data.companyType) === 1 ? '蕾丝生产企业' : format(data.companyType) === 2 ? '贸易企业' : format(data.companyType) === 3 ? '服装生产企业' : format(data.companyType) === 4 ? '其他企业' : '';
+
+    // 经营模式
+    businessModel.innerHTML = format(companyExtendBO.businessModel);
+    
+    // 文档里写的是nop
+    staffNumber.innerHTML = format(companyExtendBO.nop);
+
+    // 经营地址
+    firmAddress.innerHTML = format(data.address);
+
+    // 主要客户
+    mainClient.innerHTML = format(companyExtendBO.mainClient);
+
+
+    // turnover.innerHTML = format(data.turnover) === 1 ? '0-1000万' : format(data.turnover) === 2 ? '1001-5000万' : format(data.turnover) === 3 ? '5001-15000万' : format(data.turnover) === 4 ? '1亿五千万以上' : '';
+    
+    // 年营业额
+    turnover.innerHTML = format(companyExtendBO.turnover);
+
+    // 主营产品
+    mainProduct.innerHTML = format(companyExtendBO.mainProduct);
+
+    // 主要市场
+    mainMarket.innerHTML = format(companyExtendBO.mainMarket);
+
+    // 厂房面积
+    plant.innerHTML = format(companyExtendBO.plant);
+
+    // machineNum.innerHTML = format(data.machineNum) === 1 ? '0-10台' : format(data.machineNum) === 2 ? '11-20台' : format(data.machineNum) === 3 ? '21-50台' : format(data.machineNum) === 4 ?'51台以上' : '';
+    
+    // 设备数量
+    machineNum.innerHTML = format(companyExtendBO.machineNum);
 });
 
-function _formate(str) {
+function format(str) {
     str = str || '';
     if (!str) {
         return '';
