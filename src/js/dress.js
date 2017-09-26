@@ -36,6 +36,12 @@ console.log('companyId', companyId);
 var pageSize = 10;
 var pageNo = 1;
 
+
+// 默认背景衣服大小 25%
+var defalutBgPicSize = '25%';
+
+wrapper.style.backgroundSize = defalutBgPicSize;
+
 // alert('获取到的location.href:' + location.href);
 // alert('获取到的location.search：' + location.search);
 // alert('获取到的url上传来的图片地址是:' + imgUrl);
@@ -45,6 +51,8 @@ if (imgUrl) {
     modlePic.onload = function() {
         // alert('执行设置衣服操作' + imgUrl);
         wrapper.style.backgroundImage = 'url(' + imgUrl + ')';
+
+        wrapper.style.backgroundSize = defalutBgPicSize;
         // alert('执行设置衣服操作完毕' + imgUrl);
         modlePic.onload = null;
     };
@@ -114,6 +122,7 @@ function previewImage(file) {
         var reader = new FileReader();
         bind(reader, 'load', function(evt) {
             wrapper.style.background = 'url(' + evt.target.result + ')';
+            wrapper.style.backgroundSize = defalutBgPicSize;
         });
         reader.readAsDataURL(file.files[0]);
     }
@@ -196,6 +205,7 @@ function bindClickEvent(ele) {
             img[i].onclick = function() {
                 var imgUrl = this.style.backgroundImage;
                 wrapper.style.backgroundImage = imgUrl;
+                wrapper.style.backgroundSize = defalutBgPicSize;
                 patterns.style.display = 'none';
             };
         })(i);
